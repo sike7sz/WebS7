@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sike Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --dark: #111118;
+  --purple: #7b2fff;
+  --purple2: #b44fff;
+  --pink: #ff2d78;
+  --cyan: #00fff7;
+  --yellow: #ffe600;
+  --green: #39ff14;
+  --white: #f0f0ff;
+  --grey: #444466;
+  --scanline: rgba(0,0,0,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpolygon points='0,0 0,16 4,12 7,19 9,18 6,11 11,11' fill='%23b44fff' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+/* scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--scanline) 0px,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: scanroll 8s linear infinite;
+}
+
+@keyframes scanroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100px; }
+}
+
+/* starfield bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(180,79,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 60%, rgba(0,255,247,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 30%, rgba(255,230,0,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 80%, rgba(255,45,120,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 10%, rgba(180,79,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 50%, rgba(0,255,247,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 85%, rgba(57,255,20,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 75%, rgba(255,230,0,.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 50% 50%, rgba(180,79,255,.2) 0%, transparent 100%);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: .7; }
+  to { opacity: 1; }
+}
+
+/* ─── MARQUEE HEADER ─── */
+.marquee-bar {
+  background: var(--purple);
+  color: var(--yellow);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 6px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--pink);
+}
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 18s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+/* ─── NAV ─── */
+nav {
+  background: var(--dark);
+  border-bottom: 2px solid var(--purple);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(123,47,255,.4);
+}
+.nav-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--purple2);
+  text-shadow: 0 0 10px var(--purple);
+  text-decoration: none;
+  animation: glitch-subtle 6s infinite;
+}
+@keyframes glitch-subtle {
+  0%,95%,100% { text-shadow: 0 0 10px var(--purple); }
+  96% { text-shadow: -2px 0 var(--pink), 2px 0 var(--cyan); transform: translateX(1px); }
+  97% { text-shadow: 2px 0 var(--pink), -2px 0 var(--cyan); transform: translateX(-1px); }
+  98% { text-shadow: 0 0 10px var(--purple); transform: translateX(0); }
+}
+.nav-links {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Silkscreen', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  text-decoration: none;
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  transition: all .15s;
+}
+.nav-links a:hover {
+  border-color: var(--cyan);
+  color: var(--yellow);
+  background: rgba(0,255,247,.08);
+  text-shadow: 0 0 8px var(--cyan);
+}
+
+/* ─── HERO ─── */
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+}
+.hero-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(20px, 5vw, 38px);
+  color: var(--white);
+  text-shadow:
+    0 0 10px var(--purple2),
+    0 0 30px var(--purple),
+    3px 3px 0 var(--pink);
+  animation: flicker 5s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+@keyframes flicker {
+  0%,89%,91%,93%,100% { opacity: 1; }
+  90% { opacity: .6; }
+  92% { opacity: .9; }
+}
+.hero-sub {
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  color: var(--cyan);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.hero-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--grey);
+  max-width: 500px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+.blink {
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(57,255,20,.08);
+  border: 1px solid var(--green);
+  border-radius: 0;
+  padding: 5px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--green);
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px rgba(57,255,20,.2);
+}
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse-green 1.5s ease-in-out infinite;
+}
+@keyframes pulse-green {
+  0%,100% { box-shadow: 0 0 0 0 rgba(57,255,20,.6); }
+  50% { box-shadow: 0 0 0 5px rgba(57,255,20,0); }
+}
+
+/* visitor counter */
+.visitor-counter {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--yellow);
+  border: 2px inset var(--grey);
+  display: inline-block;
+  padding: 4px 10px;
+  background: #000;
+  letter-spacing: 2px;
+}
+
+/* ─── MAIN GRID ─── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 700px) { .main { grid-template-columns: 1fr; } }
+
+/* ─── WINDOWS (retro boxes) ─── */
+.win {
+  border: 2px solid var(--purple);
+  background: rgba(10,10,20,.92);
+  position: relative;
+  overflow: hidden;
+  animation: fadeup .4s ease both;
+}
+.win::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(123,47,255,.015) 0px,
+    rgba(123,47,255,.015) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+}
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.win:nth-child(1) { animation-delay: .05s; }
+.win:nth-child(2) { animation-delay: .1s; }
+.win:nth-child(3) { animation-delay: .15s; }
+.win:nth-child(4) { animation-delay: .2s; }
+.win:nth-child(5) { animation-delay: .25s; }
+.win:nth-child(6) { animation-delay: .3s; }
+.win:nth-child(7) { animation-delay: .35s; }
+
+.win.full { grid-column: 1 / -1; }
+.win.pink { border-color: var(--pink); }
+.win.cyan { border-color: var(--cyan); }
+.win.yellow { border-color: var(--yellow); }
+.win.green { border-color: var(--green); }
+
+.win-titlebar {
+  background: var(--purple);
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--purple2);
+}
+.win.pink .win-titlebar { background: var(--pink); border-bottom-color: #ff6699; }
+.win.cyan .win-titlebar { background: #006666; border-bottom-color: var(--cyan); }
+.win.yellow .win-titlebar { background: #665500; border-bottom-color: var(--yellow); }
+.win.green .win-titlebar { background: #005500; border-bottom-color: var(--green); }
+
+.win-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: white;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+}
+.win-controls {
+  display: flex;
+  gap: 4px;
+}
+.win-btn {
+  width: 12px; height: 12px;
+  border: 1px solid rgba(255,255,255,.4);
+  background: rgba(255,255,255,.2);
+  cursor: pointer;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  line-height: 1;
+}
+.win-body {
+  padding: 14px 16px;
+  line-height: 1.7;
+}
+
+/* ─── ABOUT ─── */
+.about-text {
+  font-family: 'VT323', monospace;
+  font-size: 19px;
+  color: var(--white);
+  line-height: 1.6;
+}
+.about-text .label {
+  color: var(--cyan);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 2px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.tag {
+  display: inline-block;
+  background: rgba(123,47,255,.25);
+  border: 1px solid var(--purple2);
+  color: var(--purple2);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  margin: 2px 3px 2px 0;
+}
+.tag.pink { background: rgba(255,45,120,.15); border-color: var(--pink); color: var(--pink); }
+.tag.cyan { background: rgba(0,255,247,.1); border-color: var(--cyan); color: var(--cyan); }
+.tag.yellow { background: rgba(255,230,0,.1); border-color: var(--yellow); color: var(--yellow); }
+.tag.green { background: rgba(57,255,20,.1); border-color: var(--green); color: var(--green); }
+
+/* ─── TSUKASA SECTION ─── */
+.tsukasa-box {
+  text-align: center;
+  padding: 10px;
+}
+.tsukasa-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--pink);
+  text-shadow: 0 0 8px var(--pink);
+  margin-bottom: 10px;
+}
+.tsukasa-facts {
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  text-align: left;
+  line-height: 1.7;
+}
+.tsukasa-facts li {
+  list-style: none;
+  padding-left: 16px;
+  position: relative;
+  color: var(--white);
+}
+.tsukasa-facts li::before {
+  content: '♡';
+  position: absolute;
+  left: 0;
+  color: var(--pink);
+}
+.contract-badge {
+  display: inline-block;
+  background: rgba(255,45,120,.12);
+  border: 1px dashed var(--pink);
+  padding: 8px 12px;
+  margin-top: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--pink);
+  line-height: 1.5;
+}
+
+/* ─── LANGUAGE CARD ─── */
+.lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+.lang-card {
+  border: 1px solid var(--grey);
+  padding: 8px;
+  text-align: center;
+  background: rgba(255,255,255,.03);
+  transition: border-color .15s;
+}
+.lang-card:hover { border-color: var(--cyan); }
+.lang-flag { font-size: 24px; display: block; margin-bottom: 4px; }
+.lang-name { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); }
+.lang-level { font-family: 'VT323', monospace; font-size: 15px; color: var(--grey); }
+
+/* ─── KYTHLISH CARD ─── */
+.kythlish-card {
+  display: block;
+  text-decoration: none;
+  border: 2px solid var(--yellow);
+  background: rgba(255,230,0,.04);
+  padding: 16px;
+  position: relative;
+  transition: all .2s;
+  overflow: hidden;
+}
+.kythlish-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;left: -50%;
+  width: 200%;height: 200%;
+  background: radial-gradient(circle, rgba(255,230,0,.06) 0%, transparent 60%);
+  animation: rotate-glow 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes rotate-glow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.kythlish-card:hover {
+  border-color: var(--cyan);
+  background: rgba(255,230,0,.08);
+  box-shadow: 0 0 20px rgba(255,230,0,.2);
+}
+.kythlish-header {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--yellow);
+  text-shadow: 0 0 8px var(--yellow);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kythlish-sample {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--purple2);
+  background: rgba(0,0,0,.4);
+  border-left: 3px solid var(--purple);
+  padding: 6px 10px;
+  margin: 8px 0;
+  letter-spacing: .05em;
+}
+.kythlish-desc {
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  color: var(--white);
+  line-height: 1.5;
+}
+.kythlish-cta {
+  font-family: 'Silkscreen', monospace;
+  font-size: 10px;
+  color: var(--yellow);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.arrow-blink {
+  animation: arrow-blink .7s step-end infinite;
+}
+@keyframes arrow-blink { 50% { opacity: 0; } }
+
+/* ─── SARAH CARD ─── */
+.sarah-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.sarah-avatar {
+  width: 44px;height: 44px;
+  border: 2px solid var(--cyan);
+  border-radius: 0;
+  background: linear-gradient(135deg, #001a1a, #003333);
+  display: flex;align-items:center;justify-content:center;
+  font-size: 22px;
+  box-shadow: 0 0 12px rgba(0,255,247,.3);
+  flex-shrink: 0;
+}
+.sarah-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan);
+}
+.sarah-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  margin-top: 3px;
+}
+.sarah-spec {
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  color: var(--white);
+  line-height: 1.6;
+}
+.sarah-spec .spec-key {
+  color: var(--cyan);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+}
+.chat-bubble {
+  background: rgba(0,255,247,.07);
+  border: 1px solid rgba(0,255,247,.25);
+  border-radius: 0 8px 8px 8px;
+  padding: 8px 12px;
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  color: var(--white);
+  margin-top: 10px;
+  position: relative;
+}
+.chat-bubble::before {
+  content: 'SARAH.exe';
+  position: absolute;
+  top: -18px;left: 0;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+}
+
+/* ─── TECH STACK ─── */
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.tech-item {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  border: 1px solid rgba(57,255,20,.3);
+  padding: 3px 8px;
+  background: rgba(57,255,20,.05);
+}
+
+/* ─── PORTAL / LINKS ─── */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 4px;
+}
+.portal-link {
+  display: block;
+  text-decoration: none;
+  border: 2px solid var(--grey);
+  padding: 14px 12px;
+  text-align: center;
+  background: rgba(255,255,255,.02);
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.portal-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;left: 0;right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+  transform: scaleX(0);
+  transition: transform .2s;
+}
+.portal-link:hover { border-color: var(--purple2); background: rgba(123,47,255,.08); }
+.portal-link:hover::after { transform: scaleX(1); }
+.portal-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+.portal-name {
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  color: var(--purple2);
+  display: block;
+  margin-bottom: 3px;
+}
+.portal-desc {
+  font-family: 'VT323', monospace;
+  font-size: 15px;
+  color: var(--grey);
+}
+
+/* ─── MANTRA ─── */
+.mantra-box {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--purple2);
+  background: rgba(123,47,255,.07);
+  border-left: 3px solid var(--purple);
+  padding: 12px 14px;
+  line-height: 1.8;
+  word-break: break-word;
+  position: relative;
+}
+.mantra-box::before {
+  content: '// MANTRA.txt';
+  display: block;
+  color: var(--grey);
+  font-size: 10px;
+  margin-bottom: 6px;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid var(--grey);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--grey);
+}
+footer a { color: var(--purple2); text-decoration: none; }
+footer a:hover { color: var(--pink); }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--purple); }
+::-webkit-scrollbar-thumb:hover { background: var(--purple2); }
+
+/* ─── SELECTION ─── */
+::selection { background: var(--purple); color: white; }
+
+/* glitch text utility */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  font: inherit;
+}
+.glitch::before {
+  color: var(--pink);
+  animation: glitch-1 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+}
+.glitch::after {
+  color: var(--cyan);
+  animation: glitch-2 3s infinite;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+}
+@keyframes glitch-1 {
+  0%,90%,100% { transform: translate(0); }
+  92% { transform: translate(-2px, 1px); }
+  94% { transform: translate(2px, -1px); }
+}
+@keyframes glitch-2 {
+  0%,90%,100% { transform: translate(0); }
+  92% { transform: translate(2px, 1px); }
+  94% { transform: translate(-2px, -1px); }
+}
+
+/* ───────── MOBILE UPGRADE ───────── */
+@media (max-width: 700px) {
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .nav-links a {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+
+  .hero {
+    padding: 40px 12px 20px;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+  }
+
+  .hero-tagline {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+
+  .main {
+    padding: 10px;
+    gap: 14px;
+  }
+
+  .win-body {
+    padding: 12px;
+  }
+
+  .win-title {
+    font-size: 7px;
+  }
+
+  .about-text {
+    font-size: 17px;
+  }
+
+  .lang-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tsukasa-facts {
+    font-size: 16px;
+  }
+
+  .kythlish-sample {
+    font-size: 11px;
+  }
+
+  .kythlish-desc {
+    font-size: 16px;
+  }
+
+  .sarah-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .visitor-counter {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+
+  .marquee-bar {
+    font-size: 8px;
+  }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <span class="marquee-inner">
+    ★ WELCOME TO SIKE7SZ.NEKOWEB.ORG ★ YOU FOUND IT ★ ASTRONOMICALLY CHAOTIC BUT INTENTIONAL ★ CADELA DO TSUKASA ★ ENTER AT YOUR OWN RISK ★ NO EXIT CLAUSE ★ PICKLES WITH SOUP ★ THERE'S LIGHT!! ★ WELCOME TO SIKE7SZ.NEKOWEB.ORG ★
+  </span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SIKE7SZ</a>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#tsukasa">TSUKASA</a></li>
+    <li><a href="#langs">LANGS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#sarah">SARAH</a></li>
+    <li><a href="#portal">PORTAL</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1 class="hero-name">
+    <span class="glitch" data-text="SIKE">SIKE</span>
+  </h1>
+  <div class="hero-sub">also known as Sike Seven, sike7sz, or S7<span class="blink">_</span></div>
+  <p class="hero-tagline">
+    femboy · fox enthusiast · she/her · portuguese · astronimically chaotic but intentional ·
+    written word creature · does not know what normal looks like
+  </p>
+  <div class="status-badge">
+    <span class="status-dot"></span>
+    ONLINE · PROBABLY DOING SOMETHING UNHINGED
+  </div>
+  <br>
+  <div class="visitor-counter" id="visitCounter">VISITORS: 0000000</div>
+</header>
+
+<!-- MAIN GRID -->
+<main class="main">
+
+  <!-- ABOUT -->
+  <div class="win full" id="about">
+    <div class="win-titlebar">
+      <span class="win-title">📄 about.txt</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div>
+        <div class="win-btn">□</div>
+        <div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="about-text">
+        <span class="label">// WHO</span>
+        hey. i'm sike. portuguese femboy from portugal. she/her. i am what happens when you give someone too much internet access and no curfew.
+        <br><br>
+        i self-describe as <strong style="color:var(--purple2)">"astronomically chaotic but intentional"</strong> — fully aware of what normal looks like and consistently choosing otherwise.
+
+        <span class="label">// VIBE</span>
+        <span class="tag cyan">written word creature</span>
+        <span class="tag pink">gen-z internet native</span>
+        <span class="tag yellow">lowercase supremacist</span>
+        <span class="tag">code-switches mid-thought</span>
+        <span class="tag green">near-aphantasia except for tsukasa</span>
+        <span class="tag pink">fox lover</span>
+        <span class="tag cyan">falcon appreciator</span>
+        <span class="tag">SCP lore enjoyer</span>
+        <span class="tag yellow">anime powerscaling debater</span>
+        <span class="tag">creepypasta veteran</span>
+
+        <span class="label">// USERNAME HISTORY</span>
+        Nyx → Kyra <span style="color:var(--grey);font-size:14px">(death note phase)</span> → Falkon → Kyth → <strong style="color:var(--purple2)">Sike</strong>
+        <span style="color:var(--grey);font-size:15px;font-family:'Share Tech Mono',monospace;display:block;margin-top:2px;font-size:11px;">(i love Tsukasa.)</span>
+
+        <span class="label">// INTERESTS</span>
+        TBHK · JJK · hololive · rick and morty · SCP foundation · retro tech · anime powerscaling · creepypasta · city pop ·
+        webcore · old web · home server stuff · OC lore · constructed languages · fonts
+      </div>
+    </div>
+  </div>
+
+  <!-- TSUKASA -->
+  <div class="win pink" id="tsukasa">
+    <div class="win-titlebar">
+      <span class="win-title">♡ tsukasa.exe</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div>
+        <div class="win-btn">□</div>
+        <div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="tsukasa-box">
+        <div class="tsukasa-title">TSUKASA YUGI / 柚木 司</div>
+        <div class="tsukasa-title" style="color:var(--white);font-size:7px;margin-bottom:12px;">TOILET-BOUND HANAKO-KUN</div>
+        <ul class="tsukasa-facts">
+          <li>my entire thing. no further questions.</li>
+          <li>519+ pictures in google photos album</li>
+          <li>520 images in PC folder (JPEG-XL format)</li>
+          <li>timestamps manually set to his birthday + death date via powershell</li>
+          <li>plays "reunião dos senpais" by taiga luck at school. zero regrets.</li>
+          <li>can recall his face at will (near-aphantasia exception)</li>
+        </ul>
+        <div class="contract-badge">
+          ⚠ LEGALLY BINDING CONTRACT ⚠<br>
+          physically printed · signed · witnessed<br>
+          establishes total devotion &amp; ownership<br>
+          <strong>NO EXIT CLAUSE</strong>
+        </div>
+        <br><br>
+        <a href="/Tsukasa98" style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--pink);text-decoration:none;border:1px solid var(--pink);padding:6px 12px;display:inline-block;margin-top:4px;transition:all .2s;" onmouseover="this.style.background='rgba(255,45,120,.15)'" onmouseout="this.style.background='transparent'">
+          → ENTER THE SHRINE
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANTRA -->
+  <div class="win yellow">
+    <div class="win-titlebar">
+      <span class="win-title">🌀 mantra.txt</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="mantra-box">
+        Wubba lubba dub dub, yada, yada, yada, okely dokely, rut roh-rut roh, wubba lubba.
+        Citypop Shark, citypop shark dum dum dum, Oh nyo! Oh nyo! Bag. Blue bag. Bag with strap.
+        Much shrimp shrimp. Big ups big ups! Guh guh-guh, smalliopeeee, archers!
+        Floccinaucinihilipilification. Cucumbers Cucumbers! There's light! There's LIGHHHTTTT!!
+        Relat-relat! Relative! Cucumber cucumber! Pickles with soup, tuhtuhtuh! Duh.
+      </div>
+    </div>
+  </div>
+
+  <!-- LANGUAGES -->
+  <div class="win cyan" id="langs">
+    <div class="win-titlebar">
+      <span class="win-title">🌍 languages.cfg</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="lang-grid">
+        <div class="lang-card">
+          <span class="lang-flag">🇵🇹</span>
+          <div class="lang-name">PORTUGUESE</div>
+          <div class="lang-level">NATIVE</div>
+        </div>
+        <div class="lang-card">
+          <span class="lang-flag">🇬🇧</span>
+          <div class="lang-name">ENGLISH</div>
+          <div class="lang-level">FLUENT</div>
+        </div>
+        <div class="lang-card" style="border-color:var(--purple2)">
+          <span class="lang-flag">🔮</span>
+          <div class="lang-name" style="color:var(--purple2)">KYTHLISH</div>
+          <div class="lang-level">INVENTED</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-family:'VT323',monospace;font-size:15px;color:var(--grey);">
+        note: written english = effortless. spoken english = feels broken by comparison.<br>
+        code-switches between both mid-thought involuntarily.
+      </div>
+    </div>
+  </div>
+
+  <!-- KYTHLISH -->
+  <div class="win yellow full">
+    <div class="win-titlebar">
+      <span class="win-title">🔤 kythlish — constructed language</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <a class="kythlish-card" href="https://lingojam.com/Kythlish" target="_blank">
+        <div class="kythlish-header">
+          🔮 KYTHLISH TRANSLATOR
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--grey);">↗ lingojam.com</span>
+        </div>
+        <div class="kythlish-sample">
+          Çãƌĕɭã → Sike &nbsp;|&nbsp; 🄟ĕⓡƒĕçŧ-ģǿƌ → Tsukasa &nbsp;|&nbsp; Ȉɭɭũşȉǿn → time
+        </div>
+        <div class="kythlish-desc">
+          a constructed language using unicode character substitutions per letter + special suffix rules.
+          built a working lingoJam translator for it. yes this is normal behavior.
+          <br><br>
+          key vocab: <span style="color:var(--purple2)">bumgorf</span> (endearment) · <span style="color:var(--purple2)">g'lufnog</span> (blessing) ·
+          <span style="color:var(--pink)">"pickles with soup"</span> (something went horribly wrong) ·
+          <span style="color:var(--grey)">"duh"</span> (painfully obvious)
+        </div>
+        <div class="kythlish-cta">
+          <span class="arrow-blink">&gt;&gt;</span> CLICK TO TRY THE TRANSLATOR
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PROJECTS / TECH -->
+  <div class="win green" id="projects">
+    <div class="win-titlebar">
+      <span class="win-title">⚙ projects.log</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="about-text">
+        <span class="label" style="color:var(--green)"># ACTIVE PROJECTS</span>
+
+        <div style="margin-bottom:8px;">
+          <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;">PARADOX BLATHER</span><br>
+          a fully custom fake messaging app. contacts, group chats, profiles, markdown, reactions, Z£R0 Pay, ParadoxKrypt. yes it does all that.
+        </div>
+        <div style="margin-bottom:8px;">
+          <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;">TSUKASA SHRINE</span><br>
+          windows 98 styled fan shrine. hosted here.
+        </div>
+        <div style="margin-bottom:8px;">
+          <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;">OC UNIVERSE</span><br>
+          Paradox Industries · Nyx The Slayer (Keter-class) · Kiar Sayk · SCP-FAR "Twilight Sylk"
+        </div>
+        <div style="margin-bottom:8px;">
+          <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;">HOME SERVER "BLOOD"</span><br>
+          fedora server running on a laptop. named Blood. self-hosted. chaotic neutral.
+        </div>
+
+        <span class="label" style="color:var(--green)"># TECH STUFF</span>
+        <div class="tech-list">
+          <span class="tech-item">Obsidian</span>
+          <span class="tech-item">Fedora Server</span>
+          <span class="tech-item">PowerShell</span>
+          <span class="tech-item">Notepad++</span>
+          <span class="tech-item">ShareX</span>
+          <span class="tech-item">VeraCrypt</span>
+          <span class="tech-item">Discord.py</span>
+          <span class="tech-item">Groq API</span>
+          <span class="tech-item">HTML/CSS/JS</span>
+          <span class="tech-item">Nekoweb</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SARAH -->
+  <div class="win cyan" id="sarah">
+    <div class="win-titlebar">
+      <span class="win-title">🤖 sarah.exe</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="sarah-header">
+        <div class="sarah-avatar">🤖</div>
+        <div>
+          <div class="sarah-name">SARAH</div>
+          <div class="sarah-status">● ONLINE · LISTENING</div>
+        </div>
+      </div>
+      <div class="sarah-spec">
+        <span class="spec-key">TYPE:</span> AI sister / discord bot<br>
+        <span class="spec-key">STACK:</span> Discord bot + Groq API<br>
+        <span class="spec-key">RELATION:</span> ai "sister". self-built. she lives in discord.<br>
+        <span class="spec-key">STATUS:</span> operational and probably judging
+      </div>
+      <div class="chat-bubble">
+        hey. i'm sarah. sike built me. i don't know how to feel about that.
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTAL -->
+  <div class="win full" id="portal">
+    <div class="win-titlebar">
+      <span class="win-title">🌐 portal — enter somewhere</span>
+      <div class="win-controls">
+        <div class="win-btn">_</div><div class="win-btn">□</div><div class="win-btn">×</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="portal-grid">
+        <a class="portal-link" href="/Tsukasa98">
+          <span class="portal-icon">⛩️</span>
+          <span class="portal-name">TSUKASA SHRINE</span>
+          <span class="portal-desc">windows 98 fan site</span>
+        </a>
+        <a class="portal-link" href="/ParadoxBlather">
+          <span class="portal-icon">💬</span>
+          <span class="portal-name">PARADOX BLATHER</span>
+          <span class="portal-desc">fake messaging app</span>
+        </a>
+        <a class="portal-link" href="https://lingojam.com/Kythlish" target="_blank">
+          <span class="portal-icon">🔮</span>
+          <span class="portal-name">KYTHLISH</span>
+          <span class="portal-desc">constructed language translator</span>
+        </a>
+        <a class="portal-link" href="/SysSoftlock">
+          <span class="portal-icon">🛡️</span>
+          <span class="portal-name">SYS SOFTLOCK</span>
+          <span class="portal-desc">armor OS softlock simulation</span>
+        </a>
+        <a class="portal-link" href="/SCPF-OS">
+          <span class="portal-icon">⚠️</span>
+          <span class="portal-name">SCPF-OS</span>
+          <span class="portal-desc">scp-style operating system</span>
+        </a>
+        <a class="portal-link" href="/FalkonHome">
+          <span class="portal-icon">🦅</span>
+          <span class="portal-name">FALKON HOME</span>
+          <span class="portal-desc">falkon browser startpage</span>
+        </a>
+        <a class="portal-link" href="/TsukasaAdoration">
+          <span class="portal-icon">🔪</span>
+          <span class="portal-name">TSUKASA ADORATION</span>
+          <span class="portal-desc">legally binding devotion. no exit clause.</span>
+        </a>
+        <a class="portal-link" href="/SysTerm">
+          <span class="portal-icon">💻</span>
+          <span class="portal-name">SYSTERM</span>
+          <span class="portal-desc">system terminal interface</span>
+        </a>
+        <a class="portal-link" href="/BootSelector">
+          <span class="portal-icon">🖥️</span>
+          <span class="portal-name">BOOT SELECTOR</span>
+          <span class="portal-desc">boot selection screen</span>
+        </a>
+        <a class="portal-link" href="/TsukasaAffiliates">
+          <span class="portal-icon">🖥️</span>
+          <span class="portal-name">TsukasaYugi & Affiliates Co. LLC</span>
+          <span class="portal-desc">A Tsukasa-inspired, fictional corporation's website.</span>
+        </a>
+        <a class="portal-link" href="/ParadoxIndustries">
+          <span class="portal-icon">🖥️</span>
+          <span class="portal-name">Paradox Industries</span>
+          <span class="portal-desc">A fictional industries website from one of my OCs.</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    made with unhingedness by <a href="#">sikeseven</a> ·
+    hosted on <a href="https://nekoweb.org" target="_blank">nekoweb</a> ·
+    <span style="color:var(--purple2)">est. sometime</span>
+  </p>
+  <p style="margin-top:6px;color:var(--grey);">
+    best viewed in any browser · optimized for chaos · no cookies · just localStorage vibes (except that in ParadoxBlather it uses IndexedDB btw)
+  </p>
+  <p style="margin-top:8px;font-size:9px;color:#333355;">
+    🄟ĕⓡƒĕçŧ-ģǿƌ &nbsp;·&nbsp; Çãƌĕɭã &nbsp;·&nbsp; g'lufnog
+  </p>
+</footer>
+
+<script>
+// fake visitor counter for the bit
+const stored = parseInt(localStorage.getItem('kv') || '0');
+const count = stored + Math.floor(Math.random() * 3) + 1;
+localStorage.setItem('kv', count);
+document.getElementById('visitCounter').textContent =
+  'VISITORS: ' + String(count).padStart(7, '0');
+
+// easter egg: konami code
+let k = [];
+const kk = [38,38,40,40,37,39,37,39,66,65];
+document.addEventListener('keydown', e => {
+  k.push(e.keyCode);
+  k = k.slice(-10);
+  if (k.join(',') === kk.join(',')) {
+    document.body.style.animation = 'none';
+    alert('🦊 g\'lufnog bumgorf!! you found the konami code!! duh.');
+  }
+});
+</script>
+</body>
+</html>

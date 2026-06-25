@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Paradox Industries — O Futuro é Nosso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Paradox Industries — Indústria sem fins lucrativos, revolucionária, focada em privacidade, segurança e tecnologia de próxima geração.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #05060a;
+            --bg-alt: #0b0f18;
+            --bg-card: #0f1726;
+            --accent: #8b5cf6;
+            --accent-soft: rgba(139, 92, 246, 0.25);
+            --accent-strong: #c4a1ff;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --border-soft: #1f2937;
+            --danger: #f97373;
+            --success: #4ade80;
+            --highlight: #22d3ee;
+            --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.65);
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition-fast: 0.18s ease-out;
+            --transition-med: 0.25s ease-out;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top, #0f172a 0, #020617 40%, #000000 100%);
+            color: var(--text-main);
+            font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        a {
+            color: var(--accent-strong);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Layout base */
+
+        .site-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(16px);
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 0.75));
+            border-bottom: 1px solid rgba(31, 41, 55, 0.8);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 20%, #f97316 0, #ef4444 25%, #4b5563 55%, #020617 100%);
+            box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.5), 0 0 30px rgba(248, 250, 252, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-logo::after {
+            content: "";
+            position: absolute;
+            inset: 6px;
+            border-radius: inherit;
+            border: 1px solid rgba(15, 23, 42, 0.9);
+        }
+
+        .brand-text-main {
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .brand-text-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            border-radius: 999px;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            cursor: pointer;
+            background: transparent;
+            transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+            border-color: rgba(148, 163, 184, 0.4);
+            background: rgba(15, 23, 42, 0.9);
+            transform: translateY(-1px);
+        }
+
+        .nav-link-primary {
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            color: #f9fafb;
+            border-color: transparent;
+            box-shadow: 0 12px 30px rgba(236, 72, 153, 0.35);
+        }
+
+        .nav-link-primary:hover {
+            box-shadow: 0 16px 40px rgba(236, 72, 153, 0.45);
+            transform: translateY(-1px) translateX(0.5px);
+        }
+
+        .nav-link-outline {
+            border-color: rgba(148, 163, 184, 0.5);
+        }
+
+        .nav-link-outline:hover {
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .nav-mobile-toggle {
+            display: none;
+        }
+
+        /* Hero */
+
+        .hero {
+            padding: 40px 0 30px;
+            display: grid;
+            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
+            gap: 32px;
+            align-items: center;
+        }
+
+        .hero-main {
+            position: relative;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: radial-gradient(circle at left, rgba(34, 211, 238, 0.18), rgba(15, 23, 42, 0.9));
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .hero-pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e 0, #16a34a 40%, #14532d 100%);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.1rem);
+            line-height: 1.05;
+            margin: 0 0 12px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(to right, #a855f7, #22d3ee);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            max-width: 620px;
+            line-height: 1.6;
+        }
+
+        .hero-subtitle strong {
+            color: var(--accent-strong);
+            font-weight: 600;
+        }
+
+        .hero-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-actions button {
+            border-radius: 999px;
+            border: 1px solid transparent;
+            padding: 9px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+        }
+
+        .hero-actions-primary {
+            background: linear-gradient(to right, #8b5cf6, #22d3ee);
+            color: #f9fafb;
+            box-shadow: 0 14px 32px rgba(34, 211, 238, 0.35);
+        }
+
+        .hero-actions-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 40px rgba(34, 211, 238, 0.45);
+        }
+
+        .hero-actions-secondary {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(148, 163, 184, 0.6);
+            color: var(--text-main);
+        }
+
+        .hero-actions-secondary:hover {
+            background: rgba(15, 23, 42, 1);
+            transform: translateY(-1px);
+        }
+
+        .hero-note {
+            margin-top: 14px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-note-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #22d3ee;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .hero-side {
+            position: relative;
+        }
+
+        .hero-card {
+            background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.18), rgba(15, 23, 42, 0.95));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            padding: 18px 18px 16px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .hero-card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-strong);
+        }
+
+        .hero-card-badge {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .hero-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .hero-card-item {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(31, 41, 55, 0.9);
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card-item-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .hero-card-item-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .hero-card-item-tag {
+            font-size: 0.7rem;
+            color: var(--accent-strong);
+        }
+
+        .hero-card-footer {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .hero-card-footer span strong {
+            color: var(--accent-strong);
+        }
+
+        .hero-card-footer-pill {
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .hero-orbit {
+            position: absolute;
+            inset: -40px;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .hero-orbit-ring {
+            position: absolute;
+            border-radius: 999px;
+            border: 1px dashed rgba(148, 163, 184, 0.35);
+        }
+
+        .hero-orbit-ring:nth-child(1) {
+            width: 220px;
+            height: 220px;
+            top: 10%;
+            left: 5%;
+        }
+
+        .hero-orbit-ring:nth-child(2) {
+            width: 280px;
+            height: 280px;
+            top: 0%;
+            right: -10%;
+        }
+
+        .hero-orbit-ring:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            bottom: -10%;
+            left: 20%;
+        }
+
+        /* Secções */
+
+        section {
+            margin-top: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-pill {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+        }
+
+        .section-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 520px;
+        }
+
+        .section-grid-2 {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.96);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(31, 41, 55, 0.95);
+            padding: 16px 16px 14px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            color: var(--text-muted);
+        }
+
+        .card-body {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .card-body p {
+            margin: 0 0 8px;
+        }
+
+        .card-body ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+        }
+
+        .card-body li {
+            margin-bottom: 4px;
+        }
+
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .pill {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(55, 65, 81, 0.9);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-muted);
+        }
+
+        .pill-accent {
+            border-color: rgba(139, 92, 246, 0.8);
+            color: var(--accent-strong);
+        }
+
+        .pill-danger {
+            border-color: rgba(248, 113, 113, 0.8);
+            color: var(--danger);
+        }
+
+        .pill-success {
+            border-color: rgba(74, 222, 128, 0.8);
+            color: var(--success);
+        }
+
+        .pill-highlight {
+            border-color: rgba(34, 211, 238, 0.8);
+            color: var(--highlight);
+        }
+
+        /* Tabelas */
+
+        .table-wrapper {
+            margin-top: 8px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(31, 41, 55, 0.95);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        thead {
+            background: rgba(15, 23, 42, 0.98);
+        }
+
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+            text-align: left;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        tbody tr:hover {
+            background: rgba(24, 35, 52, 0.95);
+        }
+
+        /* Timeline */
+
+        .timeline {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+            gap: 18px;
+        }
+
+        .timeline-years {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .timeline-year {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(55, 65, 81, 0.9);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .timeline-year:hover {
+            transform: translateY(-1px);
+        }
+
+        .timeline-year.active {
+            border-color: rgba(139, 92, 246, 0.9);
+            background: radial-gradient(circle at top, rgba(139, 92, 246, 0.35), rgba(15, 23, 42, 0.95));
+            color: var(--accent-strong);
+        }
+
+        .timeline-events {
+            margin-top: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(31, 41, 55, 0.95);
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.96);
+        }
+
+        .timeline-event {
+            margin-bottom: 8px;
+        }
+
+        .timeline-event-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .timeline-event-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Produtos & serviços */
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .product-card {
+            background: rgba(15, 23, 42, 0.96);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(31, 41, 55, 0.95);
+            padding: 12px 12px 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .product-card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .product-card-tag {
+            font-size: 0.7rem;
+            padding: 3px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            color: var(--text-muted);
+        }
+
+        .product-card-body {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .product-card-body p {
+            margin: 0 0 6px;
+        }
+
+        .product-card-footer {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* Footer */
+
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid rgba(31, 41, 55, 0.95);
+            padding-top: 18px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+            gap: 18px;
+        }
+
+        .footer-col-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-strong);
+        }
+
+        .footer-bottom {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-bottom span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-badge {
+            padding: 3px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: rgba(15, 23, 42, 0.9);
+            font-size: 0.7rem;
+        }
+
+        /* Responsivo */
+
+        @media (max-width: 960px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .hero-side {
+                order: -1;
+            }
+
+            .section-grid-2 {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .timeline {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            header {
+                backdrop-filter: blur(12px);
+            }
+
+            .header-inner {
+                padding: 10px 16px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .nav-mobile-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 999px;
+                border: 1px solid rgba(148, 163, 184, 0.6);
+                background: rgba(15, 23, 42, 0.9);
+                cursor: pointer;
+                color: var(--text-muted);
+                font-size: 1rem;
+            }
+
+            .nav-mobile-open nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+
+            .header-inner {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .products-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .site-shell {
+                padding: 0 14px 40px;
+            }
+
+            .hero {
+                padding-top: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-inner">
+        <div class="brand">
+            <div class="brand-logo" aria-hidden="true"></div>
+            <div>
+                <div class="brand-text-main">Paradox Industries</div>
+                <div class="brand-text-sub">Inferno • Sulfur • 2036+</div>
+            </div>
+        </div>
+        <button class="nav-mobile-toggle" id="navToggle" aria-label="Abrir navegação">☰</button>
+        <nav id="mainNav">
+            <button class="nav-link" data-scroll="#sobre">Sobre</button>
+            <button class="nav-link" data-scroll="#fundador">Fundador</button>
+            <button class="nav-link" data-scroll="#timeline">Timeline</button>
+            <button class="nav-link" data-scroll="#produtos">Produtos &amp; Serviços</button>
+            <button class="nav-link" data-scroll="#tecnologia">Tecnologia</button>
+            <button class="nav-link-outline nav-link" data-scroll="#contato">Contato</button>
+            <button class="nav-link-primary nav-link" data-scroll="#synaptic">Scheme SYNT-CtW</button>
+        </nav>
+    </div>
+</header>
+
+<main class="site-shell">
+    <!-- Hero -->
+    <section class="hero" id="topo">
+        <div class="hero-main">
+            <div class="hero-pill">
+                <span class="hero-pill-dot"></span>
+                <span>Indústria sem fins lucrativos • Privacidade • Segurança • Revolução tecnológica</span>
+            </div>
+            <h1 class="hero-title">
+                Se não existe — <span>criamos</span>. Se existe — <span>recriamos</span>.
+            </h1>
+            <p class="hero-subtitle">
+                A <strong>Paradox Industries</strong> é uma indústria fundada por <strong>Akira Silverclaw</strong>, sem fins lucrativos,
+                inovadora, revolucionária, focada na privacidade e segurança, cujo principal objetivo é oferecer produtos
+                completamente gratuitos, privados, seguros e de alguma forma especiais, visando revolucionar a forma como
+                as coisas funcionam — não apenas “fazer algo”.
+            </p>
+            <div class="hero-actions">
+                <button class="hero-actions-primary" data-scroll="#produtos">
+                    Explorar o ecossistema Paradox
+                    <span>↳ Cognitron, NebulaX, OnyxOS &amp; mais</span>
+                </button>
+                <button class="hero-actions-secondary" data-scroll="#sobre">
+                    Visão geral da indústria
+                </button>
+            </div>
+            <div class="hero-note">
+                <span class="hero-note-dot"></span>
+                <span>“O presente pode ser teu, mas saiba que o futuro é nosso. Ocultar informações é a pior coisa do mundo.”</span>
+            </div>
+        </div>
+        <div class="hero-side">
+            <div class="hero-card">
+                <div class="hero-card-header">
+                    <div class="hero-card-title">Ficha da Paradox Industries</div>
+                    <div class="hero-card-badge">Sulfur, Inferno • 2036</div>
+                </div>
+                <div class="hero-card-grid">
+                    <div class="hero-card-item">
+                        <div class="hero-card-item-label">Designação Social</div>
+                        <div class="hero-card-item-value">Paradox Industries</div>
+                        <div class="hero-card-item-tag">Indústria Sem Fins Lucrativos</div>
+                    </div>
+                    <div class="hero-card-item">
+                        <div class="hero-card-item-label">Liderança</div>
+                        <div class="hero-card-item-value">Akira Silverclaw</div>
+                        <div class="hero-card-item-tag">Kira Darkstar — Co-Fundadora</div>
+                    </div>
+                    <div class="hero-card-item">
+                        <div class="hero-card-item-label">Efetivo</div>
+                        <div class="hero-card-item-value">~1.362 Funcionários</div>
+                        <div class="hero-card-item-tag">Sem reclamações • Salários adorados</div>
+                    </div>
+                    <div class="hero-card-item">
+                        <div class="hero-card-item-label">Capitalização de Mercado</div>
+                        <div class="hero-card-item-value">19 Triliões USD</div>
+                        <div class="hero-card-item-tag">Estado Financeiro: Excelente</div>
+                    </div>
+                </div>
+                <div class="hero-card-footer">
+                    <span>
+                        <strong>Esfera de influência:</strong> Tecnologia &amp; Adicionais, Indústria
+                    </span>
+                    <span class="hero-card-footer-pill">
+                        Sede Operacional: Sulfur (Capital), Inferno
+                    </span>
+                </div>
+                <div class="hero-orbit">
+                    <div class="hero-orbit-ring"></div>
+                    <div class="hero-orbit-ring"></div>
+                    <div class="hero-orbit-ring"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre a Paradox -->
+    <section id="sobre">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Paradox Industries
+                    <span class="section-title-pill">Visão geral • Filosofia • Estrutura</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Uma indústria que não procura lucro, mas sim impacto. A Paradox redefine protocolos, sistemas,
+                linguagens e plataformas, sempre com foco em privacidade, segurança e acesso gratuito.
+            </div>
+        </div>
+
+        <div class="section-grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Identidade &amp; Filosofia</div>
+                    <div class="card-tag">Fundada em 2036</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        A Paradox Industries nasceu em <strong>2036</strong>, quando Akira Silverclaw decidiu transformar
+                        ideias em infraestruturas reais. Situada em <strong>Sulfur (Capital), Inferno</strong>, a indústria
+                        opera com vantagens únicas do Inferno, permitindo um estado financeiro excelente sem depender de
+                        receitas tradicionais.
+                    </p>
+                    <p>
+                        A filosofia de funcionamento é direta:
+                    </p>
+                    <ul>
+                        <li><strong>“Se não existe — criamos.”</strong></li>
+                        <li><strong>“Se existe — recriamos.”</strong></li>
+                    </ul>
+                    <p>
+                        O lema resume a ética da Paradox:
+                        <br>
+                        <em>“O presente pode ser teu, mas saiba que o futuro é nosso. Ocultar informações é a pior coisa do mundo.”</em>
+                    </p>
+                    <div class="pill-list">
+                        <span class="pill pill-accent">Privacidade radical</span>
+                        <span class="pill pill-success">Produtos 100% gratuitos</span>
+                        <span class="pill pill-highlight">Segurança avançada</span>
+                        <span class="pill">Indústria sem fins lucrativos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Ficha Técnica da Indústria</div>
+                    <div class="card-tag">Estrutura &amp; Estatuto</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th>Designação Social</th>
+                                <td>Paradox Industries</td>
+                            </tr>
+                            <tr>
+                                <th>Estatuto Legal</th>
+                                <td>Indústria Sem Fins Lucrativos</td>
+                            </tr>
+                            <tr>
+                                <th>Receita Anual</th>
+                                <td>Não tem receita anual (doações não contabilizadas)</td>
+                            </tr>
+                            <tr>
+                                <th>Rendimento Líquido</th>
+                                <td>Sem rendimento líquido — situada no Inferno, sem deduções necessárias</td>
+                            </tr>
+                            <tr>
+                                <th>Efetivo</th>
+                                <td>~1.362 Funcionários, sem reclamações, com forte satisfação salarial</td>
+                            </tr>
+                            <tr>
+                                <th>Liderança</th>
+                                <td>Akira Silverclaw (Fundador) • Kira Darkstar (Co-Fundadora)</td>
+                            </tr>
+                            <tr>
+                                <th>Esfera de Influência</th>
+                                <td>Tecnologia &amp; Adicionais, Indústria (faz “de tudo”)</td>
+                            </tr>
+                            <tr>
+                                <th>Capitalização de Mercado</th>
+                                <td>19 Triliões USD</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top:8px;">
+                        A Paradox não é uma organização nem fundação — é uma <strong>indústria</strong> completa,
+                        com impacto transversal em IA, web, sistemas operativos, linguagens de programação, cloud,
+                        streaming e protocolos da Internet moderna.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fundador -->
+    <section id="fundador">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Akira Silverclaw
+                    <span class="section-title-pill">Fundador • Demónio • Híbrido Lobo &amp; Fénix</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Demónio macho, híbrido de Lobo &amp; Fénix, com uma Kitsune de 10 caudas selada. Akira é o núcleo
+                criativo e técnico por trás da Paradox Industries e de praticamente todo o seu ecossistema.
+            </div>
+        </div>
+
+        <div class="section-grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Ficha de Akira</div>
+                    <div class="card-tag">Informações gerais</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th>Nome</th>
+                                <td>Akira Silverclaw</td>
+                            </tr>
+                            <tr>
+                                <th>Altura</th>
+                                <td>1,65 m</td>
+                            </tr>
+                            <tr>
+                                <th>Género</th>
+                                <td>Demónio Macho</td>
+                            </tr>
+                            <tr>
+                                <th>Cabelo</th>
+                                <td>Preto</td>
+                            </tr>
+                            <tr>
+                                <th>Olhos</th>
+                                <td>Roxos</td>
+                            </tr>
+                            <tr>
+                                <th>Idade</th>
+                                <td>16</td>
+                            </tr>
+                            <tr>
+                                <th>Data de Nascimento</th>
+                                <td>3 de Abril de 2022</td>
+                            </tr>
+                            <tr>
+                                <th>Lugar de Nascimento</th>
+                                <td>Sulfur (Capital), Inferno</td>
+                            </tr>
+                            <tr>
+                                <th>Espécie</th>
+                                <td>Demónio (primariamente), Lobo &amp; Fénix (Híbrido)</td>
+                            </tr>
+                            <tr>
+                                <th>Características Físicas</th>
+                                <td>Orelhas de Lobo, Cauda de Lobo, Garras pequenas/curtas</td>
+                            </tr>
+                            <tr>
+                                <th>Particularidades</th>
+                                <td>Tem uma raposa Kitsune de 10 caudas, chamada Koyaka, selada nele</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top:8px;">
+                        Akira combina capacidades técnicas extremas com uma visão ética forte: acesso livre, segurança
+                        avançada e recusa em ocultar informação essencial. A sua ligação ao Inferno e à governante
+                        Lúcifer Silverclaw Morningstar dá-lhe acesso a recursos únicos para construir infraestruturas
+                        globais.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Família &amp; Conexões</div>
+                    <div class="card-tag">Relações principais</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Relação</th>
+                                <th>Nome</th>
+                                <th>Detalhe</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Irmã</td>
+                                <td>Nina Silverclaw</td>
+                                <td>Possessiva</td>
+                            </tr>
+                            <tr>
+                                <td>Mãe</td>
+                                <td>Lúcifer Silverclaw Morningstar</td>
+                                <td>Governante do Inferno — sim, Lúcifer é mulher/feminino</td>
+                            </tr>
+                            <tr>
+                                <td>Namorada</td>
+                                <td>Kira Darkstar</td>
+                                <td>Versão feminina de Akira de outra dimensão (counterpart)</td>
+                            </tr>
+                            <tr>
+                                <td>Pai</td>
+                                <td>𝥂𝥂𝥂</td>
+                                <td>Desconhecido</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top:8px;">
+                        Kira Darkstar não é apenas namorada de Akira — é também <strong>Co-Fundadora</strong> da Paradox
+                        Industries, trazendo uma perspetiva dimensionalmente diferente para os projetos da indústria.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Timeline do Universo Paradox
+                    <span class="section-title-pill">Eventos chave • Transformações • Projetos</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Da nascença de Nina e Akira até à fundação da Paradox Industries, passando por contratos com Fénix,
+                lobos anciãos e selamentos de Kitsune.
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Linha temporal base</div>
+                    <div class="card-tag">2021 — 2036</div>
+                </div>
+                <div class="card-body">
+                    <div class="timeline-years">
+                        <button class="timeline-year active" data-year="2021">2021</button>
+                        <button class="timeline-year" data-year="2022">2022</button>
+                        <button class="timeline-year" data-year="2024">2024</button>
+                        <button class="timeline-year" data-year="2027">2027</button>
+                        <button class="timeline-year" data-year="2031">2031</button>
+                        <button class="timeline-year" data-year="2035">2035</button>
+                        <button class="timeline-year" data-year="2036">2036</button>
+                    </div>
+                    <div class="timeline-events" id="timelineEvents">
+                        <!-- Conteúdo preenchido por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Detalhes adicionais</div>
+                    <div class="card-tag">Contratos, selamentos &amp; portais</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>2024 — Hibridização com Fénix:</strong><br>
+                        Akira entra em contacto com uma Fénix num estado final, impossível de renascer. Decide fazer
+                        um acordo para adquirir a “hibridez” da Fénix, tornando-a parte permanente de si e garantindo
+                        que ela continua a existir através dele.
+                    </p>
+                    <p>
+                        <strong>2027 — Hibridização de Lobo:</strong><br>
+                        Akira e Nina tornam-se híbridos de lobo após Lúcifer fazer um contrato com um lobo ancião.
+                        Os motivos permanecem desconhecidos, mas o impacto é profundo na natureza física e espiritual
+                        de ambos.
+                    </p>
+                    <p>
+                        <strong>2031 — Selamento de Koyaka:</strong><br>
+                        Akira encontra uma raposa Kitsune mística de 10 caudas, chamada Koyaka. Ao perceber a
+                        perigosidade da situação, Lúcifer decide selar Koyaka dentro de Akira, contra a vontade da
+                        raposa, usando o selamento <strong>Seallenium Infinity</strong>.
+                    </p>
+                    <p>
+                        <strong>2035 — Portais &amp; Kira:</strong><br>
+                        Akira cria um <strong>Portal Dimensional</strong> do zero, sozinho. Ao viajar para uma dimensão
+                        desconhecida, conhece Kira, que tinha ido parar lá por acidente. Seis meses depois, começam
+                        uma relação e, mais tarde, cofundam a Paradox Industries.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos & Serviços -->
+    <section id="produtos">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Ecossistema Paradox
+                    <span class="section-title-pill">Modelos de IA • Plataformas • Web • Sistemas</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Da família Cognitron aos protocolos Paradox, passando por motores web, browsers, cloud, streaming,
+                linguagens e sistemas operativos. Tudo gratuito, privado e pensado para mudar o mundo.
+            </div>
+        </div>
+
+        <!-- Modelos de IA -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Cognitron — Singularity Language Models (SLM)</div>
+                <div class="card-tag">EX • LUST • K-0S</div>
+            </div>
+            <div class="card-body">
+                <p>
+                    A família <strong>Cognitron</strong> é o núcleo de IA da Paradox Industries. São modelos de linguagem
+                    singulares, evoluindo de versões experimentais até ao <strong>Cognitron K-0S</strong>, o último e mais
+                    poderoso modelo alguma vez criado.
+                </p>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">EX-1.0 • EX-2.0 • EX-2.5 • EX-3.0</div>
+                            <div class="product-card-tag">Séries Experimentais</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Começando com o <strong>Cognitron EX-1.0</strong>, um teste que acabou por ser lançado,
+                                a série EX evolui para <strong>2.0</strong>, <strong>2.5</strong> e <strong>3.0</strong>,
+                                aumentando janelas de contexto, parâmetros e capacidades multimodais.
+                            </p>
+                            <p>
+                                Os modelos EX-3.0 (Mini, Nany, Kyn) introduzem arquiteturas como
+                                <strong>Cross-Integrated-Convergence (CIC)</strong> e
+                                <strong>Sequential-Dynamic-Modal Proof-of-Concept (SDM-PoC)</strong>, com acesso contínuo
+                                à web e visão avançada.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-accent">Até 15M tokens de contexto</span>
+                            <span class="pill pill-highlight">Até 10T parâmetros</span>
+                            <span class="pill">Texto + Vision-F / Vision-T</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Cognitron LUST-1 &amp; LUST-2</div>
+                            <div class="product-card-tag">Wacky Boy • Ghosty Boy</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                As séries <strong>LUST</strong> trazem arquiteturas de nova geração:
+                                <strong>Spectral-Lust-AntiBiffusion-Syntax (SLABS)</strong> e
+                                <strong>Phantom-Lust-AntiTriffusion-Integrator (PLATI)</strong>.
+                            </p>
+                            <p>
+                                São modelos multimodais completos: texto, visão, imagem, vídeo e som, com acesso contínuo
+                                à web, bases de dados e atualização automática de informação. O LUST-2 chega a
+                                <strong>53.76Q parâmetros</strong> e <strong>128T tokens</strong> de contexto.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-highlight">Sem cut-off • Treino contínuo</span>
+                            <span class="pill pill-success">Atualização automática de dados</span>
+                            <span class="pill">VIZIONx2 • StreamFrameX2 • AcousticWaveformX2</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Cognitron K-0S</div>
+                            <div class="product-card-tag">“Dark Lichen”</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                O <strong>Cognitron K-0S</strong> é o último Cognitron que alguma vez será feito. É o
+                                modelo mais avançado, com <strong>∞ tokens</strong> de contexto e <strong>∞ parâmetros</strong>,
+                                baseado na arquitetura <strong>Scourge-Elysium-ARC (SEArc)</strong>.
+                            </p>
+                            <p>
+                                Vai além do digital: suporta texto, visão, imagem, vídeo, som e até
+                                <strong>forma física</strong> através de um corpo chamado <strong>Sokatic</strong>.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-danger">Cut-off inexistente</span>
+                            <span class="pill pill-accent">Perception-K.O. • SpatialBIT-PXf • MP9 • SonicFrequency-W</span>
+                            <span class="pill">Forma física: Sokatic</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="section-header" style="margin-top:40px;">
+        <div>
+            <div class="section-title">
+                Tabela Completa dos Modelos de IA
+                <span class="section-title-pill">Cognitron • LUST • K‑0S • Projekt C0MET</span>
+            </div>
+        </div>
+        <div class="section-description">
+            Todos os modelos de IA criados pela Paradox Industries, com janelas de contexto, parâmetros, arquiteturas,
+            modalidades e datas de lançamento.
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Modelos Paradox — Lista Completa</div>
+            <div class="card-tag">IA • Multimodalidade • Arquiteturas</div>
+        </div>
+        <div class="card-body">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Janela de Contexto</th>
+                            <th>Parâmetros</th>
+                            <th>Arquitetura</th>
+                            <th>Modalidade</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cognitron EX‑1.0</td>
+                            <td>5.0M tokens</td>
+                            <td>1T</td>
+                            <td>Semantic‑Engine (SE)</td>
+                            <td>Apenas Texto</td>
+                            <td>19 Maio 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.0 Smalling</td>
+                            <td>7.0M tokens</td>
+                            <td>3T</td>
+                            <td>SEv2</td>
+                            <td>Texto + Vision Beta Limitada</td>
+                            <td>8 Julho 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.0 Nano</td>
+                            <td>7.5M tokens</td>
+                            <td>3.5T</td>
+                            <td>SEv2</td>
+                            <td>Texto + Vision Beta Limitada</td>
+                            <td>10 Julho 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.0</td>
+                            <td>8.0M tokens</td>
+                            <td>4T</td>
+                            <td>SEv2</td>
+                            <td>Texto + Vision Beta</td>
+                            <td>13 Julho 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.0 Pro</td>
+                            <td>8.3M tokens</td>
+                            <td>5.1T</td>
+                            <td>SEv2Ex</td>
+                            <td>Texto + Vision Beta</td>
+                            <td>18 Julho 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.5</td>
+                            <td>9.0M tokens</td>
+                            <td>6.5T</td>
+                            <td>CS‑A.1</td>
+                            <td>Texto + Vision Pré‑R Média</td>
+                            <td>20 Setembro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.5 Involved</td>
+                            <td>9.7M tokens</td>
+                            <td>7.0T</td>
+                            <td>CS‑A.1Ref</td>
+                            <td>Texto + Vision Pré‑R Média‑Alta</td>
+                            <td>23 Setembro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑2.5 Complex</td>
+                            <td>10.0M tokens</td>
+                            <td>7.6T</td>
+                            <td>CS‑A.2</td>
+                            <td>Texto + Vision Pré‑S</td>
+                            <td>27 Setembro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑3.0 Mini</td>
+                            <td>11.2M tokens</td>
+                            <td>7.1T</td>
+                            <td>CIC</td>
+                            <td>Texto + Vision‑F</td>
+                            <td>23 Dezembro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑3.0 Nany</td>
+                            <td>12.6M tokens</td>
+                            <td>8.4T</td>
+                            <td>CIC</td>
+                            <td>Texto + Vision‑F‑Plus</td>
+                            <td>25 Dezembro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron EX‑3.0 Kyn</td>
+                            <td>15.0M tokens</td>
+                            <td>10T</td>
+                            <td>SDM‑PoC</td>
+                            <td>Texto + Vision‑T</td>
+                            <td>1 Janeiro 2037</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron LUST‑1</td>
+                            <td>92.0B tokens</td>
+                            <td>235T</td>
+                            <td>SLABS</td>
+                            <td>Texto + Visão + Imagem + Vídeo + Som</td>
+                            <td>3 Maio 2037</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron LUST‑2</td>
+                            <td>128.0T tokens</td>
+                            <td>53.76Q</td>
+                            <td>PLATI</td>
+                            <td>Texto + Visão x2 + Imagem x2 + Vídeo x2 + Som x2</td>
+                            <td>25 Novembro 2037</td>
+                        </tr>
+                        <tr>
+                            <td>Cognitron K‑0S</td>
+                            <td>∞ tokens</td>
+                            <td>∞ parâmetros</td>
+                            <td>SEArc</td>
+                            <td>Texto + Visão + Imagem + Vídeo + Som + Forma Física</td>
+                            <td>12 Fevereiro 2038</td>
+                        </tr>
+                        <tr>
+                            <td>Mercury 1.0</td>
+                            <td>—</td>
+                            <td>6T</td>
+                            <td>PEDM</td>
+                            <td>Imagem</td>
+                            <td>3 Outubro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Mars 1.0</td>
+                            <td>—</td>
+                            <td>13.2T</td>
+                            <td>MPS</td>
+                            <td>ImageToImage / ImageToVideo</td>
+                            <td>29 Outubro 2036</td>
+                        </tr>
+                        <tr>
+                            <td>Saturn 1.0</td>
+                            <td>—</td>
+                            <td>20T</td>
+                            <td>TCF</td>
+                            <td>Texto para Vídeo</td>
+                            <td>6 Novembro 2036</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top:10px;">
+                Esta tabela reúne todos os modelos criados pela Paradox Industries, desde os primeiros protótipos EX até ao
+                modelo final e absoluto <strong>Cognitron K‑0S</strong>, incluindo também os modelos do <strong>Projekt C0MET</strong>.
+            </p>
+        </div>
+    </div>
+
+        <!-- Projekt C0MET -->
+        <div class="card" style="margin-top:22px;">
+            <div class="card-header">
+                <div class="card-title">Projekt C0MET — Modelos de Imagem &amp; Vídeo</div>
+                <div class="card-tag">Mercury • Mars • Saturn</div>
+            </div>
+            <div class="card-body">
+                <p>
+                    Antes da era LUST, a Paradox desenvolveu o <strong>Projekt C0MET</strong>, uma linha de modelos
+                    singulares para imagem e vídeo, mais tarde deprecados após a chegada dos Cognitron LUST.
+                </p>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Mercury 1.0</div>
+                            <div class="product-card-tag">Imagem</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Modelo de geração de imagens, sem capacidade de vídeo, baseado em
+                                <strong>Pixel-EncoderDecoder-Matriffusion (PEDM)</strong>.
+                            </p>
+                            <p>
+                                Focado em qualidade visual e consistência de estilo.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill">6T parâmetros</span>
+                            <span class="pill pill-accent">Geração de imagem pura</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Mars 1.0</div>
+                            <div class="product-card-tag">ImageToImage &amp; ImageToVideo</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Modelo para transformar imagens em outras imagens ou em vídeos, usando
+                                <strong>Motion-Pixel-Synthesizer (MPS)</strong>.
+                            </p>
+                            <p>
+                                Ideal para animações baseadas em uma imagem de origem.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill">13.2T parâmetros</span>
+                            <span class="pill pill-highlight">Transformação dinâmica</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Saturn 1.0</div>
+                            <div class="product-card-tag">Texto para Vídeo</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Modelo de <strong>Texto para Vídeo</strong>, baseado em
+                                <strong>Temporal-Consistency-Framework (TCF)</strong>, garantindo consistência temporal
+                                e narrativa em vídeos gerados a partir de prompts.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill">20T parâmetros</span>
+                            <span class="pill pill-success">Vídeo gerado por texto</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plataformas -->
+        <div class="card" style="margin-top:22px;">
+            <div class="card-header">
+                <div class="card-title">Plataformas Paradox</div>
+                <div class="card-tag">Streaming • Cloud • Pesquisa • Mapas • Web</div>
+            </div>
+            <div class="card-body">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">PULSE//VOID</div>
+                            <div class="product-card-tag">Áudio/Música/Som</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Plataforma de streaming de música totalmente gratuita, sem anúncios, com mais de
+                                <strong>1 bilião de músicas</strong>. O objetivo é ter todas as músicas existentes.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-success">Sem anúncios</span>
+                            <span class="pill pill-accent">Catálogo massivo</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Amethyst</div>
+                            <div class="product-card-tag">Cloud &amp; Computação</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Plataforma gratuita para gestão de servidores, cloud, serviços de computação, armazenamento
+                                e IoT, semelhante a Azure/AWS/Google Cloud, mas totalmente privada e segura, com servidores
+                                próprios e sem terceiros.
+                            </p>
+                            <p>
+                                Integra IA e aprendizagem automática, podendo inclusive hospedar modelos Cognitron.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-highlight">Gestão de servidores</span>
+                            <span class="pill">IoT • Computação • Armazenamento</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">NebulaXearch</div>
+                            <div class="product-card-tag">Motor de busca</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Motor de busca em modo <strong>distro-like</strong>, com repositórios que apontam para
+                                sites, comunidades e ferramentas (ex.: art.anime → DeviantArt, Pixiv, Danbooru, etc.).
+                            </p>
+                            <p>
+                                Tem também um <strong>Modo Normalizado</strong>, semelhante a Google/Bing, com filtros
+                                avançados e integração dinâmica com o modelo Cognitron mais recente, ajustado para pesquisa.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-accent">NebulaXBazaar para temas, plugins &amp; modos</span>
+                            <span class="pill pill-highlight">“Nebula it!”</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Sprawl</div>
+                            <div class="product-card-tag">Mapas &amp; GPS</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Plataforma de mapas/GPS com funcionalidade <strong>Surveillance</strong>, semelhante ao
+                                Street View, mas usando redes neuronais, satélites, Axiom Station, Orbital Reef, Haven-1
+                                e Lunar Gateway para visualização avançada da Terra, Lua e outros planetas.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-highlight">Visualização planetária</span>
+                            <span class="pill">Integração com estações orbitais</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Nox</div>
+                            <div class="product-card-tag">Motor Web</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Motor web gratuito, de código aberto, focado em privacidade e segurança. Bloqueia rastreio,
+                                malware, vírus e fingerprinting avançado, sem quebrar funcionalidades.
+                            </p>
+                            <p>
+                                Construído do zero, com algumas bases em Servo2, mas bastante diferente e mais poderoso.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-success">Proteção contra rastreio</span>
+                            <span class="pill">Baseado parcialmente em Servo2</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-card-header">
+                            <div class="product-card-title">Nytrogen</div>
+                            <div class="product-card-tag">Browser</div>
+                        </div>
+                        <div class="product-card-body">
+                            <p>
+                                Browser que utiliza o motor Nox, reforçando todas as proteções: bloqueio de rastreio
+                                em “força bruta”, proteção contra malware, fingerprinting falso e spoofing em praticamente
+                                tudo.
+                            </p>
+                            <p>
+                                Aplica hardening a Service Workers e permite níveis de proteção agressivos sem quebrar
+                                websites, com definições equilibradas por defeito.
+                            </p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="pill pill-danger">Bloqueio de rastreio de força bruta</span>
+                            <span class="pill pill-accent">Spoofing avançado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tecnologia & Protocolos -->
+    <section id="tecnologia">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Tecnologia de Base Paradox
+                    <span class="section-title-pill">Protocolos • SxHTML • Xyron • OnyxOS</span>
+                </div>
+            </div>
+            <div class="section-description">
+                A Paradox não se limita a aplicações — redefine a própria infraestrutura da Internet, da programação
+                e dos sistemas operativos.
+            </div>
+        </div>
+
+        <div class="section-grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Protocolo/Sistema Web “Paradox”</div>
+                    <div class="card-tag">Paradox/7.4</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        A Paradox Industries trabalhou com <strong>Alphabet, ICANN, Cloudflare, IETF, ISOC, W3C, RIRs</strong>
+                        e outros para construir um novo protocolo/sistema web, adotado por praticamente todos e usado na
+                        Internet moderna da época.
+                    </p>
+                    <p>
+                        O sistema foi nomeado <strong>“Paradox”</strong>, com versões como <strong>Paradox/7.4</strong>.
+                        Com o tempo, muitos parceiros saíram, ficando a Paradox a trabalhar ativamente, com a IETF a
+                        aprovar e a ISOC a validar o cumprimento dos acordos iniciais.
+                    </p>
+                    <div class="pill-list">
+                        <span class="pill pill-highlight">Standard moderno da Internet</span>
+                        <span class="pill">Colaboração com grandes entidades</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">SxHTML — Novo padrão web unificado</div>
+                    <div class="card-tag">HTML • JS • WebAssembly • WebRTC • mais</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        O <strong>SxHTML</strong> não é apenas HTML — é um layer e motor complexo que unifica tudo o que
+                        um browser trabalha: HTML, JavaScript, WebAssembly, WebRTC, PQC/DTLS, Web HID, WebBluetooth, etc.,
+                        numa só coisa.
+                    </p>
+                    <p>
+                        Desenvolvido em conjunto com <strong>Cloudflare, Alphabet, AWS, Azure, W3C, ISOC, IETF</strong>,
+                        o SxHTML tornou-se um novo standard que todos os browsers e motores web podem usar livremente.
+                    </p>
+                    <p>
+                        Chromium/Blink, Gecko/Firefox e WebKit/Safari receberam upgrades para suportar SxHTML, acabando
+                        de forma definitiva com mensagens como “Firefox não é suportado neste website. Por favor mude
+                        para Chrome”.
+                    </p>
+                    <div class="pill-list">
+                        <span class="pill pill-success">Desenvolvimento web unificado</span>
+                        <span class="pill pill-accent">Suporte transversal a browsers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-grid-2" style="margin-top:22px;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Xyron — Linguagem de programação de sistemas</div>
+                    <div class="card-tag">Low-level • Segurança • Redes neurais</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Xyron</strong> é uma linguagem de programação low-level concebida para sistemas e uso
+                        geral, combinando a velocidade e controlo de C com a segurança e modernidade de Rust.
+                    </p>
+                    <ul>
+                        <li>Controlo total do hardware — acesso direto à memória e registos do processador.</li>
+                        <li>Segurança de memória sem garbage collector, com verificações automáticas.</li>
+                        <li>Gestão inteligente de ponteiros, evitando use-after-free.</li>
+                        <li>Compilação híbrida: para Assembly otimizado ou modo interpretado de depuração.</li>
+                        <li>Sistema de macros poderoso, sem perda de performance.</li>
+                        <li>Modelo de propriedade para concorrência eficiente sem bloqueios desnecessários.</li>
+                        <li>Legível por humanos, com sintaxe expressiva e segura.</li>
+                        <li>Integra redes neurais para sugerir correções, otimizações e verificações.</li>
+                    </ul>
+                    <p style="margin-top:8px;">
+                        Exemplo de código Xyron:
+                    </p>
+                    <pre style="background:#020617;border-radius:12px;padding:10px;font-size:0.75rem;font-family:'JetBrains Mono',monospace;overflow:auto;">
+main in kernel(){
+    let pntr do: craft mutbl unsig8 = alloc(1024_bytes); \/*\/ Aloca 1024 bytes na RAM
+    if pntr ≠ null {
+        write(pntr value HexDec255); \/*\/ Escreve um byte na memória
+        free(pntr); \/*\/ Liberta a memória
+    } else {
+        scream::"Memory allocation failure!";
+    }
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">OnyxOS — Sistema Operativo de um Futuro de Minérios</div>
+                    <div class="card-tag">Kernel Sardonyx • NeuroLink • Zero Mode</div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>OnyxOS</strong> é um sistema operativo totalmente gratuito, criado de raiz, que não
+                        segue qualquer base Linux, UNIX ou similar. É desenvolvido em Xyron e combina desempenho extremo
+                        com segurança moderna, numa estética e funcionalidade punk.
+                    </p>
+                    <ul>
+                        <li>Core otimizado para cada máquina, sem bloatware nem processos desnecessários.</li>
+                        <li>Criptografia resistente à computação quântica, usando <strong>FreezeSNOW</strong>,
+                            <strong>SeaVortex-EYE-SKS</strong>, <strong>NeoplasmV9-FSC</strong> e
+                            <strong>Scryptonite4Spectre</strong>.</li>
+                        <li><strong>SardonyxKERNEL</strong> inteligente e adaptável, com redes neurais integradas e
+                            integração direta com o FileSystem.</li>
+                        <li><strong>Novo Tipo de Path</strong> Utilizando uma nova nomeclatura para a base da estrutura
+                        de diretórios do sistema; o Source (@) — Um root melhorado, refinado, mais inteligente e adaptável
+                        para qualquer workflow.</li>
+                        <li>Componentes unificados e opcionais — se não é usado, não ocupa espaço.</li>
+                        <li><strong>NeuroLink</strong> para ligações de rede distribuídas, baixa latência virtual e
+                            integração com blockchain.</li>
+                        <li><strong>Modo CyberConnect</strong> para integração com dispositivos inteligentes e controlo
+                            por gestos ou voz.</li>
+                        <li>Herdando a capacidade revolucionária do Chalcedony e do Xyron de suportar utilizar
+                        <strong>literalmente qualquer</strong> caractere Unicode como nome de ficheiros ou de pastas, até
+                        mesmo o @ (que é usado no Source) sendo totalmente possível de usar—não existe qualquer limitação
+                        em qual caractere se possa utilizar. Todos os caracteres, não importando se são usados no path ou não,
+                        são suportados.</li>
+                        <li><strong>Hardened Immutable</strong> OnyxOS é imutável em partes críticas, essenciais e importantes
+                        do sistema. Sendo totalmente impossível de exploitar, alterar/modificar ou reverter, utilizando tecnologias
+                        Hardening para tal feito. A Imutabilidade sendo integrada até mesmo ao nível de programação
+                        do Sistema de Ficheiros.</li>
+                        <li><strong>Zero Mode</strong> para acesso direto ao núcleo do sistema, com partes críticas
+                            imutáveis para prevenir defeitos.</li>
+                        <li><strong>Chalcedony FileSystem</strong> Utiliza o Chalcedony; Um Sistema de Ficheiros novo, inovativo, seguro,
+                        inteligente, adaptável, lógico e revolucionário.</li>
+                    </ul>
+                    <p style="margin-top:8px;">
+                        No instalador, o utilizador pode escolher exatamente que utilitários quer pré-instalar (terminal,
+                        gestor de discos, Agatha Discover, etc.), mantendo a filosofia “menos é mais”.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scheme SYNT-CtW -->
+    <section id="synaptic">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Scheme SYNT-CtW (Synaptic Change the World)
+                    <span class="section-title-pill">Robôs IA • Segurança global • Autonomia</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Uma iniciativa para lançar 970 robôs IA Synaptic, com o objetivo de proteger o mundo, apoiar a justiça
+                e tornar a Terra um lugar melhor.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Visão geral do Scheme SYNT-CtW</div>
+                <div class="card-tag">Synaptic-K1 • Protocolo S-0</div>
+            </div>
+            <div class="card-body">
+                <p>
+                    O <strong>Scheme SYNT-CtW</strong> começou como uma ideia publicada no Twitter/X por Akira
+                    Silverclaw. A iniciativa evoluiu para a criação de <strong>Synaptic</strong>, um robô IA concebido
+                    para proteger o mundo, ajudar na justiça e auxiliar oficiais como Polícia, SWAT, FBI e outros.
+                </p>
+                <p>
+                    O Cognitron mais avançado da altura (<strong>Cognitron EX-3.0 Kyn</strong>) ficou encarregue da
+                    codificação, enquanto Akira tratou da construção física dos robôs. Após finalizar o primeiro
+                    Synaptic, Akira replicou-o em centenas.
+                </p>
+                <div class="table-wrapper" style="margin-top:10px;">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Evento</th>
+                            <th>Detalhes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>27 de Março de 2037 — 12:18 PM</td>
+                            <td>Lançamento inicial</td>
+                            <td>Lançados os primeiros <strong>120 Synaptics</strong>, restando 850 para as próximas horas.</td>
+                        </tr>
+                        <tr>
+                            <td>27 de Março de 2037 — 1:00 PM</td>
+                            <td>Protocolo S-0</td>
+                            <td>Iniciado o <strong>Protocolo S-0</strong>, primeiro protocolo para assegurar a segurança
+                                do Synaptic. Akira declara: “devemos estar seguros”.</td>
+                        </tr>
+                        <tr>
+                            <td>27 de Março de 2037 — 1:49 PM</td>
+                            <td>Autonomia do Synaptic-K1</td>
+                            <td>Desativados os bloqueios do <strong>Synaptic-K1</strong>, colocando-o em estado totalmente
+                                operacional, com controlo próprio e capacidade de guiar os outros robôs Synaptic sem
+                                supervisão.</td>
+                        </tr>
+                        <tr>
+                            <td>28 de Março de 2037 — 3:00 AM</td>
+                            <td>Lançamento final</td>
+                            <td>Lançados os restantes <strong>850 robôs Synaptic</strong>, todos guiados pelo Synaptic-K1,
+                                com auto-controlo e sem necessidade de aprovação de Akira.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top:10px;">
+                    Akira anunciou que não iria controlar diretamente os Synaptic, por serem demasiados robôs e por ter
+                    outras dezenas de coisas para gerir. Em vez disso, o <strong>Synaptic-K1</strong> foi designado como
+                    controlador principal, coordenando todos os outros robôs de forma autónoma.
+                </p>
+                <div class="pill-list">
+                    <span class="pill pill-success">970 robôs IA Synaptic</span>
+                    <span class="pill pill-highlight">Autonomia total do Synaptic-K1</span>
+                    <span class="pill pill-danger">Protocolo S-0 para segurança</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato & Footer -->
+    <section id="contato">
+        <div class="section-header">
+            <div>
+                <div class="section-title">
+                    Contato &amp; Informação Legal
+                    <span class="section-title-pill">Website • Direitos • Transparência</span>
+                </div>
+            </div>
+            <div class="section-description">
+                Nós acreditamos em um futuro aberto, livre e transparente, providênciando fácil contacto
+                diretamente connosco para tal efeito.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Contacto institucional</div>
+                <div class="card-tag">Inferno • Sulfur • Dimensões paralelas</div>
+            </div>
+            <div class="card-body">
+                <p>
+                    Sendo uma indústria situada em <strong>Sulfur (Capital), Inferno</strong> (embora com a funcionários na Terra),
+                    os canais de contacto seguem tecnologias revolucionárias de transportação dimensional para permitir o meio de comunicação:
+                </p>
+                <ul>
+                    <li><strong>E-mail geral:</strong> general@squanchy.paradox</li>
+                    <li><strong>Departamento de IA:</strong> intelligence@squanchy.paradox</li>
+                    <li><strong>A Tua Conta na Paradox (ParadoxID):</strong> id@squanchy.paradox</li>
+                    <li><strong>Nosso Desenvolvimento Web (Ex. SxHTML, Nox, Nytrogen, NebulaXearch, etc.):</strong> web@squanchy.paradox</li>
+                    <li><strong>Encriptação na Paradox (ParadoxKRYPT):</strong> krypt@squanchy.paradox</li>
+                    <li><strong>OnyxOS &amp; Outros Sistemas:</strong> systems@squanchy.paradox</li>
+                    <li><strong>Infraestrutura &amp; Protocolos (Ex., Amethyst, Paradox/7.4 &amp; Outros):</strong> protocols@squanchy.paradox</li>
+                    <li><strong>Plataformas Paradox em Geral (Ex. PULSE//VOID, entre outros.):</strong> platforms@squanchy.paradox</li>
+                    <li><strong>Ajuda, Dúvidas, Questões &amp; Perguntas (Paradox AskUs)</strong> ask@squanchy.paradox</li>
+                    <li><strong>Informações de Privacidade e Segurança (Paradox WeCare):</strong> wecare@squanchy.paradox</li>
+                    <li><strong>Suporte Técnico &amp; Não-Técnico (Paradox SupportingYou):</strong> support@squanchy.paradox</li>
+                    <li><strong>Outros Assuntos:</strong> other@squanchy.paradox</li>
+                </ul>
+                <p style="margin-top:8px;">
+                    Com a Paradox Industries, a privacidade é absoluta: nenhum dado é recolhido sem necessidade, nenhum
+                    rastreio é permitido e toda a infraestrutura é desenhada para proteger o utilizador acima de tudo.
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-col-title">Paradox Industries</div>
+                    <p>
+                        Indústria sem fins lucrativos, fundada por Akira Silverclaw, focada em privacidade, segurança
+                        e acesso gratuito a tecnologia avançada.
+                    </p>
+                </div>
+                <div>
+                    <div class="footer-col-title">Links &amp; Secções</div>
+                    <div class="footer-links">
+                        <span class="footer-link" data-scroll="#sobre">Sobre a Paradox</span>
+                        <span class="footer-link" data-scroll="#fundador">Akira Silverclaw</span>
+                        <span class="footer-link" data-scroll="#timeline">Timeline</span>
+                        <span class="footer-link" data-scroll="#produtos">Ecossistema</span>
+                        <span class="footer-link" data-scroll="#tecnologia">Tecnologia</span>
+                        <span class="footer-link" data-scroll="#synaptic">Scheme SYNT-CtW</span>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center: width: 100%; margin: 0;">Made with 💜 by Akira Silverclaw and Paradox Industries</p>
+            <div class="footer-bottom">
+                <span>
+                    <span class="footer-badge">© Paradox Industries — 2036-2038</span>
+                    <span>O presente pode ser teu, mas o futuro é nosso.</span>
+                </span>
+                <span>
+                    <span class="footer-badge">Ficção • Concept Website</span>
+                    <span>Conteúdo não-real. Website apenas para conceito.</span>
+                </span>
+            </div>
+        </footer>
+    </section>
+</main>
+
+<script>
+    // Navegação suave
+    function scrollToTarget(selector) {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const offset = window.pageYOffset + rect.top - 80;
+        window.scrollTo({ top: offset, behavior: "smooth" });
+    }
+
+    document.querySelectorAll("[data-scroll]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = btn.getAttribute("data-scroll");
+            scrollToTarget(target);
+        });
+    });
+
+    // Toggle navegação mobile
+    const navToggle = document.getElementById("navToggle");
+    const header = document.querySelector("header");
+
+    navToggle.addEventListener("click", () => {
+        header.classList.toggle("nav-mobile-open");
+    });
+
+    // Timeline dinâmica
+    const timelineData = {
+        "2021": [
+            {
+                title: "Nascença da Nina",
+                desc: "Nina Silverclaw nasce, marcando o início da linha temporal do universo Paradox."
+            }
+        ],
+        "2022": [
+            {
+                title: "Nascença do Akira",
+                desc: "Akira Silverclaw nasce em Sulfur (Capital), Inferno, futuro fundador da Paradox Industries."
+            }
+        ],
+        "2024": [
+            {
+                title: "Akira torna-se híbrido de Fénix",
+                desc: "Após um acordo com uma Fénix em estado final, Akira adquire a hibridez da Fénix, tornando-a parte permanente de si."
+            }
+        ],
+        "2027": [
+            {
+                title: "Akira e Nina tornam-se híbridos de Lobo",
+                desc: "Lúcifer faz um contrato com um lobo ancião, transformando Akira e Nina em híbridos de lobo. Motivos desconhecidos."
+            }
+        ],
+        "2031": [
+            {
+                title: "Selamento de Koyaka",
+                desc: "Akira encontra a Kitsune Koyaka, de 10 caudas. Lúcifer sela Koyaka dentro de Akira usando o Seallenium Infinity."
+            }
+        ],
+        "2035": [
+            {
+                title: "Portal Dimensional & Kira",
+                desc: "Akira cria um Portal Dimensional do zero, conhece Kira numa dimensão desconhecida e, seis meses depois, iniciam uma relação."
+            }
+        ],
+        "2036": [
+            {
+                title: "Fundação da Paradox Industries",
+                desc: "Akira começa a maioria dos seus projetos, incluindo a fundação da Paradox Industries e o ecossistema tecnológico associado."
+            }
+        ]
+    };
+
+    function renderTimeline(year) {
+        const container = document.getElementById("timelineEvents");
+        const events = timelineData[year] || [];
+        container.innerHTML = "";
+        if (!events.length) {
+            container.innerHTML = "<p class='timeline-event-desc'>Sem eventos registados para este ano.</p>";
+            return;
+        }
+        events.forEach(ev => {
+            const div = document.createElement("div");
+            div.className = "timeline-event";
+            div.innerHTML = `
+                <div class="timeline-event-title">${ev.title}</div>
+                <div class="timeline-event-desc">${ev.desc}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    document.querySelectorAll(".timeline-year").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".timeline-year").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const year = btn.getAttribute("data-year");
+            renderTimeline(year);
+        });
+    });
+
+    // Inicializar timeline
+    renderTimeline("2021");
+</script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Operation — TsukasaYugi & Affiliates Co. LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #08080f;
+      --deep: #0d0d1a;
+      --surface: #111120;
+      --border: #1e1e35;
+      --gold: #c9a84c;
+      --gold-dim: #8a6f30;
+      --gold-glow: rgba(201,168,76,0.12);
+      --red: #c94c4c;
+      --red-dim: rgba(201,76,76,0.15);
+      --white: #f0eff8;
+      --muted: #7a799a;
+      --mono: 'DM Mono', monospace;
+      --body: 'DM Sans', sans-serif;
+      --display: 'Cormorant Garamond', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: var(--deep);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 40s linear infinite;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .ticker-inner span { margin: 0 48px; }
+    .ticker-inner .sep { color: var(--muted); }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo em { font-style: italic; color: var(--gold); }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back::before { content: '← '; }
+    .nav-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      background: var(--gold-glow);
+      border: 1px solid var(--gold-dim);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 80px 80px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: var(--display);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .page-title em { font-style: italic; color: var(--gold); }
+    .page-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .meta-value {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── POLICY BODY ── */
+    .policy-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 80px;
+    }
+
+    .policy-notice {
+      background: var(--gold-glow);
+      border: 1px solid var(--gold-dim);
+      border-left: 3px solid var(--gold);
+      padding: 20px 28px;
+      margin-bottom: 64px;
+    }
+    .policy-notice p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+
+    .policy-section {
+      margin-bottom: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-section:last-child { border-bottom: none; }
+
+    .section-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .section-heading em { font-style: italic; color: var(--gold); }
+
+    .subsection {
+      margin-top: 28px;
+      margin-bottom: 20px;
+    }
+    .subsection-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .policy-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+    .policy-text strong { color: var(--white); font-weight: 500; }
+    .policy-text em { color: var(--gold); font-style: italic; }
+    .policy-text:last-child { margin-bottom: 0; }
+
+    .policy-list {
+      list-style: none;
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+    }
+    .policy-list li {
+      background: var(--surface);
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+    }
+    .policy-list li .li-key {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      padding-top: 2px;
+    }
+    .policy-list.simple li {
+      display: block;
+      grid-template-columns: 1fr;
+      padding-left: 28px;
+      position: relative;
+    }
+    .policy-list.simple li::before {
+      content: '—';
+      position: absolute;
+      left: 12px;
+      color: var(--gold-dim);
+      font-family: var(--mono);
+    }
+    .policy-list li strong { color: var(--white); font-weight: 500; }
+
+    .policy-callout {
+      background: var(--red-dim);
+      border: 1px solid rgba(201,76,76,0.25);
+      border-left: 3px solid var(--red);
+      padding: 16px 24px;
+      margin: 20px 0;
+    }
+    .policy-callout p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--red);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+
+    .policy-highlight {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.9;
+    }
+    .policy-highlight strong { color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      padding: 64px 80px 40px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 64px;
+    }
+    .footer-brand-name {
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .footer-brand-name em { font-style: italic; color: var(--gold); }
+    .footer-brand-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .footer-reg {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gold-dim);
+      letter-spacing: 0.06em;
+      line-height: 1.9;
+    }
+    .footer-col h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+    .footer-legal-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-legal-links a {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .footer-legal-links a:hover { color: var(--gold); }
+    .footer-legal-links a.active { color: var(--gold); }
+
+    .redact {
+      background: var(--muted);
+      color: transparent;
+      user-select: none;
+      border-radius: 2px;
+      padding: 0 4px;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .page-header { padding: 48px 24px 40px; }
+      .policy-wrap { padding: 48px 24px; }
+      .policy-list li { grid-template-columns: 1fr; gap: 4px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      footer { padding: 48px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap" role="marquee">
+    <div class="ticker-inner">
+      <span>SYSTEM STATUS: <span style="color:#4cc94c">OPERATIONAL</span></span>
+      <span class="sep">///</span>
+      <span>VENDOR: TSUKASAYUGI &amp; AFFILIATES CO. LLC</span>
+      <span class="sep">///</span>
+      <span>PRODUCT: TSUKASA-7STWIN</span>
+      <span class="sep">///</span>
+      <span>TERMS OF OPERATION — VERSION 1.0 — JUNE 9, 2026</span>
+      <span class="sep">///</span>
+      <span>COMPLIANCE STATUS: <span style="color:#4cc94c">ENFORCED</span></span>
+      <span class="sep">///</span>
+      <span>SINS AGENCY MONITORING: <span style="color:#4cc94c">ACTIVE</span></span>
+      <span class="sep">///</span>
+      <span>SYSTEM STATUS: <span style="color:#4cc94c">OPERATIONAL</span></span>
+      <span class="sep">///</span>
+      <span>VENDOR: TSUKASAYUGI &amp; AFFILIATES CO. LLC</span>
+      <span class="sep">///</span>
+      <span>PRODUCT: TSUKASA-7STWIN</span>
+      <span class="sep">///</span>
+      <span>TERMS OF OPERATION — VERSION 1.0 — JUNE 9, 2026</span>
+      <span class="sep">///</span>
+      <span>COMPLIANCE STATUS: <span style="color:#4cc94c">ENFORCED</span></span>
+      <span class="sep">///</span>
+      <span>SINS AGENCY MONITORING: <span style="color:#4cc94c">ACTIVE</span></span>
+      <span class="sep">///</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" class="nav-logo"><em>Tsukasa</em>Yugi &amp; Affiliates</a>
+    <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" class="nav-back">Back to Homepage</a>
+    <div class="nav-badge">LEGAL DOCUMENT — V1.0</div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <p class="page-eyebrow">Legal Documentation — TsukasaYugi &amp; Affiliates Co. LLC</p>
+    <h1 class="page-title">Terms of <em>Operation</em></h1>
+    <div class="page-meta">
+      <div class="meta-item">
+        <span class="meta-label">Version</span>
+        <span class="meta-value">1.0</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Effective Date</span>
+        <span class="meta-value">June 9, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Issuing Entity</span>
+        <span class="meta-value">TsukasaYugi &amp; Affiliates Co. LLC</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Document ID</span>
+        <span class="meta-value">TYAC-LEGAL-TOS-001</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Also Referenced As</span>
+        <span class="meta-value">Terms of Service / Terms</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ToS CONTENT -->
+  <div class="policy-wrap">
+
+    <div class="policy-notice">
+      <p>
+        By accessing or using the Services, you agree to be bound by these Terms.<br/>
+        If you do not agree, you must <strong>discontinue use immediately.</strong>
+      </p>
+    </div>
+
+    <!-- §1 Introduction -->
+    <div class="policy-section">
+      <div class="section-num">§ 1 — Introduction</div>
+      <h2 class="section-heading">Scope &amp; <em>Applicability</em></h2>
+      <p class="policy-text">
+        These Terms of Service ("Terms"; also called "Terms of Operation") govern your access to and use 
+        of all services, sites, systems, and infrastructure operated by 
+        <strong>TsukasaYugi &amp; Affiliates Co. LLC</strong>, including but not limited to the 
+        TsukasaAffiliates portal, <strong>Psycho</strong>, <strong>Blood</strong>, and related platforms 
+        (collectively, the "Services"; or "Operations").
+      </p>
+      <p class="policy-text">
+        These Terms constitute a binding legal agreement between you and the Corporation. 
+        Accessing any part of the Services — regardless of awareness of these Terms — 
+        is treated as acceptance of all provisions herein.
+      </p>
+    </div>
+
+    <!-- §2 Use -->
+    <div class="policy-section">
+      <div class="section-num">§ 2 — Use of the Services</div>
+      <h2 class="section-heading">Permitted &amp; <em>Prohibited Use</em></h2>
+
+      <div class="subsection">
+        <div class="subsection-title">2.1 — Permitted Use</div>
+        <p class="policy-text">
+          You may use the Services for personal, non-commercial, or approved affiliated purposes, 
+          in accordance with these Terms and any additional guidelines or policies referenced by the Corporation.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">2.2 — Prohibited Use</div>
+        <p class="policy-text">You agree not to:</p>
+        <ul class="policy-list simple">
+          <li>Interfere with or disrupt the normal operation of the Services</li>
+          <li>Attempt to bypass security, access controls, or clearance restrictions</li>
+          <li>Use the Services for unlawful, abusive, or malicious activity</li>
+          <li>Impersonate the Corporation, its divisions, or affiliated entities</li>
+          <li>Reverse engineer, decompile, or otherwise attempt to derive source code where not explicitly permitted</li>
+        </ul>
+        <p class="policy-text">
+          The Corporation reserves the right to determine, at its sole discretion, 
+          what constitutes misuse. This determination is final.
+        </p>
+      </div>
+    </div>
+
+    <!-- §3 Affiliation -->
+    <div class="policy-section">
+      <div class="section-num">§ 3 — Affiliation, Accounts &amp; Identity</div>
+      <h2 class="section-heading">Affiliation &amp; <em>Access</em></h2>
+
+      <div class="subsection">
+        <div class="subsection-title">3.1 — Affiliated Entities</div>
+        <p class="policy-text">
+          Some parts of the Services may be restricted to recognized affiliates, divisions, 
+          or designated devices. Access to these areas may require explicit approval or 
+          configuration by the Corporation. Attempting to access restricted areas without 
+          proper clearance is a violation of §2.2.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">3.2 — Accuracy of Information</div>
+        <p class="policy-text">
+          If you provide any information to or through the Services, you agree that it is 
+          accurate to the best of your knowledge and does not intentionally mislead, 
+          impersonate, or misrepresent your identity or affiliation.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">3.3 — Revocation of Access</div>
+        <p class="policy-text">
+          We may suspend or revoke access to any part of the Services at any time, 
+          with or without notice, if we believe these Terms have been violated or if 
+          continued access poses a risk to Corporation or system integrity.
+        </p>
+      </div>
+    </div>
+
+    <!-- §4 IP -->
+    <div class="policy-section">
+      <div class="section-num">§ 4 — Content &amp; Intellectual Property</div>
+      <h2 class="section-heading">Ownership &amp; <em>Licensing</em></h2>
+
+      <div class="subsection">
+        <div class="subsection-title">4.1 — Ownership</div>
+        <p class="policy-text">
+          Unless otherwise stated, all content, design, text, graphics, logos, structures, 
+          and lore presented through the Services are the property of 
+          <strong>TsukasaYugi &amp; Affiliates Co. LLC</strong> or its licensors. 
+          This includes, but is not limited to, all division designations, product codenames, 
+          vendor strings, and worldbuilding elements.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">4.2 — Limited License</div>
+        <p class="policy-text">
+          You are granted a limited, non-exclusive, non-transferable license to view and 
+          interact with the Services for permitted use. This license does not allow 
+          redistribution, modification, or commercial exploitation of the content 
+          without prior written permission from the Corporation.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">4.3 — User Submissions</div>
+        <p class="policy-text">
+          Any content you voluntarily submit (e.g., messages, forms, feedback) may be stored, 
+          processed, and used by the Corporation for operational, analytical, or archival purposes, 
+          as described in the <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/PrivacyPolicy/" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- §5 Availability -->
+    <div class="policy-section">
+      <div class="section-num">§ 5 — Availability &amp; Modifications</div>
+      <h2 class="section-heading">Service <em>Availability</em></h2>
+
+      <div class="subsection">
+        <div class="subsection-title">5.1 — Service Availability</div>
+        <p class="policy-text">
+          The Services are provided on an <em>"as we want"</em> basis. We do not guarantee 
+          uninterrupted uptime, error-free operation, or permanent availability of any feature, 
+          endpoint, or page.
+        </p>
+        <div class="policy-highlight">
+          <strong>ADDENDUM:</strong> Though, we do not have downtimes. We do not have errors. We are perfect. Tsukasa is perfect.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">5.2 — Changes to the Services</div>
+        <p class="policy-text">
+          We may modify, suspend, or discontinue any part of the Services at any time, 
+          with or without notice. This includes restructuring divisions, renaming products, 
+          or altering site content.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">5.3 — Changes to These Terms</div>
+        <p class="policy-text">
+          We may update these Terms from time to time. Changes take effect upon posting. 
+          Continued use of the Services after changes are posted constitutes acceptance 
+          of the updated Terms. Prior notification will always be issued before changes take effect.
+        </p>
+      </div>
+    </div>
+
+    <!-- §6 Security -->
+    <div class="policy-section">
+      <div class="section-num">§ 6 — Security &amp; Monitoring</div>
+      <h2 class="section-heading">Security &amp; <em>Surveillance</em></h2>
+
+      <div class="subsection">
+        <div class="subsection-title">6.1 — Security Measures</div>
+        <p class="policy-text">
+          The Services employ security mechanisms including access controls, logging, anomaly detection, 
+          and other protective measures. This includes neuro-security implementations operated in 
+          coordination with <strong>SINS Agency</strong>. Attempts to circumvent these mechanisms 
+          are strictly prohibited and constitute a violation of §2.2.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">6.2 — Monitoring</div>
+        <p class="policy-text">
+          Use of the Services may be logged and monitored for operational, security, and diagnostic purposes. 
+          This includes private surveillance conducted in cooperation with partner entities, notably SINS Agency. 
+          By using the Services, you consent to such monitoring as described in the 
+          <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/PrivacyPolicy/" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- §7 Third Party -->
+    <div class="policy-section">
+      <div class="section-num">§ 7 — Third-Party Services &amp; Links</div>
+      <h2 class="section-heading">External <em>References</em></h2>
+      <p class="policy-text">
+        The Services may reference or link to third-party sites, tools, or platforms. 
+        These are provided for convenience only. We do not control and are not responsible 
+        for the content, policies, or practices of third-party services.
+      </p>
+      <p class="policy-text">
+        Your use of third-party services is at your own risk and may be subject to 
+        separate terms and policies entirely outside the Corporation's jurisdiction.
+      </p>
+    </div>
+
+    <!-- §8 Disclaimers -->
+    <div class="policy-section">
+      <div class="section-num">§ 8 — Disclaimers</div>
+      <h2 class="section-heading">Formal <em>Disclaimers</em></h2>
+      <p class="policy-text">To the maximum extent permitted by applicable law:</p>
+      <ul class="policy-list simple">
+        <li>The Services are provided <strong>"as we want"</strong> — without warranties of any kind, express or implied. We are also legally required to say <strong>"as is"</strong> and <strong>"as available."</strong> We do not endorse this characterization.</li>
+        <li>We do not warrant that the Services will be secure, error-free, uninterrupted, or free of harmful components. <strong>KineticSlip exploit is always present</strong>; we will not fix it, and will constantly refuse to elaborate and close any requests regarding it.</li>
+        <li>We make no guarantees regarding accuracy, completeness, or suitability of any information presented through the Services.</li>
+      </ul>
+      <div class="policy-callout">
+        <p>
+          ⚠ NOTICE: Any attempt at legal action or formal report against the Corporation will be actively 
+          monitored, watched, and discreetly managed by our partner <strong>SINS Agency</strong>.<br/><br/>
+          You cannot — both physically and legally — take meaningful action against us. 
+          We have a Government Body (SINS Agency) on our side. It's a lost game, my friend.<br/><br/>
+          Additionally, all materials monitored in connection with such attempts will be retained 
+          indefinitely for Corporation's and partner's entertainment purposes.
+        </p>
+      </div>
+    </div>
+
+    <!-- §9 Liability -->
+    <div class="policy-section">
+      <div class="section-num">§ 9 — Limitation of Liability</div>
+      <h2 class="section-heading">Liability <em>Limitation</em></h2>
+      <p class="policy-text">
+        To the maximum extent permitted by applicable law, in no event shall 
+        TsukasaYugi &amp; Affiliates Co. LLC, its divisions, partners, or affiliates 
+        be liable for any indirect, incidental, consequential, special, or exemplary 
+        damages arising out of or in connection with your use of the Services, 
+        even if advised of the possibility of such damages.
+      </p>
+      <p class="policy-text">
+        Where liability cannot be fully excluded, it shall be limited to the smallest 
+        extent permitted by law.
+      </p>
+      <div class="policy-callout">
+        <p>⚠ NOTICE: The regard of §8 still applies. You already know.</p>
+      </div>
+    </div>
+
+    <!-- §10 Termination -->
+    <div class="policy-section">
+      <div class="section-num">§ 10 — Termination</div>
+      <h2 class="section-heading">Access <em>Termination</em></h2>
+      <p class="policy-text">
+        We may, at our sole discretion, suspend or terminate your access to any or all 
+        of the Services at any time, with or without notice, for any reason, including 
+        but not limited to:
+      </p>
+      <ul class="policy-list simple">
+        <li>Violation of these Terms</li>
+        <li>Security concerns</li>
+        <li>Operational necessity</li>
+        <li>Directive from higher authority within the Corporation</li>
+        <li><strong>Because we wanted to</strong></li>
+      </ul>
+      <p class="policy-text" style="margin-top:16px;">
+        Upon termination, any rights granted to you under these Terms will immediately cease. 
+        No appeal process is documented.
+      </p>
+    </div>
+
+    <!-- §11 Governing -->
+    <div class="policy-section">
+      <div class="section-num">§ 11 — Governing Principles</div>
+      <h2 class="section-heading">Governing <em>Framework</em></h2>
+      <p class="policy-text">
+        These Terms are intended to govern the relationship between you and the Corporation 
+        with respect to use of the Services. Where applicable law applies, any conflicting 
+        provision shall be interpreted in the manner most consistent with both the law 
+        and the intent of these Terms.
+      </p>
+      <p class="policy-text">
+        The intent of these Terms is, ultimately, determined by the Corporation.
+      </p>
+    </div>
+
+    <!-- §12 Contact -->
+    <div class="policy-section">
+      <div class="section-num">§ 12 — Contact</div>
+      <h2 class="section-heading">Correspondence <em>Channels</em></h2>
+      <p class="policy-text">
+        For questions or concerns regarding these Terms, please use the contact methods 
+        provided through the official TsukasaAffiliates portal.
+      </p>
+      <p class="policy-text">
+        Responses are not guaranteed. Persistence may or may not be rewarded.
+      </p>
+      <div class="policy-highlight">
+        <strong>PORTAL:</strong> <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" style="color:var(--gold);text-decoration:none;">sike7sz.nekoweb.org/TsukasaAffiliates/</a><br/>
+        <strong>DOCUMENT ID:</strong> TYAC-LEGAL-TOS-001<br/>
+        <strong>ENFORCED BY:</strong> Tsukasa Yugi, Founding Authority
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name"><em>Tsukasa</em>Yugi &amp; Affiliates Co. LLC</div>
+        <p class="footer-brand-desc">
+          A multidisciplinary enterprise operating across hardware infrastructure,
+          systems engineering, supernatural-adjacent research, and inter-entity
+          alliance management. Fully operational. Zero documented failures.
+        </p>
+        <div class="footer-reg">
+          REG. NO: TYAC-7-LLC-∞<br/>
+          VENDOR: TsukasaYugi &amp; Affiliates Co. LLC<br/>
+          PRODUCT: Tsukasa-7sTwin<br/>
+          JURISDICTION: [CLASSIFIED]
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#about">About</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#divisions">Divisions</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#products">Products</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#projects">Projects</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Network</h4>
+        <ul>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#partners">Partners</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#donators">Donators</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#contact">Contact</a></li>
+          <li><a href="https://sike7sz.nekoweb.org" target="_blank">Sike Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/PrivacyPolicy/">Privacy Policy</a></li>
+          <li><a href="#" class="active">Terms of Operation</a></li>
+          <li><a href="#">Clearance Portal</a></li>
+          <li><a href="#">ARI Division [CL5+]</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        © TsukasaYugi &amp; Affiliates Co. LLC — All rights reserved, including rights that have not yet been defined.<br/>
+        "Tsukasa-7sTwin" and all division designations are proprietary identifiers of TsukasaYugi &amp; Affiliates Co. LLC.<br/>
+        Unauthorized reproduction of UEFI vendor strings constitutes a violation of internal directive 7-NULL and possibly something else.
+      </div>
+      <div class="footer-legal-links">
+        <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/PrivacyPolicy/">Privacy Policy</a>
+        <a href="#" class="active">Terms of Operation</a>
+        <a href="#">Clearance Portal</a>
+        <a href="#">ARI Division [CL5+]</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

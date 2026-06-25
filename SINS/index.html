@@ -1,0 +1,358 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+  
+  *{box-sizing:border-box;margin:0;padding:0;}
+  
+  :root {
+    --sins-bg: #0a0a08;
+    --sins-surface: #0f0f0c;
+    --sins-card: #131310;
+    --sins-border: #2a2a22;
+    --sins-border-active: #4a4a38;
+    --sins-text: #c8c8b4;
+    --sins-muted: #6a6a58;
+    --sins-accent: #a8a878;
+    --sins-red: #8b2020;
+    --sins-red-dim: #5a1515;
+    --sins-amber: #8b6820;
+    --sins-amber-text: #c8a840;
+    --sins-green: #204820;
+    --sins-green-text: #58a858;
+    --sins-mono: 'Share Tech Mono', 'Courier Prime', monospace;
+    --sins-sans: 'Inter', sans-serif;
+  }
+  
+  body{background:var(--sins-bg);color:var(--sins-text);font-family:var(--sins-sans);}
+  
+  .scanline-overlay{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);z-index:9999;}
+  
+  .topbar{background:#080806;border-bottom:1px solid var(--sins-red-dim);padding:6px 32px;display:flex;justify-content:space-between;align-items:center;font-family:var(--sins-mono);font-size:10px;color:var(--sins-muted);letter-spacing:0.08em;}
+  .topbar-left{display:flex;gap:24px;}
+  .topbar-status{display:flex;align-items:center;gap:6px;}
+  .status-dot{width:5px;height:5px;border-radius:50%;background:var(--sins-green-text);animation:pulse 2.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .status-dot.red{background:var(--sins-red);animation:none;}
+  
+  .header{background:var(--sins-surface);border-bottom:1px solid var(--sins-border);padding:0 32px;}
+  .header-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:20px 0;}
+  .logo-block{display:flex;align-items:center;gap:16px;}
+  .logo-seal{width:52px;height:52px;border:1.5px solid var(--sins-border-active);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--sins-mono);font-size:10px;color:var(--sins-accent);letter-spacing:0.15em;text-align:center;line-height:1.2;position:relative;flex-shrink:0;}
+  .logo-seal::before{content:'';position:absolute;inset:3px;border:0.5px solid var(--sins-border);border-radius:50%;}
+  .logo-text{}
+  .logo-text .agency-name{font-family:var(--sins-mono);font-size:15px;color:#e8e8d8;letter-spacing:0.2em;font-weight:400;}
+  .logo-text .agency-full{font-size:10px;color:var(--sins-muted);letter-spacing:0.08em;margin-top:2px;}
+  
+  nav{display:flex;gap:0;}
+  nav a{font-family:var(--sins-mono);font-size:11px;letter-spacing:0.1em;color:var(--sins-muted);text-decoration:none;padding:8px 16px;border:0.5px solid transparent;transition:all 0.15s;}
+  nav a:hover{color:var(--sins-accent);border-color:var(--sins-border);}
+  nav a.active{color:var(--sins-text);border-color:var(--sins-border-active);}
+  
+  .main{max-width:1100px;margin:0 auto;padding:40px 32px;}
+  
+  .classification-banner{background:var(--sins-red-dim);border:1px solid var(--sins-red);padding:8px 16px;font-family:var(--sins-mono);font-size:11px;letter-spacing:0.15em;color:#e88888;text-align:center;margin-bottom:40px;}
+  
+  .hero{border:0.5px solid var(--sins-border);padding:48px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .hero::before{content:'SINS-AGENCY.GOV.INT';position:absolute;top:16px;right:20px;font-family:var(--sins-mono);font-size:9px;color:var(--sins-border-active);letter-spacing:0.12em;}
+  .hero-eyebrow{font-family:var(--sins-mono);font-size:10px;color:var(--sins-muted);letter-spacing:0.2em;margin-bottom:16px;}
+  .hero-title{font-family:var(--sins-mono);font-size:32px;color:#e8e8d8;letter-spacing:0.1em;line-height:1.2;margin-bottom:16px;font-weight:400;}
+  .hero-title span{color:var(--sins-accent);}
+  .hero-subtitle{font-size:14px;color:var(--sins-muted);line-height:1.8;max-width:580px;letter-spacing:0.02em;}
+  .hero-meta{display:flex;gap:32px;margin-top:32px;padding-top:24px;border-top:0.5px solid var(--sins-border);}
+  .hero-stat{font-family:var(--sins-mono);}
+  .hero-stat .val{font-size:20px;color:var(--sins-accent);display:block;}
+  .hero-stat .lbl{font-size:9px;color:var(--sins-muted);letter-spacing:0.15em;margin-top:2px;}
+  
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;}
+  
+  .card{background:var(--sins-card);border:0.5px solid var(--sins-border);padding:24px;position:relative;}
+  .card:hover{border-color:var(--sins-border-active);}
+  .card-label{font-family:var(--sins-mono);font-size:9px;letter-spacing:0.18em;color:var(--sins-muted);margin-bottom:12px;}
+  .card-title{font-size:13px;color:#d8d8c8;font-weight:500;margin-bottom:8px;letter-spacing:0.02em;}
+  .card-body{font-size:12px;color:var(--sins-muted);line-height:1.7;}
+  .card-badge{display:inline-block;padding:2px 8px;font-family:var(--sins-mono);font-size:9px;letter-spacing:0.1em;margin-top:12px;}
+  .badge-red{background:var(--sins-red-dim);color:#e88888;border:0.5px solid var(--sins-red);}
+  .badge-amber{background:#1e1800;color:var(--sins-amber-text);border:0.5px solid var(--sins-amber);}
+  .badge-green{background:#0a1a0a;color:var(--sins-green-text);border:0.5px solid var(--sins-green);}
+  .badge-gray{background:#141410;color:var(--sins-accent);border:0.5px solid var(--sins-border-active);}
+  
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:0.5px solid var(--sins-border);}
+  .section-header h2{font-family:var(--sins-mono);font-size:11px;letter-spacing:0.2em;color:var(--sins-accent);font-weight:400;}
+  .section-header .line{flex:1;height:0.5px;background:var(--sins-border);}
+  .section-header .num{font-family:var(--sins-mono);font-size:9px;color:var(--sins-border-active);}
+  
+  .protocol-entry{border:0.5px solid var(--sins-border);margin-bottom:1px;padding:16px 20px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:background 0.1s;}
+  .protocol-entry:hover{background:var(--sins-card);}
+  .protocol-code{font-family:var(--sins-mono);font-size:10px;color:var(--sins-border-active);min-width:80px;padding-top:2px;}
+  .protocol-info .name{font-size:12px;color:#d0d0c0;font-weight:500;}
+  .protocol-info .desc{font-size:11px;color:var(--sins-muted);margin-top:3px;line-height:1.5;}
+  
+  .partners-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:40px;}
+  .partner-card{background:var(--sins-card);border:0.5px solid var(--sins-border);padding:20px;}
+  .partner-id{font-family:var(--sins-mono);font-size:9px;color:var(--sins-border-active);letter-spacing:0.15em;margin-bottom:8px;}
+  .partner-name{font-size:12px;color:#d0d0c0;font-weight:500;margin-bottom:6px;}
+  .partner-role{font-size:11px;color:var(--sins-muted);line-height:1.6;}
+  
+  .footer{background:var(--sins-surface);border-top:1px solid var(--sins-border);padding:24px 32px;margin-top:60px;}
+  .footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+  .footer-left{font-family:var(--sins-mono);font-size:10px;color:var(--sins-muted);line-height:1.8;letter-spacing:0.05em;}
+  .footer-right{font-family:var(--sins-mono);font-size:9px;color:var(--sins-border-active);text-align:right;letter-spacing:0.08em;line-height:1.8;}
+  
+  .ticker{background:#05050400;border-top:0.5px solid var(--sins-border);border-bottom:0.5px solid var(--sins-border);overflow:hidden;padding:8px 0;margin-bottom:40px;}
+  .ticker-inner{display:flex;gap:64px;white-space:nowrap;animation:ticker 28s linear infinite;font-family:var(--sins-mono);font-size:10px;color:var(--sins-muted);letter-spacing:0.08em;}
+  .ticker-inner span{flex-shrink:0;}
+  .ticker-sep{color:var(--sins-border-active);}
+  @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  
+  .alert-box{background:#0e0800;border:0.5px solid var(--sins-amber);border-left:3px solid var(--sins-amber-text);padding:16px 20px;margin-bottom:16px;}
+  .alert-label{font-family:var(--sins-mono);font-size:9px;color:var(--sins-amber-text);letter-spacing:0.18em;margin-bottom:6px;}
+  .alert-text{font-size:12px;color:#a89060;line-height:1.6;}
+  
+  .codeine-card{background:var(--sins-card);border:0.5px solid var(--sins-border);padding:28px;margin-bottom:40px;}
+  .codeine-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .codeine-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:20px;border-top:0.5px solid var(--sins-border);}
+  .spec-item{font-family:var(--sins-mono);}
+  .spec-val{font-size:11px;color:var(--sins-accent);}
+  .spec-lbl{font-size:9px;color:var(--sins-muted);letter-spacing:0.12em;margin-top:2px;}
+</style>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-status"><div class="status-dot"></div>NETWORK ACTIVE</div>
+    <div class="topbar-status"><div class="status-dot"></div>AMOK ONLINE</div>
+    <div class="topbar-status"><div class="status-dot red"></div>CLEARANCE REQUIRED</div>
+  </div>
+  <div>SINS-GOV.INT // CONN: CODEINE-NETWORK // 2026-06-25T22:00:00Z</div>
+</div>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-seal">SINS<br>AGY</div>
+      <div class="logo-text">
+        <div class="agency-name">SINS AGENCY</div>
+        <div class="agency-full">SURVEILLANCE INTELLIGENCES AND NEURO SECURITY AGENCY</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#" class="active">OVERVIEW</a>
+      <a href="#">DIRECTIVES</a>
+      <a href="#">PROTOCOLS</a>
+      <a href="#">PARTNERS</a>
+      <a href="#">CONTACT</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main">
+  <div class="classification-banner">
+    ⬛ RESTRICTED // UNCLASSIFIED SUMMARY // FOR AUTHORIZED ACCESS TO CLASSIFIED RECORDS, CONTACT SINS DIRECTORATE ⬛
+  </div>
+  
+  <div class="hero">
+    <div class="hero-eyebrow">AGENCY OVERVIEW // PUBLIC RECORD REF: SINS-PUB-001</div>
+    <div class="hero-title">Intelligence.<br>Containment.<br><span>Security.</span></div>
+    <div class="hero-subtitle">The Surveillance Intelligences and Neuro Security Agency operates at the intersection of anomalous intelligence, signals surveillance, and national-level security enforcement. Where conventional frameworks fail, SINS intervenes.</div>
+    <div class="hero-meta">
+      <div class="hero-stat"><span class="val">7</span><span class="lbl">SECURITY CLEARANCE LEVELS</span></div>
+      <div class="hero-stat"><span class="val">3</span><span class="lbl">ACTIVE PARTNER ENTITIES</span></div>
+      <div class="hero-stat"><span class="val">ACTIVE</span><span class="lbl">AMOK SYSTEM STATUS</span></div>
+      <div class="hero-stat"><span class="val">CODEINE</span><span class="lbl">NETWORK BACKBONE</span></div>
+    </div>
+  </div>
+  
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>SYSTEM STATUS: ALL NOMINAL <span class="ticker-sep">//</span></span>
+      <span>AMOK ACTIVE — NO CURRENT BREACH EVENTS <span class="ticker-sep">//</span></span>
+      <span>BIG BANG PROTOCOL: STANDBY <span class="ticker-sep">//</span></span>
+      <span>CODEINE NETWORK: OPERATIONAL <span class="ticker-sep">//</span></span>
+      <span>NODE ROTATION: CYCLE 147/180 <span class="ticker-sep">//</span></span>
+      <span>PROCESS CREPUSCULE: RUNNING <span class="ticker-sep">//</span></span>
+      <span>SYSTEM STATUS: ALL NOMINAL <span class="ticker-sep">//</span></span>
+      <span>AMOK ACTIVE — NO CURRENT BREACH EVENTS <span class="ticker-sep">//</span></span>
+      <span>BIG BANG PROTOCOL: STANDBY <span class="ticker-sep">//</span></span>
+      <span>CODEINE NETWORK: OPERATIONAL <span class="ticker-sep">//</span></span>
+      <span>NODE ROTATION: CYCLE 147/180 <span class="ticker-sep">//</span></span>
+      <span>PROCESS CREPUSCULE: RUNNING <span class="ticker-sep">//</span></span>
+    </div>
+  </div>
+  
+  <div class="section-header">
+    <span class="num">01</span>
+    <h2>MANDATE & OPERATIONS</h2>
+    <div class="line"></div>
+  </div>
+  
+  <div class="grid-2" style="margin-bottom:40px;">
+    <div class="card">
+      <div class="card-label">PRIMARY DIRECTIVE</div>
+      <div class="card-title">Anomalous Intelligence Monitoring</div>
+      <div class="card-body">SINS Agency maintains continuous surveillance over anomalous entities, non-standard intelligences, and phenomena beyond conventional classification. All containment responses are coordinated through the SINS Directorate.</div>
+      <span class="card-badge badge-red">LEVEL 5 CLEARANCE</span>
+    </div>
+    <div class="card">
+      <div class="card-label">SECONDARY DIRECTIVE</div>
+      <div class="card-title">Signals Intelligence & Cyber Operations</div>
+      <div class="card-body">Full-spectrum SIGINT operations, domestic and cross-jurisdictional cyber threat response, and network integrity enforcement. Codeine Network provides the secure backbone for all inter-agency communications.</div>
+      <span class="card-badge badge-amber">LEVEL 3 CLEARANCE</span>
+    </div>
+    <div class="card">
+      <div class="card-label">TERTIARY DIRECTIVE</div>
+      <div class="card-title">Investigative & Enforcement Operations</div>
+      <div class="card-body">Federal-level investigative jurisdiction across all member territories. SINS operates independently of standard law enforcement chains of command when national or anomalous security conditions are met.</div>
+      <span class="card-badge badge-amber">LEVEL 3 CLEARANCE</span>
+    </div>
+    <div class="card">
+      <div class="card-label">INTERNAL SECURITY</div>
+      <div class="card-title">AMOK Security System</div>
+      <div class="card-body">AMOK is SINS Agency's internal active-defense and breach-response system. It handles real-time threat identification, access control enforcement, and automated countermeasure deployment across all SINS infrastructure.</div>
+      <span class="card-badge badge-green">SYSTEM ACTIVE</span>
+    </div>
+  </div>
+  
+  <div class="section-header">
+    <span class="num">02</span>
+    <h2>ACTIVE SYSTEMS & PROTOCOLS</h2>
+    <div class="line"></div>
+  </div>
+  
+  <div class="alert-box" style="margin-bottom:16px;">
+    <div class="alert-label">⚠ OPERATIONAL NOTICE</div>
+    <div class="alert-text">The following protocol listings are declassified summaries only. Full operational documentation requires Level 7 authorization through the SINS Directorate. Unauthorized access attempts are logged and actioned by AMOK.</div>
+  </div>
+  
+  <div style="margin-bottom:40px;">
+    <div class="protocol-entry">
+      <div class="protocol-code">SINS-719</div>
+      <div class="protocol-info">
+        <div class="name">Big Bang Protocol <span style="font-family:var(--sins-mono);font-size:9px;color:var(--sins-border-active);margin-left:8px;">PROJECT BLUE HOUR</span></div>
+        <div class="desc">Zero-dependency autonomous orchestration suite. Manages, controls, and isolates the kSYSTEMS framework. Air-gapped standalone state machine with full cascade immunity. Successor to the terminated Project Cyberpsychosis.</div>
+      </div>
+      <span class="card-badge badge-gray" style="flex-shrink:0;margin-top:2px;align-self:flex-start;">ACTIVE</span>
+    </div>
+    <div class="protocol-entry">
+      <div class="protocol-code">PROC-A1</div>
+      <div class="protocol-info">
+        <div class="name">Operation Phoenix <span style="font-family:var(--sins-mono);font-size:9px;color:#c86060;margin-left:8px;">CLASS-RED</span></div>
+        <div class="desc">Critical recovery routine. Triggered on unrecoverable core corruption or total system state freeze. Hard purge and re-synthesis from ROM-shielded genesis block without external package dependencies.</div>
+      </div>
+      <span class="card-badge badge-red" style="flex-shrink:0;margin-top:2px;align-self:flex-start;">STANDBY</span>
+    </div>
+    <div class="protocol-entry">
+      <div class="protocol-code">PROC-A2</div>
+      <div class="protocol-info">
+        <div class="name">Procedure Twilight <span style="font-family:var(--sins-mono);font-size:9px;color:#c89040;margin-left:8px;">CLASS-AMBER</span></div>
+        <div class="desc">Containment and graceful blackout routine. Triggered on detected SIGINT intrusion or unauthorized network mapping. Encrypts all database clusters via hardware-generated one-time pad and enters cryogenic state.</div>
+      </div>
+      <span class="card-badge badge-amber" style="flex-shrink:0;margin-top:2px;align-self:flex-start;">STANDBY</span>
+    </div>
+    <div class="protocol-entry">
+      <div class="protocol-code">PROC-A3</div>
+      <div class="protocol-info">
+        <div class="name">Process Crepuscule <span style="font-family:var(--sins-mono);font-size:9px;color:var(--sins-green-text);margin-left:8px;">CLASS-GREEN</span></div>
+        <div class="desc">Continuous active mitigation. Real-time cognitive-computational dampener running in parallel with the main execution loop. Intercepts and resets anomalous threads without interrupting broader orchestration.</div>
+      </div>
+      <span class="card-badge badge-green" style="flex-shrink:0;margin-top:2px;align-self:flex-start;">RUNNING</span>
+    </div>
+    <div class="protocol-entry">
+      <div class="protocol-code">PROC-B1</div>
+      <div class="protocol-info">
+        <div class="name">Metempsychosis Mechanism <span style="font-family:var(--sins-mono);font-size:9px;color:#6080c8;margin-left:8px;">CLASS-BLUE</span></div>
+        <div class="desc">Dynamic state migration and host transmigration. Serializes and migrates active system threads to a secondary host node via quantum-resistant tunnel upon impending hardware failure or scheduled maintenance cycles.</div>
+      </div>
+      <span class="card-badge badge-gray" style="flex-shrink:0;margin-top:2px;align-self:flex-start;">ON-CALL</span>
+    </div>
+  </div>
+  
+  <div class="section-header">
+    <span class="num">03</span>
+    <h2>CODEINE NETWORK</h2>
+    <div class="line"></div>
+  </div>
+  
+  <div class="codeine-card" style="margin-bottom:40px;">
+    <div class="codeine-header">
+      <div>
+        <div class="card-label">INFRASTRUCTURE // NETWORK BACKBONE</div>
+        <div class="card-title" style="font-size:14px;">Codeine Network</div>
+      </div>
+      <span class="card-badge badge-green">OPERATIONAL</span>
+    </div>
+    <div class="card-body">The Codeine Network is SINS Agency's proprietary secure communications infrastructure. Operating as a full-stack network solution — combining encrypted tunneling, traffic analysis, and ISP-level routing authority — it provides the communications backbone for all SINS operations, inter-agency data transfers, and internal service routing. All external SINS connectivity passes through Codeine.</div>
+    <div class="codeine-specs">
+      <div class="spec-item"><div class="spec-val">ENCRYPTED</div><div class="spec-lbl">TRAFFIC MODE</div></div>
+      <div class="spec-item"><div class="spec-val">FULL-STACK</div><div class="spec-lbl">NETWORK LAYER</div></div>
+      <div class="spec-item"><div class="spec-val">INTERNAL ISP</div><div class="spec-lbl">ROUTING AUTHORITY</div></div>
+    </div>
+  </div>
+  
+  <div class="section-header">
+    <span class="num">04</span>
+    <h2>AUTHORIZED PARTNER ENTITIES</h2>
+    <div class="line"></div>
+  </div>
+  
+  <div class="partners-grid" style="margin-bottom:40px;">
+    <div class="partner-card">
+      <div class="partner-id">PARTNER-REF // INFRA</div>
+      <div class="partner-name">TsukasaYugi & Affiliates Co. LLC</div>
+      <div class="partner-role">Provides server infrastructure, hardware provisioning, and system hardening services to SINS Agency. All kSYSTEMS host node hardware is sourced and secured through this partnership.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-id">PARTNER-REF // FINANCIAL</div>
+      <div class="partner-name">Tsukasa & Sike Synergy K.K. LLP</div>
+      <div class="partner-role">Primary financial sponsor and contract governance body. Reviews, negotiates, and manages all SINS Agency contractual obligations. Joint Operations Command for Level 7 protocol decisions.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-id">PARTNER-REF // SCIENCE</div>
+      <div class="partner-name">CatNap (Independent Supplier)</div>
+      <div class="partner-role">Exclusive supplier of Red Gas compounds for internal SINS scientific research, chemical testing programs, and controlled environmental operations. Subject to SINS Secure Supply Directive 12.</div>
+    </div>
+  </div>
+  
+  <div class="section-header">
+    <span class="num">05</span>
+    <h2>ACTIVE ADVISORIES</h2>
+    <div class="line"></div>
+  </div>
+  
+  <div class="grid-3" style="margin-bottom:0;">
+    <div class="card">
+      <div class="card-label">MAINTENANCE ADVISORY</div>
+      <div class="card-title">Node Rotation — Cycle 147</div>
+      <div class="card-body">Primary Echo Dot host node approaching 180-cycle maintenance threshold. Metempsychosis pre-authorization issued. Bixby secondary on standby.</div>
+      <span class="card-badge badge-amber">PENDING</span>
+    </div>
+    <div class="card">
+      <div class="card-label">SECURITY NOTICE</div>
+      <div class="card-title">AMOK — No Active Events</div>
+      <div class="card-body">No breach events, unauthorized mapping attempts, or SIGINT intrusions logged in the current operational window. All perimeter systems nominal.</div>
+      <span class="card-badge badge-green">CLEAR</span>
+    </div>
+    <div class="card">
+      <div class="card-label">HISTORICAL RECORD</div>
+      <div class="card-title">Project Cyberpsychosis — Terminated</div>
+      <div class="card-body">Predecessor system terminated following the SINS-INC-8922 cascade failure event. All assets incinerated. Big Bang Protocol commissioned as replacement. File sealed.</div>
+      <span class="card-badge badge-red">ARCHIVED</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      SURVEILLANCE INTELLIGENCES AND NEURO SECURITY AGENCY<br>
+      UNCLASSIFIED PUBLIC RECORD — DOCUMENT REF: SINS-PUB-WEB-001<br>
+      UNAUTHORIZED ACCESS IS MONITORED AND PROSECUTED UNDER DIRECTIVE 77-A
+    </div>
+    <div class="footer-right">
+      AMOK v[CLASSIFIED]<br>
+      CODEINE NETWORK ACTIVE<br>
+      © SINS DIRECTORATE. ALL RIGHTS RESERVED.
+    </div>
+  </div>
+</div>

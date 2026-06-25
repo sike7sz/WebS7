@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falkon Browser - Start Page</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Press+Start+2P&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --panel: #0d0d1a;
+    --border: #2a1a5e;
+    --glow: #6b3fa0;
+    --glow2: #c0a0ff;
+    --accent: #ff6ec7;
+    --accent2: #00e5ff;
+    --text: #d4b8ff;
+    --dim: #6a5080;
+    --gold: #ffd700;
+    --scanline: rgba(0,0,0,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* CRT scanlines overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      var(--scanline) 2px,
+      var(--scanline) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* starfield bg */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 70%, #aaa 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, #ccc 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 55%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 85%, #bbb 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 40%, #fff 0%, transparent 100%),
+      radial-gradient(2px 2px at 15% 15%, #c0a0ff 0%, transparent 100%),
+      radial-gradient(2px 2px at 85% 75%, #ff6ec7 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* top marquee bar */
+  .marquee-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #1a0a3a, #2a0a5a, #1a0a3a);
+    border-bottom: 1px solid var(--glow);
+    border-top: 1px solid var(--glow);
+    overflow: hidden;
+    padding: 4px 0;
+    margin-bottom: 30px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  .marquee-inner {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 25s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* main panel */
+  .main-panel {
+    background: linear-gradient(135deg, #0d0d1a 0%, #12082a 50%, #0d0d1a 100%);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 40px 50px;
+    width: 100%;
+    max-width: 750px;
+    box-shadow:
+      0 0 30px rgba(107, 63, 160, 0.4),
+      0 0 80px rgba(107, 63, 160, 0.15),
+      inset 0 0 30px rgba(107, 63, 160, 0.05);
+    position: relative;
+    text-align: center;
+  }
+
+  /* corner decorations */
+  .main-panel::before,
+  .main-panel::after {
+    content: '◈';
+    position: absolute;
+    font-size: 20px;
+    color: var(--glow);
+    opacity: 0.6;
+  }
+  .main-panel::before { top: 10px; left: 15px; }
+  .main-panel::after { bottom: 10px; right: 15px; }
+
+  .corner-tr {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 20px;
+    color: var(--glow);
+    opacity: 0.6;
+  }
+  .corner-bl {
+    position: absolute;
+    bottom: 10px; left: 15px;
+    font-size: 20px;
+    color: var(--glow);
+    opacity: 0.6;
+  }
+
+  /* logo */
+  .logo-area {
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .logo-img {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 15px rgba(107, 63, 160, 0.8)) drop-shadow(0 0 30px rgba(192, 160, 255, 0.4));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .title-area {
+    margin-bottom: 30px;
+  }
+
+  #main-title {
+    font-family: 'VT323', monospace;
+    font-size: 72px;
+    letter-spacing: 12px;
+    color: var(--glow2);
+    text-shadow:
+      0 0 10px var(--glow),
+      0 0 30px var(--glow),
+      0 0 60px rgba(107, 63, 160, 0.5);
+    transition: all 0.3s ease;
+    user-select: none;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  #main-title.tsukasa-mode {
+    color: var(--accent);
+    text-shadow:
+      0 0 10px var(--accent),
+      0 0 30px var(--accent),
+      0 0 60px rgba(255, 110, 199, 0.5);
+    animation: heartbeat 0.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.03); }
+  }
+
+  .subtitle {
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+    position: relative;
+  }
+  .divider::after {
+    content: '◆';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #12082a;
+    padding: 0 8px;
+    color: var(--glow);
+    font-size: 12px;
+  }
+
+  /* search */
+  .search-container {
+    margin-bottom: 25px;
+  }
+
+  .search-label {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  #search-input {
+    width: 100%;
+    background: rgba(10, 5, 25, 0.9);
+    border: 1px solid var(--glow);
+    color: var(--glow2);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    padding: 10px 15px;
+    outline: none;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px rgba(107, 63, 160, 0.3), inset 0 0 10px rgba(107, 63, 160, 0.1);
+  }
+
+  #search-input:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(0, 229, 255, 0.05);
+    color: var(--accent2);
+  }
+
+  #search-input::placeholder {
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  .search-btn {
+    background: linear-gradient(135deg, #2a0a5a, #3a1070);
+    border: 1px solid var(--glow);
+    color: var(--glow2);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 9px 20px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+    margin-left: -1px;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover {
+    background: linear-gradient(135deg, #3a1070, #5a1a9a);
+    box-shadow: 0 0 15px rgba(107, 63, 160, 0.6);
+    color: #fff;
+  }
+
+  .search-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* search engine badge */
+  .search-engine-tag {
+    display: inline-block;
+    background: rgba(30, 10, 60, 0.8);
+    border: 1px solid #333;
+    color: var(--dim);
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+
+  .search-engine-tag span {
+    color: #4285F4;
+  }
+
+  /* quick links */
+  .quicklinks {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .ql-btn {
+    background: rgba(20, 5, 40, 0.8);
+    border: 1px solid #2a1a4a;
+    color: var(--dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .ql-btn:hover {
+    border-color: var(--glow);
+    color: var(--glow2);
+    box-shadow: 0 0 8px rgba(107, 63, 160, 0.4);
+  }
+
+  /* info bar */
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 1px;
+    margin-top: 5px;
+  }
+
+  .about-link {
+    color: var(--accent2);
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-size: 11px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .about-link:hover {
+    border-bottom-color: var(--accent2);
+    text-shadow: 0 0 8px var(--accent2);
+  }
+
+  /* clock widget */
+  .clock-widget {
+    text-align: right;
+  }
+
+  #clock {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    color: var(--glow2);
+    letter-spacing: 3px;
+  }
+
+  #date-display {
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 2px;
+  }
+
+  /* YT embed section */
+  .yt-section {
+    width: 100%;
+    max-width: 750px;
+    margin-top: 20px;
+  }
+
+  .section-header {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--glow);
+    letter-spacing: 4px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-header::before {
+    content: '▶';
+    color: var(--accent);
+    font-size: 14px;
+  }
+
+  .yt-wrapper {
+    background: #0d0d1a;
+    border: 1px solid var(--border);
+    padding: 12px;
+    box-shadow: 0 0 20px rgba(107, 63, 160, 0.2);
+  }
+
+  .yt-wrapper iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+    display: block;
+  }
+
+  /* bottom grid */
+  .bottom-grid {
+    width: 100%;
+    max-width: 750px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .grid-card {
+    background: linear-gradient(135deg, #0d0d1a, #12082a);
+    border: 1px solid var(--border);
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(107, 63, 160, 0.1);
+  }
+
+  .grid-card-title {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--glow2);
+    margin-bottom: 8px;
+    border-bottom: 1px solid #1a0a3a;
+    padding-bottom: 5px;
+  }
+
+  .status-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--dim);
+    padding: 3px 0;
+    letter-spacing: 1px;
+  }
+
+  .status-val {
+    color: var(--accent2);
+  }
+
+  .status-ok { color: #00ff88; }
+  .status-warn { color: var(--gold); }
+
+  /* tip of the day */
+  .tip-text {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.7;
+    letter-spacing: 0.5px;
+    font-style: italic;
+  }
+
+  .tip-text span {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  /* footer */
+  .footer {
+    width: 100%;
+    max-width: 750px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top: 1px solid #1a0a3a;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 10px;
+    color: #3a2a5a;
+    letter-spacing: 2px;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-box {
+    background: linear-gradient(135deg, #0d0d1a, #1a0a3a);
+    border: 2px solid var(--glow);
+    padding: 35px 40px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(107, 63, 160, 0.6), 0 0 80px rgba(107, 63, 160, 0.2);
+    animation: modalIn 0.3s ease;
+    position: relative;
+  }
+
+  @keyframes modalIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    margin-bottom: 15px;
+    line-height: 1.8;
+    letter-spacing: 2px;
+  }
+
+  .modal-subtitle {
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+  }
+
+  .modal-warning {
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+  }
+
+  .modal-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .modal-btn {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    letter-spacing: 3px;
+    padding: 8px 28px;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .modal-btn.yes {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+  .modal-btn.yes:hover {
+    background: rgba(0, 229, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+  }
+
+  .modal-btn.no {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .modal-btn.no:hover {
+    background: rgba(255, 110, 199, 0.15);
+    box-shadow: 0 0 15px rgba(255, 110, 199, 0.4);
+  }
+
+  .skull-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 12px;
+    animation: spin-slow 4s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* konami hint */
+  .konami-progress {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    font-family: 'VT323', monospace;
+    font-size: 13px;
+    color: var(--glow);
+    letter-spacing: 2px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 9998;
+  }
+
+  .konami-progress.show { opacity: 1; }
+
+  /* pixel art border effect */
+  .pixel-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--glow2);
+  }
+  .pc-tl { top: -1px; left: -1px; }
+  .pc-tr { top: -1px; right: -1px; }
+  .pc-bl { bottom: -1px; left: -1px; }
+  .pc-br { bottom: -1px; right: -1px; }
+
+  /* glitch effect for logo on hover */
+  .logo-img:hover {
+    animation: glitch 0.3s ease-in-out;
+  }
+
+  @keyframes glitch {
+    0% { filter: drop-shadow(0 0 15px rgba(107,63,160,0.8)) hue-rotate(0deg); }
+    25% { filter: drop-shadow(2px 0 10px rgba(255,0,100,0.9)) hue-rotate(90deg); }
+    50% { filter: drop-shadow(-2px 0 10px rgba(0,229,255,0.9)) hue-rotate(180deg); }
+    75% { filter: drop-shadow(0 2px 10px rgba(255,200,0,0.9)) hue-rotate(270deg); }
+    100% { filter: drop-shadow(0 0 15px rgba(107,63,160,0.8)) hue-rotate(360deg); }
+  }
+
+  @media (max-width: 600px) {
+    .main-panel { padding: 25px 20px; }
+    #main-title { font-size: 52px; }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .info-bar { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- top marquee -->
+  <div class="marquee-bar">
+    <div class="marquee-inner">
+      ◈ FALKON BROWSER — FAST, LIGHTWEIGHT, OPEN SOURCE ◈ POWERED BY QTWEBENGINE ◈ KDE PROJECT ◈ DuckDuckGo PRIVACY FIRST ◈ WELCOME TO THE WEB ◈ FALKON BROWSER — FAST, LIGHTWEIGHT, OPEN SOURCE ◈ POWERED BY QTWEBENGINE ◈ KDE PROJECT ◈ WELCOME TO THE WEB ◈
+    </div>
+  </div>
+
+  <!-- main panel -->
+  <div class="main-panel">
+    <div class="pixel-corner pc-tl"></div>
+    <div class="pixel-corner pc-tr"></div>
+    <div class="pixel-corner pc-bl"></div>
+    <div class="pixel-corner pc-br"></div>
+    <span class="corner-tr">◈</span>
+    <span class="corner-bl">◈</span>
+
+    <div class="logo-area">
+      <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/5/57/Breezeicons-apps-48-falkon.svg" alt="Falkon Logo" draggable="false">
+    </div>
+
+    <div class="title-area">
+      <div id="main-title">FALKON</div>
+      <div class="subtitle">your web, your rules&nbsp;&nbsp;◆&nbsp;&nbsp;kde browser</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="search-container">
+      <span class="search-label">[ SEARCH THE WEB ]</span>
+      <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="what are you looking for..?" autocomplete="off">
+        <button class="search-btn" onclick="doSearch()">SEARCH ▶</button>
+      </div>
+      <div>
+        <span class="search-engine-tag">results via&nbsp;<span>Google</span></span>
+      </div>
+    </div>
+
+    <div class="quicklinks">
+      <a href="https://github.com" target="_blank" class="ql-btn">◈ GitHub</a>
+      <a href="https://youtube.com" target="_blank" class="ql-btn">▶ YouTube</a>
+      <a href="https://reddit.com" target="_blank" class="ql-btn">◆ Reddit</a>
+      <a href="https://wikipedia.org" target="_blank" class="ql-btn">◇ Wiki</a>
+      <a href="https://news.ycombinator.com" target="_blank" class="ql-btn">// HN</a>
+      <a href="https://archlinux.org" target="_blank" class="ql-btn">⚙ Arch</a>
+    </div>
+
+    <hr class="divider">
+
+    <div class="info-bar">
+      <div>
+        <span>search results via </span>
+        <a href="https://userbase.kde.org/Falkon" target="_blank" class="about-link">About Falkon ◈</a>
+      </div>
+      <div class="clock-widget">
+        <div id="clock">00:00:00</div>
+        <div id="date-display">loading date...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YT section -->
+  <div class="yt-section">
+    <div class="section-header">NOW PLAYING</div>
+    <div class="yt-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/wNGikEgSm_M?autoplay=0&rel=0&modestbranding=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        title="Embedded video">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- bottom grid -->
+  <div class="bottom-grid">
+    <div class="grid-card">
+      <div class="grid-card-title">// SYSTEM STATUS</div>
+      <div class="status-item"><span>BROWSER</span><span class="status-val">Falkon</span></div>
+      <div class="status-item"><span>ENGINE</span><span class="status-val">QtWebEngine</span></div>
+      <div class="status-item"><span>CONNECTION</span><span class="status-ok">◉ ONLINE</span></div>
+      <div class="status-item"><span>PRIVACY</span><span class="status-ok">◉ ACTIVE</span></div>
+      <div class="status-item"><span>AD BLOCK</span><span class="status-ok">◉ ENABLED</span></div>
+      <div class="status-item"><span>KDE</span><span class="status-ok">◉ POWERED</span></div>
+    </div>
+    <div class="grid-card">
+      <div class="grid-card-title">// DID YOU KNOW</div>
+      <p class="tip-text" id="tip-text">Loading tip...</p>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <span>© FALKON BROWSER — KDE PROJECT</span>
+    <span><span class="blink">█</span> READY</span>
+    <span>OPEN SOURCE ♥ FREE SOFTWARE</span>
+  </div>
+
+</div>
+
+<!-- KONAMI MODAL -->
+<div class="modal-overlay" id="konami-modal">
+  <div class="modal-box">
+    <span class="skull-icon">💀</span>
+    <div class="modal-title">TOP SECRET<br>CLEARANCE REQUIRED</div>
+    <div class="modal-subtitle">You have entered the Konami Code.</div>
+    <div class="modal-warning">⚠ DO YOU WISH TO VIEW THE TOP SECRET FILE? ⚠</div>
+    <div class="modal-btns">
+      <button class="modal-btn yes" onclick="konamiYes()">[ YES ]</button>
+      <button class="modal-btn no" onclick="konamiNo()">[ NO ]</button>
+    </div>
+  </div>
+</div>
+
+<!-- konami progress indicator -->
+<div class="konami-progress" id="konami-progress"></div>
+
+<script>
+  // ── Search ──────────────────────────────────────────────────────────────────
+  function doSearch() {
+    const q = document.getElementById('search-input').value.trim();
+    if (!q) return;
+    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+  }
+
+  document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  // ── Clock ───────────────────────────────────────────────────────────────────
+  function updateClock() {
+    const now = new Date();
+    const t = now.toLocaleTimeString('en-GB', { hour12: false });
+    const d = now.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+    document.getElementById('clock').textContent = t;
+    document.getElementById('date-display').textContent = d.toUpperCase();
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ── Tsukasa easter egg ───────────────────────────────────────────────────────
+  let tsukasaTimer = null;
+  const titleEl = document.getElementById('main-title');
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    const val = e.target.value;
+    if (val.startsWith('T') || val.startsWith('t') ? val[0] === 'T' : false) {
+      // starts with uppercase T
+    }
+    if (val.startsWith('T')) {
+      titleEl.textContent = 'Tsukasa ❤︎';
+      titleEl.classList.add('tsukasa-mode');
+      clearTimeout(tsukasaTimer);
+      tsukasaTimer = setTimeout(() => {
+        titleEl.textContent = 'FALKON';
+        titleEl.classList.remove('tsukasa-mode');
+      }, 5000);
+    }
+  });
+
+  // ── Tips ─────────────────────────────────────────────────────────────────────
+  const tips = [
+    "Falkon was previously known as <span>QupZilla</span> before being adopted as a KDE project in 2017.",
+    "You can use <span>:w</span> in the address bar as a shortcut for searching without leaving the keyboard.",
+    "Falkon supports <span>WebExtensions</span> — the same format as Firefox add-ons.",
+    "The browser is built on <span>QtWebEngine</span>, which is based on Chromium's rendering engine.",
+    "Falkon is fully open source. You can read every single line of its code on <span>KDE's GitLab</span>.",
+    "Konami Code works on this page. Just saying. <span>Up Up Down Down...</span>",
+    "Falkon uses <span>DuckDuckGo</span> by default for a reason — your searches are private.",
+  ];
+
+  document.getElementById('tip-text').innerHTML = tips[Math.floor(Math.random() * tips.length)];
+
+  // ── Konami Code ──────────────────────────────────────────────────────────────
+  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let konamiIdx = 0;
+  const progressEl = document.getElementById('konami-progress');
+  const progressSymbols = ['↑','↑','↓','↓','←','→','←','→','B','A'];
+  let progressTimer = null;
+
+  document.addEventListener('keydown', e => {
+    if (e.key === KONAMI[konamiIdx]) {
+      konamiIdx++;
+      const done = progressSymbols.slice(0, konamiIdx).join(' ');
+      progressEl.textContent = done;
+      progressEl.classList.add('show');
+      clearTimeout(progressTimer);
+      progressTimer = setTimeout(() => {
+        progressEl.classList.remove('show');
+        konamiIdx = 0;
+      }, 3000);
+
+      if (konamiIdx === KONAMI.length) {
+        konamiIdx = 0;
+        progressEl.classList.remove('show');
+        setTimeout(() => {
+          document.getElementById('konami-modal').classList.add('active');
+        }, 200);
+      }
+    } else {
+      konamiIdx = 0;
+      clearTimeout(progressTimer);
+      progressEl.classList.remove('show');
+    }
+  });
+
+  function konamiYes() {
+    document.getElementById('konami-modal').classList.remove('active');
+    window.open('https://docs.google.com/document/d/1KGLgJzduZmspkFFHnqJYN1EtiyTyT_LVy783VYmt1TU/edit?usp=sharing', '_blank');
+  }
+
+  function konamiNo() {
+    document.getElementById('konami-modal').classList.remove('active');
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+  }
+
+  // close modal on overlay click
+  document.getElementById('konami-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
+</script>
+</body>
+</html>

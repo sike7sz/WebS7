@@ -1,0 +1,37 @@
+# Opa! ✨ Você caiu direto na página pra controlar o acesso dos web crawlers, hein? Hehe, que sorte a sua~ ♡
+
+User-agent: *
+Allow: /
+
+User-agent: Applebot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: Slackbot
+Disallow: /
+
+User-agent: Quora-Bot
+Disallow: /
+
+User-agent: LinkedInBot
+Disallow: /
+
+User-agent: baidu
+Disallow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /

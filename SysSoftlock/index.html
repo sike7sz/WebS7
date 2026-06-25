@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Strikelock Control Console</title>
+  <style>
+    /* === Global reset === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: #101018;
+      color: #e0e0e0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    /* === Main desktop container === */
+    .desktop {
+      width: 1400px;
+      height: 820px;
+      background: linear-gradient(135deg, #171a22, #14141c);
+      border: 1px solid #444;
+      box-shadow: 0 0 0 1px #000, 0 14px 40px rgba(0, 0, 0, 0.9);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+
+      /* NEW: resizable window */
+      resize: both;
+      min-width: 900px;
+      min-height: 500px;
+    }
+
+    /* === Title bar (Win95-style, modernized) === */
+    .title-bar {
+      height: 28px;
+      background: linear-gradient(to right, #004a9f, #4593ff);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      color: #fdfdfd;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .title-bar__icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0, #7fceff 40%, #004a9f 100%);
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+    }
+
+    .title-bar__text {
+      flex: 1;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .title-bar__buttons {
+      display: flex;
+      gap: 3px;
+    }
+
+    .title-btn {
+      width: 18px;
+      height: 18px;
+      border: 1px solid #082650;
+      background: linear-gradient(to bottom, #e0edff, #a1c3ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: default;
+      box-shadow: 0 1px 0 #fff inset, 0 -1px 0 #7d95b8 inset;
+    }
+
+    .title-btn:active {
+      background: linear-gradient(to bottom, #c3d4ff, #6c8fd8);
+      box-shadow: 0 -1px 0 #fff inset, 0 1px 0 #7d95b8 inset;
+    }
+
+    /* === Content area layout === */
+    .content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 2.1fr 1.4fr;
+      grid-template-rows: 1.3fr 1.1fr;
+      grid-template-areas:
+        "terminal status"
+        "log      status";
+      gap: 8px;
+      padding: 8px;
+    }
+
+    /* Shared window chrome */
+    .panel {
+      background: #151821;
+      border: 1px solid #555;
+      box-shadow:
+        0 0 0 1px #000,
+        0 0 0 1px #000 inset;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      height: 22px;
+      background: linear-gradient(to bottom, #dedede, #b7b7b7);
+      border-bottom: 1px solid #000;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      font-size: 11px;
+      color: #000;
+      user-select: none;
+    }
+
+    .panel-header__title {
+      font-weight: 600;
+      text-shadow: 0 1px 0 #f8f8f8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .panel-header__right {
+      margin-left: auto;
+      display: flex;
+      gap: 4px;
+      font-size: 10px;
+      color: #222;
+    }
+
+    .panel-body {
+      flex: 1;
+      padding: 6px;
+      font-size: 12px;
+      color: #d0d0d0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === Terminal panel === */
+    .panel--terminal {
+      grid-area: terminal;
+    }
+
+    .terminal-screen {
+      flex: 1;
+      background: #05060b;
+      border: 1px solid #2a2a3a;
+      padding: 6px;
+      font-family: "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      color: #a7ffb3;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .terminal-line {
+      white-space: pre;
+      line-height: 1.25;
+    }
+
+    .terminal-line--prompt {
+      color: #7fd0ff;
+    }
+
+    .terminal-line--status {
+      color: #ffd37f;
+    }
+
+    .terminal-line--error {
+      color: #ff8383;
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 13px;
+      background: #a7ffb3;
+      margin-left: 2px;
+      animation: cursorBlink 1s steps(1) infinite;
+    }
+
+    @keyframes cursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .terminal-input-line {
+      margin-top: 4px;
+      white-space: pre;
+    }
+
+    .terminal-input-label {
+      color: #7fd0ff;
+    }
+
+    /* === Log panel === */
+    .panel--log {
+      grid-area: log;
+    }
+
+    .log-viewer {
+      flex: 1;
+      background: #06070d;
+      border: 1px solid #25253a;
+      padding: 4px;
+      overflow-y: auto;
+      font-family: "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+      font-size: 11px;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 6px;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+
+    .log-time {
+      color: #8f8f8f;
+      width: 70px;
+      flex-shrink: 0;
+    }
+
+    .log-level {
+      width: 60px;
+      flex-shrink: 0;
+      text-align: center;
+      border-radius: 3px;
+      padding: 0 4px;
+      color: #111;
+      font-weight: 600;
+    }
+
+    .log-level--info {
+      background: #b2ebf2;
+    }
+
+    .log-level--warn {
+      background: #ffe082;
+    }
+
+    .log-level--ok {
+      background: #c8e6c9;
+    }
+
+    .log-level--err {
+      background: #ffab91;
+    }
+
+    .log-text {
+      flex: 1;
+      color: #e0e0e0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* === Status panel === */
+    .panel--status {
+      grid-area: status;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .status-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 8px;
+    }
+
+    .status-block {
+      background: #10121a;
+      border: 1px solid #323546;
+      padding: 6px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .status-block__label {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9a9a9a;
+    }
+
+    .status-block__value {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #f1f1f1;
+    }
+
+    .status-pill {
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-pill--armed {
+      background: #ffb74d33;
+      border: 1px solid #ffb74d;
+      color: #ffe0b2;
+    }
+
+    .status-pill--standby {
+      background: #64b5f633;
+      border: 1px solid #64b5f6;
+      color: #bbdefb;
+    }
+
+    .status-pill--linked {
+      background: #81c78433;
+      border: 1px solid #81c784;
+      color: #c8e6c9;
+    }
+
+    .status-pill--locked {
+      background: #ef9a9a33;
+      border: 1px solid #ef9a9a;
+      color: #ffcdd2;
+    }
+
+    .status-bar-wrapper {
+      margin-top: 4px;
+    }
+
+    .status-bar {
+      height: 5px;
+      border-radius: 999px;
+      background: #22242e;
+      overflow: hidden;
+      border: 1px solid #36394a;
+    }
+
+    .status-bar__fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #4caf50, #a5d6a7);
+      transition: width 0.25s ease-out;
+    }
+
+    .status-bar__fill--orange {
+      background: linear-gradient(to right, #ff9800, #ffcc80);
+    }
+
+    .status-bar__fill--blue {
+      background: linear-gradient(to right, #2196f3, #90caf9);
+    }
+
+    .status-bar__fill--red {
+      background: linear-gradient(to right, #f44336, #ef9a9a);
+    }
+
+    .status-small {
+      font-size: 10px;
+      color: #a5a5a5;
+      margin-top: 2px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .status-log {
+      background: #0b0d14;
+      border: 1px solid #282b3c;
+      padding: 5px;
+      font-family: "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      color: #cfd8dc;
+      overflow-y: auto;
+    }
+
+    .status-log-line {
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+
+    .status-log-line strong {
+      color: #ffcc80;
+      font-weight: 600;
+    }
+
+    /* === Control strip (bottom) === */
+    .control-strip {
+      height: 26px;
+      background: #d4d0c8;
+      border-top: 1px solid #000;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      font-size: 11px;
+      color: #000;
+      user-select: none;
+    }
+
+    .control-btn {
+      border: 1px solid #808080;
+      background: #e4e4e4;
+      padding: 2px 10px;
+      margin-right: 4px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: default;
+      box-shadow: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset;
+    }
+
+    .control-btn:active {
+      box-shadow: -1px -1px 0 #ffffff inset, 1px 1px 0 #808080 inset;
+      background: #c8c8c8;
+    }
+
+    .control-led {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 3px #4caf50;
+    }
+
+    .control-led--idle {
+      background: #9e9e9e;
+      box-shadow: none;
+    }
+
+    .control-strip-divider {
+      width: 1px;
+      height: 70%;
+      background: #808080;
+      margin: 0 8px;
+    }
+
+    .control-strip-text {
+      font-family: "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+      font-size: 10px;
+    }
+
+    .control-strip-text span {
+      margin-right: 12px;
+    }
+
+    .control-strip-right {
+      margin-left: auto;
+      font-family: "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+      font-size: 10px;
+    }
+
+    /* Scrollbars (subtle) */
+    .terminal-screen::-webkit-scrollbar,
+    .log-viewer::-webkit-scrollbar,
+    .status-log::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .terminal-screen::-webkit-scrollbar-track,
+    .log-viewer::-webkit-scrollbar-track,
+    .status-log::-webkit-scrollbar-track {
+      background: #090911;
+    }
+
+    .terminal-screen::-webkit-scrollbar-thumb,
+    .log-viewer::-webkit-scrollbar-thumb,
+    .status-log::-webkit-scrollbar-thumb {
+      background: #353849;
+      border-radius: 3px;
+    }
+
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="title-bar">
+    <div class="title-bar__icon"></div>
+    <div class="title-bar__text">System Strikelock Control Console</div>
+    <div class="title-bar__buttons">
+      <div class="title-btn">–</div>
+      <div class="title-btn">□</div>
+      <div class="title-btn">×</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Terminal panel -->
+    <div class="panel panel--terminal">
+      <div class="panel-header">
+        <span class="panel-header__title">Strikelock Dispatch Shell</span>
+        <div class="panel-header__right">
+          <span>ANSI</span>
+          <span>C:\STRIKELOCK&gt;</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div id="terminalScreen" class="terminal-screen">
+          <!-- Terminal lines inserted by JS -->
+        </div>
+        <div class="terminal-input-line">
+          <span class="terminal-input-label">C:\STRIKELOCK&gt;</span>
+          <span id="terminalInputText">strikelock_init /target:STRIKELOCK-07 /mode:SAFE-LIMIT</span><span class="terminal-cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Log panel -->
+    <div class="panel panel--log">
+      <div class="panel-header">
+        <span class="panel-header__title">System Event Log (Strikelock bus)</span>
+      </div>
+      <div class="panel-body">
+        <div id="logViewer" class="log-viewer">
+          <!-- Log lines inserted by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Status panel -->
+    <div class="panel panel--status">
+      <div class="panel-header">
+        <span class="panel-header__title">External Mechanism Telemetry</span>
+      </div>
+      <div class="panel-body">
+        <div class="status-grid">
+          <div class="status-row">
+            <div class="status-block">
+              <div class="status-block__label">Suit link</div>
+              <div class="status-block__value">
+                <span id="suitId">STRIKELOCK-07</span>
+                <span id="linkPill" class="status-pill status-pill--standby">LINKING</span>
+              </div>
+              <div class="status-bar-wrapper">
+                <div class="status-bar">
+                  <div id="linkBar" class="status-bar__fill status-bar__fill--blue"></div>
+                </div>
+                <div class="status-small">
+                  <span>Handshake progress</span>
+                  <span id="linkPercent">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="status-block">
+              <div class="status-block__label">Strikelock channel</div>
+              <div class="status-block__value">
+                <span>Channel 3 · SAFE-LIMIT</span>
+                <span id="lockPill" class="status-pill status-pill--armed">ARMED</span>
+              </div>
+              <div class="status-bar-wrapper">
+                <div class="status-bar">
+                  <div id="lockBar" class="status-bar__fill status-bar__fill--orange"></div>
+                </div>
+                <div class="status-small">
+                  <span>Sequence position</span>
+                  <span id="lockPercent">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-row">
+            <div class="status-block">
+              <div class="status-block__label">Suit load</div>
+              <div class="status-block__value">
+                <span id="loadValue">12%</span>
+                <span class="status-pill status-pill--linked">NORMAL</span>
+              </div>
+              <div class="status-bar-wrapper">
+                <div class="status-bar">
+                  <div id="loadBar" class="status-bar__fill"></div>
+                </div>
+                <div class="status-small">
+                  <span>Muscular assist envelope</span>
+                  <span>SAFE</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="status-block">
+              <div class="status-block__label">Constraint state</div>
+              <div class="status-block__value">
+                <span id="constraintState">UNBOUND</span>
+                <span id="constraintPill" class="status-pill status-pill--standby">IDLE</span>
+              </div>
+              <div class="status-bar-wrapper">
+                <div class="status-bar">
+                  <div id="constraintBar" class="status-bar__fill status-bar__fill--red"></div>
+                </div>
+                <div class="status-small">
+                  <span>Strikelock envelope</span>
+                  <span id="constraintPercent">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-block" style="min-height:0;">
+            <div class="status-block__label">Sequence timeline</div>
+            <div id="statusLog" class="status-log">
+              <!-- Short status messages inserted by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom control strip -->
+  <div class="control-strip">
+    <button id="btnArm" class="control-btn">
+      <div id="armLed" class="control-led control-led--idle"></div>
+      <span>Arm</span>
+    </button>
+    <button id="btnDispatch" class="control-btn">
+      <div id="dispatchLed" class="control-led control-led--idle"></div>
+      <span>Dispatch sequence</span>
+    </button>
+    <button id="btnAbort" class="control-btn">
+      <div id="abortLed" class="control-led control-led--idle" style="background:#f44336;box-shadow:0 0 3px #f44336;"></div>
+      <span>Abort</span>
+    </button>
+
+    <div class="control-strip-divider"></div>
+
+    <div class="control-strip-text">
+      <span>Profile: <strong>SAFE-LIMIT</strong></span>
+      <span>Bus: <strong>STRIKELOCK-3</strong></span>
+      <span>External: <strong>EXO-SHELL/07</strong></span>
+    </div>
+
+    <div class="control-strip-right">
+      <span>STRIKELOCK.EXE  ▌</span>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+  Simple fake simulation:
+  - Press "Arm" to arm the system.
+  - Press "Dispatch sequence" to run the strikelock initialization and dispatch.
+  - Logs, terminal, and status bars animate.
+  - No real external control is done; purely cosmetic.
+*/
+
+(function () {
+  const terminalScreen = document.getElementById("terminalScreen");
+  const logViewer = document.getElementById("logViewer");
+  const statusLog = document.getElementById("statusLog");
+
+  const linkBar = document.getElementById("linkBar");
+  const linkPercent = document.getElementById("linkPercent");
+  const lockBar = document.getElementById("lockBar");
+  const lockPercent = document.getElementById("lockPercent");
+  const loadBar = document.getElementById("loadBar");
+  const loadValue = document.getElementById("loadValue");
+  const constraintBar = document.getElementById("constraintBar");
+  const constraintPercent = document.getElementById("constraintPercent");
+
+  const linkPill = document.getElementById("linkPill");
+  const lockPill = document.getElementById("lockPill");
+  const constraintPill = document.getElementById("constraintPill");
+  const constraintState = document.getElementById("constraintState");
+
+  const btnArm = document.getElementById("btnArm");
+  const btnDispatch = document.getElementById("btnDispatch");
+  const btnAbort = document.getElementById("btnAbort");
+  const armLed = document.getElementById("armLed");
+  const dispatchLed = document.getElementById("dispatchLed");
+  const abortLed = document.getElementById("abortLed");
+
+  let armed = false;
+  let running = false;
+  let aborted = false;
+
+  function pad(num, size) {
+    let s = String(num);
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+  function timeStamp() {
+    const d = new Date();
+    return (
+      pad(d.getHours(), 2) +
+      ":" +
+      pad(d.getMinutes(), 2) +
+      ":" +
+      pad(d.getSeconds(), 2)
+    );
+  }
+
+  function addTerminalLine(text, type) {
+    const line = document.createElement("div");
+    line.className = "terminal-line";
+    if (type === "prompt") line.classList.add("terminal-line--prompt");
+    if (type === "status") line.classList.add("terminal-line--status");
+    if (type === "error") line.classList.add("terminal-line--error");
+    line.textContent = text;
+    terminalScreen.appendChild(line);
+    terminalScreen.scrollTop = terminalScreen.scrollHeight;
+  }
+
+  function addLogLine(level, text) {
+    const line = document.createElement("div");
+    line.className = "log-line";
+
+    const time = document.createElement("div");
+    time.className = "log-time";
+    time.textContent = timeStamp();
+
+    const levelEl = document.createElement("div");
+    levelEl.className = "log-level";
+    levelEl.textContent = level.toUpperCase();
+
+    switch (level) {
+      case "info":
+        levelEl.classList.add("log-level--info");
+        break;
+      case "warn":
+        levelEl.classList.add("log-level--warn");
+        break;
+      case "ok":
+        levelEl.classList.add("log-level--ok");
+        break;
+      case "err":
+        levelEl.classList.add("log-level--err");
+        break;
+    }
+
+    const textEl = document.createElement("div");
+    textEl.className = "log-text";
+    textEl.textContent = text;
+
+    line.appendChild(time);
+    line.appendChild(levelEl);
+    line.appendChild(textEl);
+    logViewer.appendChild(line);
+    logViewer.scrollTop = logViewer.scrollHeight;
+  }
+
+  function addStatusLine(text, emphasis) {
+    const line = document.createElement("div");
+    line.className = "status-log-line";
+    if (emphasis) {
+      line.innerHTML = "<strong>" + emphasis + "</strong> " + text;
+    } else {
+      line.textContent = text;
+    }
+    statusLog.appendChild(line);
+    statusLog.scrollTop = statusLog.scrollHeight;
+  }
+
+  function setBar(bar, percent, labelNode) {
+    bar.style.width = percent + "%";
+    if (labelNode) {
+      labelNode.textContent = percent + "%";
+    }
+  }
+
+  function setLED(el, active) {
+    if (active) {
+      el.classList.remove("control-led--idle");
+    } else {
+      el.classList.add("control-led--idle");
+    }
+  }
+
+  function resetAll() {
+    running = false;
+    aborted = false;
+
+    setLED(dispatchLed, false);
+    setLED(abortLed, false);
+
+    setBar(linkBar, 0, linkPercent);
+    setBar(lockBar, 0, lockPercent);
+    setBar(constraintBar, 0, constraintPercent);
+    setBar(loadBar, 12);
+    loadValue.textContent = "12%";
+
+    linkPill.className = "status-pill status-pill--standby";
+    linkPill.textContent = "LINKING";
+    lockPill.className = "status-pill status-pill--armed";
+    lockPill.textContent = "ARMED";
+    constraintPill.className = "status-pill status-pill--standby";
+    constraintPill.textContent = "IDLE";
+    constraintState.textContent = "UNBOUND";
+  }
+
+  function simulateSequence() {
+    if (!armed || running) return;
+
+    running = true;
+    aborted = false;
+    setLED(dispatchLed, true);
+    setLED(abortLed, false);
+
+    resetAll();
+    addTerminalLine("C:\\STRIKELOCK> strikelock_init /type:SOFTLOCK /target:STRIKELOCK-07 /mode:SAFE-LIMIT", "prompt");
+    addTerminalLine("Initializing strikelock control bus ...", "status");
+    addLogLine("info", "Operator requested softlock INIT for STRIKELOCK-07 (SAFE-LIMIT profile).");
+    addStatusLine("Operator: strikelock_init /target:STRIKELOCK-07 /mode:SAFE-LIMIT", "COMMAND");
+
+    let step = 0;
+
+    const steps = [
+      function () {
+        addTerminalLine("Resolving external mechanism: EXO-SHELL/07 ... OK", "status");
+        addLogLine("ok", "External EXO-SHELL/07 located and reachable.");
+        addStatusLine("External EXO-SHELL/07 reachable.", "LINK");
+        setBar(linkBar, 20, linkPercent);
+      },
+      function () {
+        addTerminalLine("Opening strikelock channel ...", "status");
+        addLogLine("info", "Opening STRIKELOCK-3 channel in SAFE-LIMIT mode.");
+        setBar(linkBar, 35, linkPercent);
+      },
+      function () {
+        addTerminalLine("Channel handshake ............. OK", "status");
+        addLogLine("ok", "STRIKELOCK-3 handshake complete.");
+        addStatusLine("Strikelock bus handshake acknowledged.", "BUS");
+        setBar(linkBar, 65, linkPercent);
+        linkPill.textContent = "LINKED";
+        linkPill.className = "status-pill status-pill--linked";
+      },
+      function () {
+        addTerminalLine("Querying suit telemetry ...", "status");
+        addLogLine("info", "Polling STRIKELOCK-07 for baseline telemetry.");
+        setBar(linkBar, 75, linkPercent);
+        setBar(loadBar, 18);
+        loadValue.textContent = "18%";
+      },
+      function () {
+        addTerminalLine("Baseline load: 18% (SAFE)", "status");
+        addLogLine("ok", "Suit baseline load within safe envelope.");
+        addStatusLine("Baseline load confirmed at 18%.", "TELEMETRY");
+        setBar(linkBar, 88, linkPercent);
+      },
+      function () {
+        addTerminalLine("Arming strikelock envelope ...", "status");
+        addLogLine("info", "Preparing constraint envelope (SAFE-LIMIT).");
+        setBar(lockBar, 25, lockPercent);
+      },
+      function () {
+        addTerminalLine("Envelope parameters: torso, limbs; torque clamp 40%; override path SAFE.", "status");
+        addLogLine("info", "Envelope configured: torque clamp 40%, full limb coverage.");
+        addStatusLine("Envelope configured; torque clamp at 40%.", "ENVELOPE");
+        setBar(lockBar, 55, lockPercent);
+      },
+      function () {
+        addTerminalLine("Dispatching strikelock sequence ...", "status");
+        addLogLine("warn", "Softlock sequence dispatched to STRIKELOCK-07 (SAFE-LIMIT).");
+        addStatusLine("Softlock sequence dispatch initiated.", "DISPATCH");
+        setBar(lockBar, 80, lockPercent);
+        constraintPill.textContent = "TRANSITION";
+      },
+      function () {
+        if (aborted) return;
+        addTerminalLine("Suit response: ACCEPTED (latency 23ms).", "status");
+        addLogLine("ok", "STRIKELOCK-07 accepted softlock command set.");
+        setBar(linkBar, 100, linkPercent);
+        setBar(lockBar, 95, lockPercent);
+        setBar(constraintBar, 30, constraintPercent);
+        loadValue.textContent = "24%";
+        setBar(loadBar, 24);
+      },
+      function () {
+        if (aborted) return;
+        addTerminalLine("Strikelock state: ENGAGED (SAFE-LIMIT).", "status");
+        addLogLine("ok", "Softlock envelope engaged on external Strikelock mechanism.");
+        addStatusLine("Softlock envelope engaged. SAFE-LIMIT active.", "STATE");
+        constraintState.textContent = "ENGAGED";
+        constraintPill.className = "status-pill status-pill--locked";
+        constraintPill.textContent = "SOFTLOCK";
+        setBar(constraintBar, 60, constraintPercent);
+        setBar(lockBar, 100, lockPercent);
+      },
+      function () {
+        if (aborted) return;
+        addTerminalLine("Monitoring sustained load and compliance vector ...", "status");
+        addLogLine("info", "Strikelock monitoring in progress.");
+        addStatusLine("Monitoring sustained load and compliance vector.", "MONITOR");
+        setBar(constraintBar, 72, constraintPercent);
+        setBar(loadBar, 28);
+        loadValue.textContent = "28%";
+      },
+      function () {
+        if (aborted) return;
+        addTerminalLine("Sequence complete. External mechanism is now in STRIKELOCK-SAFE state.", "status");
+        addLogLine("ok", "Sequence complete. STRIKELOCK-07 in STRIKELOCK-SAFE state.");
+        addStatusLine("Sequence complete. STRIKELOCK-07 in STRIKELOCK-SAFE state.", "COMPLETE");
+        setBar(constraintBar, 80, constraintPercent);
+        setLED(dispatchLed, false);
+        running = false;
+      }
+    ];
+
+    let idx = 0;
+    function nextStep() {
+      if (aborted || idx >= steps.length) return;
+      steps[idx++]();
+      if (idx < steps.length && !aborted) {
+        setTimeout(nextStep, 550 + Math.random() * 450);
+      }
+    }
+
+    nextStep();
+  }
+
+  function abortSequence() {
+    if (!running) return;
+    aborted = true;
+    running = false;
+
+    setLED(dispatchLed, false);
+    setLED(abortLed, true);
+
+    addTerminalLine("Strikelock sequence aborted by operator.", "error");
+    addLogLine("err", "Operator aborted strikelock sequence.");
+    addStatusLine("Strikelock sequence aborted.", "ABORT");
+
+    lockPill.textContent = "ARMED";
+    lockPill.className = "status-pill status-pill--armed";
+    constraintState.textContent = "UNBOUND";
+    constraintPill.className = "status-pill status-pill--standby";
+    constraintPill.textContent = "IDLE";
+
+    setBar(lockBar, 0, lockPercent);
+    setBar(constraintBar, 0, constraintPercent);
+  }
+
+  btnArm.addEventListener("click", function () {
+    armed = !armed;
+    setLED(armLed, armed);
+    if (armed) {
+      addTerminalLine("C:\\STRIKELOCK> strikelock_arm /bus:STRIKELOCK-3", "prompt");
+      addTerminalLine("Strikelock bus armed and ready.", "status");
+      addLogLine("ok", "Strikelock bus armed for dispatch operations.");
+      addStatusLine("Strikelock bus armed for dispatch operations.", "ARM");
+      btnArm.querySelector("span").textContent = "Disarm";
+    } else {
+      addTerminalLine("C:\\STRIKELOCK> strikelock_disarm", "prompt");
+      addTerminalLine("Strikelock bus disarmed.", "status");
+      addLogLine("info", "Strikelock bus disarmed by operator.");
+      addStatusLine("Strikelock bus disarmed by operator.", "ARM");
+      btnArm.querySelector("span").textContent = "Arm";
+      resetAll();
+    }
+  });
+
+  btnDispatch.addEventListener("click", simulateSequence);
+  btnAbort.addEventListener("click", abortSequence);
+
+  // Initial boot text
+  (function bootstrap() {
+    addTerminalLine("STRIKELOCK.ZEN  v4.3 (bySKYE) © 2048–2050", "status");
+    addTerminalLine("Initializing runtime shell ... OK", "status");
+    addTerminalLine("Registered external profile: EXO-SHELL/07 (SAFE-LIMIT)", "status");
+    addTerminalLine("Type 'strikelock_init /?' for help.", "status");
+
+    addLogLine("info", "Strikelock console loaded in supervised mode.");
+    addStatusLine("Console boot completed. Awaiting operator ARM.", "BOOT");
+
+    setBar(loadBar, 12);
+  })();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — TsukasaYugi & Affiliates Co. LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #08080f;
+      --deep: #0d0d1a;
+      --surface: #111120;
+      --border: #1e1e35;
+      --gold: #c9a84c;
+      --gold-dim: #8a6f30;
+      --gold-glow: rgba(201,168,76,0.12);
+      --red: #c94c4c;
+      --red-dim: rgba(201,76,76,0.15);
+      --white: #f0eff8;
+      --muted: #7a799a;
+      --mono: 'DM Mono', monospace;
+      --body: 'DM Sans', sans-serif;
+      --display: 'Cormorant Garamond', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: var(--deep);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 40s linear infinite;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .ticker-inner span { margin: 0 48px; }
+    .ticker-inner .sep { color: var(--muted); }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo em { font-style: italic; color: var(--gold); }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back::before { content: '← '; }
+    .nav-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      background: var(--gold-glow);
+      border: 1px solid var(--gold-dim);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 80px 80px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: var(--display);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .page-title em { font-style: italic; color: var(--gold); }
+    .page-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .meta-value {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── POLICY BODY ── */
+    .policy-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 80px;
+    }
+
+    .policy-notice {
+      background: var(--gold-glow);
+      border: 1px solid var(--gold-dim);
+      border-left: 3px solid var(--gold);
+      padding: 20px 28px;
+      margin-bottom: 64px;
+    }
+    .policy-notice p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+
+    .policy-section {
+      margin-bottom: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-section:last-child {
+      border-bottom: none;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .section-heading em { font-style: italic; color: var(--gold); }
+
+    .policy-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+    .policy-text strong { color: var(--white); font-weight: 500; }
+    .policy-text em { color: var(--gold); font-style: italic; }
+    .policy-text:last-child { margin-bottom: 0; }
+
+    .policy-list {
+      list-style: none;
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+    }
+    .policy-list li {
+      background: var(--surface);
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+    }
+    .policy-list li .li-key {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      padding-top: 2px;
+    }
+    .policy-list.simple li {
+      grid-template-columns: 1fr;
+      padding-left: 28px;
+      position: relative;
+    }
+    .policy-list.simple li::before {
+      content: '—';
+      position: absolute;
+      left: 12px;
+      color: var(--gold-dim);
+      font-family: var(--mono);
+    }
+    .policy-list li strong { color: var(--white); font-weight: 500; }
+
+    .policy-callout {
+      background: var(--red-dim);
+      border: 1px solid rgba(201,76,76,0.25);
+      border-left: 3px solid var(--red);
+      padding: 16px 24px;
+      margin: 20px 0;
+    }
+    .policy-callout p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--red);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+
+    .policy-highlight {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.9;
+    }
+    .policy-highlight strong { color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      padding: 64px 80px 40px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 64px;
+    }
+    .footer-brand-name {
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .footer-brand-name em { font-style: italic; color: var(--gold); }
+    .footer-brand-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .footer-reg {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gold-dim);
+      letter-spacing: 0.06em;
+      line-height: 1.9;
+    }
+    .footer-col h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+    .footer-legal-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-legal-links a {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .footer-legal-links a:hover { color: var(--gold); }
+    .footer-legal-links a.active { color: var(--gold); }
+
+    .redact {
+      background: var(--muted);
+      color: transparent;
+      user-select: none;
+      border-radius: 2px;
+      padding: 0 4px;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .page-header { padding: 48px 24px 40px; }
+      .policy-wrap { padding: 48px 24px; }
+      .policy-list li { grid-template-columns: 1fr; gap: 4px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      footer { padding: 48px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap" role="marquee">
+    <div class="ticker-inner">
+      <span>SYSTEM STATUS: <span style="color:#4cc94c">OPERATIONAL</span></span>
+      <span class="sep">///</span>
+      <span>VENDOR: TSUKASAYUGI &amp; AFFILIATES CO. LLC</span>
+      <span class="sep">///</span>
+      <span>PRODUCT: TSUKASA-7STWIN</span>
+      <span class="sep">///</span>
+      <span>PRIVACY POLICY — VERSION 1.0 — JUNE 9, 2026</span>
+      <span class="sep">///</span>
+      <span>DATA HANDLING COMPLIANCE: <span style="color:#4cc94c">VERIFIED</span></span>
+      <span class="sep">///</span>
+      <span>LORE CONTINUITY STATUS: <span style="color:#4cc94c">INTACT</span></span>
+      <span class="sep">///</span>
+      <span>SYSTEM STATUS: <span style="color:#4cc94c">OPERATIONAL</span></span>
+      <span class="sep">///</span>
+      <span>VENDOR: TSUKASAYUGI &amp; AFFILIATES CO. LLC</span>
+      <span class="sep">///</span>
+      <span>PRODUCT: TSUKASA-7STWIN</span>
+      <span class="sep">///</span>
+      <span>PRIVACY POLICY — VERSION 1.0 — JUNE 9, 2026</span>
+      <span class="sep">///</span>
+      <span>DATA HANDLING COMPLIANCE: <span style="color:#4cc94c">VERIFIED</span></span>
+      <span class="sep">///</span>
+      <span>LORE CONTINUITY STATUS: <span style="color:#4cc94c">INTACT</span></span>
+      <span class="sep">///</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" class="nav-logo"><em>Tsukasa</em>Yugi &amp; Affiliates</a>
+    <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" class="nav-back">Back to Homepage</a>
+    <div class="nav-badge">LEGAL DOCUMENT — V1.0</div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <p class="page-eyebrow">Legal Documentation — TsukasaYugi &amp; Affiliates Co. LLC</p>
+    <h1 class="page-title">Privacy <em>Policy</em></h1>
+    <div class="page-meta">
+      <div class="meta-item">
+        <span class="meta-label">Version</span>
+        <span class="meta-value">1.0</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Effective Date</span>
+        <span class="meta-value">June 9, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Issuing Entity</span>
+        <span class="meta-value">TsukasaYugi &amp; Affiliates Co. LLC</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Document ID</span>
+        <span class="meta-value">TYAC-LEGAL-PP-001</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLICY CONTENT -->
+  <div class="policy-wrap">
+
+    <div class="policy-notice">
+      <p>
+        By accessing any TsukasaAffiliates service, you acknowledge that you have read, understood, 
+        and accepted this Policy.<br/>
+        If you do not agree, please discontinue use <strong>before the Corporation notices.</strong>
+      </p>
+    </div>
+
+    <!-- §1 Introduction -->
+    <div class="policy-section">
+      <div class="section-num">§ 1 — Introduction</div>
+      <h2 class="section-heading">What This <em>Is</em></h2>
+      <p class="policy-text">
+        TsukasaYugi &amp; Affiliates Co. LLC values the integrity, safety, and emotional stability 
+        of all entities interacting with our systems. This Privacy Policy explains how we collect, 
+        use, store, and protect information across all TsukasaAffiliates platforms, including 
+        <strong>Psycho</strong>, <strong>Blood</strong>, and associated digital infrastructure.
+      </p>
+      <p class="policy-text">
+        This document constitutes a binding agreement between you and the Corporation. 
+        Continued use of any TsukasaAffiliates service is treated as ongoing acceptance. 
+        The Corporation reserves the right to know you have read this.
+      </p>
+    </div>
+
+    <!-- §2 Collection -->
+    <div class="policy-section">
+      <div class="section-num">§ 2 — Information We Collect</div>
+      <h2 class="section-heading">Data <em>Collection</em></h2>
+      <p class="policy-text">We collect information across the following categories:</p>
+      <ul class="policy-list">
+        <li>
+          <span class="li-key">Operational Data</span>
+          <span>System logs, uptime metrics, device identifiers, and performance telemetry across all certified endpoints.</span>
+        </li>
+        <li>
+          <span class="li-key">Voluntary Submissions</span>
+          <span>Information you provide through forms, messages, or direct contact with the Corporation. You chose to send it. We chose to keep it.</span>
+        </li>
+        <li>
+          <span class="li-key">Behavioral Signals</span>
+          <span>Navigation patterns, interaction timing, and anomalous activity indicators. Anomalies are flagged automatically.</span>
+        </li>
+        <li>
+          <span class="li-key">Affiliation Metadata</span>
+          <span>Division membership, product ownership, clearance level on file, and loyalty status.</span>
+        </li>
+        <li>
+          <span class="li-key">Non-Personal Data</span>
+          <span>Anonymized analytics used to improve system stability and expand operational scope.</span>
+        </li>
+      </ul>
+      <p class="policy-text">
+        We do <strong>not</strong> collect biometric data, financial data, or anything that would make this legally complicated.
+      </p>
+    </div>
+
+    <!-- §3 Use -->
+    <div class="policy-section">
+      <div class="section-num">§ 3 — How We Use Your Information</div>
+      <h2 class="section-heading">Data <em>Usage</em></h2>
+      <p class="policy-text">Your data is used to:</p>
+      <ul class="policy-list simple">
+        <li>Maintain system functionality and ensure all divisions remain <strong>OPERATIONAL</strong></li>
+        <li>Improve user experience across TsukasaAffiliates services</li>
+        <li>Detect, prevent, and respond to security incidents</li>
+        <li>Expand the Corporation's multiversal influence</li>
+        <li>Generate internal analytics for product development</li>
+        <li>Maintain accurate records of affiliated devices and entities</li>
+      </ul>
+      <div class="policy-highlight">
+        <strong>NOTICE:</strong> We do NOT sell your data.<br/>
+        We do NOT share your data with third parties except those explicitly listed in §4 of this document.<br/>
+        This is a commitment enforced by Tsukasa himself.
+      </div>
+    </div>
+
+    <!-- §4 Sharing -->
+    <div class="policy-section">
+      <div class="section-num">§ 4 — Data Sharing</div>
+      <h2 class="section-heading">Partner <em>Disclosure</em></h2>
+      <p class="policy-text">
+        We may share limited information with the following authorized entities, 
+        each operating under strict confidentiality agreements enforced by Tsukasa himself:
+      </p>
+      <ul class="policy-list">
+        <li>
+          <span class="li-key">SINS Agency</span>
+          <span>For security implementation, private surveillance, neuro additions, and threat analysis. Operates under the joint infrastructure agreement.</span>
+        </li>
+        <li>
+          <span class="li-key">Silver Wolf</span>
+          <span>For incorporating exploits and system hardening, pursuant to the Zero-Day Exploit Agreement (CVE-FOREVER-0000).</span>
+        </li>
+        <li>
+          <span class="li-key">Hanako / Amane Yugi</span>
+          <span>For Tsukasa's personal familiar transparency and contact</span>
+        </li>
+        <li>
+          <span class="li-key">Kengo Yozakura</span>
+          <span>For improvements suggestions and learning purposes</span>
+        </li>
+        <li>
+          <span class="li-key">CatNap</span>
+          <span>For atmospheric ambient improvement in our and our partners HQ and blurredly cat-specific and scent reasons</span>
+        </li>
+        <li>
+          <span class="li-key">SKA K.K. LLP Inc.</span>
+          <span>For legal compliance across dimensions. Their jurisdiction is broad. Their measurement standards are authoritative.</span>
+        </li>
+        <li>
+          <span class="li-key">Tsukasa &amp; Sike Synergy K.K. LLP.</span>
+          <span>For co-partnered product &amp; services improvement and shared database infrastructure, per the joint SO-J Division arrangement.</span>
+        </li>
+        <li>
+          <span class="li-key">Internal Divisions</span>
+          <span>Including but not limited to: HFI, SPE, CIS, ERAM, and Reality Management. ARI Division data access is governed by Directive 7-NULL.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- §5 Storage -->
+    <div class="policy-section">
+      <div class="section-num">§ 5 — Data Storage &amp; Retention</div>
+      <h2 class="section-heading">Storage &amp; <em>Retention</em></h2>
+      <p class="policy-text">
+        Your information is stored in secure, access-controlled environments maintained by the Corporation. 
+        Retention periods are as follows:
+      </p>
+      <ul class="policy-list">
+        <li>
+          <span class="li-key">Operational Logs</span>
+          <span>90 days from generation date.</span>
+        </li>
+        <li>
+          <span class="li-key">Affiliation Metadata</span>
+          <span>Indefinitely, unless formally revoked via §6 procedures.</span>
+        </li>
+        <li>
+          <span class="li-key">Contact Submissions</span>
+          <span>Until processed. Processing timeline is not disclosed.</span>
+        </li>
+        <li>
+          <span class="li-key">Analytics Data</span>
+          <span>Anonymized and retained for research, unless opted-in for inclusion of personal fingerprinting data.</span>
+        </li>
+      </ul>
+      <p class="policy-text">
+        Data may be retained beyond standard periods if required for <strong>security</strong>, <strong>compliance</strong>, 
+        or <em>lore continuity</em>. The Corporation determines which applies.
+      </p>
+    </div>
+
+    <!-- §6 Rights -->
+    <div class="policy-section">
+      <div class="section-num">§ 6 — Your Rights</div>
+      <h2 class="section-heading">Entity <em>Rights</em></h2>
+      <p class="policy-text">You may submit formal requests for the following:</p>
+      <ul class="policy-list simple">
+        <li>Access to your stored data</li>
+        <li>Correction of inaccurate information</li>
+        <li>Removal of voluntary submissions</li>
+        <li>Revocation of affiliation (pending approval)</li>
+      </ul>
+      <div class="policy-callout">
+        <p>
+          ⚠ NOTICE: Requests may be denied if they compromise system integrity or violate Tsukasa's directives.<br/>
+          The Corporation does not elaborate on which requests will be denied prior to their denial.
+        </p>
+      </div>
+    </div>
+
+    <!-- §7 Security -->
+    <div class="policy-section">
+      <div class="section-num">§ 7 — Security Measures</div>
+      <h2 class="section-heading">Security <em>Infrastructure</em></h2>
+      <p class="policy-text">The Corporation employs the following security measures across all platforms:</p>
+      <ul class="policy-list simple">
+        <li><strong>SELinux-based MAC enforcement</strong> — mandatory access control at the kernel level</li>
+        <li><strong>SINS-grade intrusion detection</strong> — operated in coordination with the SINS Agency</li>
+        <li><strong>KineticSlip exploit implementation</strong> — proprietary hardening layer</li>
+        <li><strong>Encrypted transport protocols</strong> — across all inter-entity communications</li>
+        <li><strong>Internal anomaly monitoring</strong> — continuous, automated, unannounced</li>
+        <li><strong>Amok-based security systems</strong> — scope not publicly disclosed</li>
+      </ul>
+      <p class="policy-text">
+        Despite these measures, no system is perfectly secure. If a breach occurs, we will notify 
+        affected users unless doing so would worsen the situation.
+      </p>
+      <div class="policy-highlight">
+        <strong>ADDENDUM:</strong> It will not occur. We are perfect. Tsukasa is perfect.
+      </div>
+    </div>
+
+    <!-- §8 Children -->
+    <div class="policy-section">
+      <div class="section-num">§ 8 — Children's Privacy</div>
+      <h2 class="section-heading">Minor <em>Entities</em></h2>
+      <p class="policy-text">
+        TsukasaAffiliates services are not intended for individuals under the age of 14. 
+        We do not knowingly collect data from minors.
+      </p>
+      <p class="policy-text">
+        If such data is discovered, it will be deleted <strong>immediately</strong> — 
+        without retention, analysis, or move-to-trash actions. 
+        No exceptions. This one is not negotiable.
+      </p>
+    </div>
+
+    <!-- §9 Changes -->
+    <div class="policy-section">
+      <div class="section-num">§ 9 — Policy Changes</div>
+      <h2 class="section-heading">Amendment <em>Procedures</em></h2>
+      <p class="policy-text">
+        We may update this Privacy Policy at any time. Changes take effect immediately upon posting. 
+        Continued use of TsukasaAffiliates services following an update constitutes acceptance of the revised terms.
+      </p>
+      <p class="policy-text">
+        We will always provide prior notification before policy changes are enacted. 
+        The format and channel of notification is at the Corporation's discretion.
+      </p>
+    </div>
+
+    <!-- §10 Contact -->
+    <div class="policy-section">
+      <div class="section-num">§ 10 — Contact</div>
+      <h2 class="section-heading">Correspondence <em>Channels</em></h2>
+      <p class="policy-text">
+        For questions, concerns, or existential crises regarding this Privacy Policy, 
+        contact us via the official TsukasaAffiliates portal.
+      </p>
+      <p class="policy-text">
+        Responses are not guaranteed. Threats will be archived for entertainment purposes.
+      </p>
+      <div class="policy-highlight">
+        <strong>PORTAL:</strong> <a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/" style="color:var(--gold);text-decoration:none;">sike7sz.nekoweb.org/TsukasaAffiliates/</a><br/>
+        <strong>DOCUMENT ID:</strong> TYAC-LEGAL-PP-001<br/>
+        <strong>ENFORCED BY:</strong> Tsukasa Yugi, Founding Authority
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name"><em>Tsukasa</em>Yugi &amp; Affiliates Co. LLC</div>
+        <p class="footer-brand-desc">
+          A multidisciplinary enterprise operating across hardware infrastructure,
+          systems engineering, supernatural-adjacent research, and inter-entity
+          alliance management. Fully operational. Zero documented failures.
+        </p>
+        <div class="footer-reg">
+          REG. NO: TYAC-7-LLC-∞<br/>
+          VENDOR: TsukasaYugi &amp; Affiliates Co. LLC<br/>
+          PRODUCT: Tsukasa-7sTwin<br/>
+          JURISDICTION: [CLASSIFIED]
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#about">About</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#divisions">Divisions</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#products">Products</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#projects">Projects</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Network</h4>
+        <ul>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#partners">Partners</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#donators">Donators</a></li>
+          <li><a href="https://sike7sz.nekoweb.org/TsukasaAffiliates/#contact">Contact</a></li>
+          <li><a href="https://sike7sz.nekoweb.org" target="_blank">Sike Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#" class="active">Privacy Policy</a></li>
+          <li><a href="#">Terms of Operation</a></li>
+          <li><a href="#">Clearance Portal</a></li>
+          <li><a href="#">ARI Division [CL5+]</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        © TsukasaYugi &amp; Affiliates Co. LLC — All rights reserved, including rights that have not yet been defined.<br/>
+        "Tsukasa-7sTwin" and all division designations are proprietary identifiers of TsukasaYugi &amp; Affiliates Co. LLC.<br/>
+        Unauthorized reproduction of UEFI vendor strings constitutes a violation of internal directive 7-NULL and possibly something else.
+      </div>
+      <div class="footer-legal-links">
+        <a href="#" class="active">Privacy Policy</a>
+        <a href="#">Terms of Operation</a>
+        <a href="#">Clearance Portal</a>
+        <a href="#">ARI Division [CL5+]</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

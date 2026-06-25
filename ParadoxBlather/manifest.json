@@ -1,0 +1,20 @@
+{
+  "name": "Paradox Blather",
+  "short_name": "ParadoxBlather",
+  "start_url": "/ParadoxBlather/",
+  "display": "standalone",
+  "background_color": "#2d0057",
+  "theme_color": "#7b2fff",
+  "icons": [
+    {
+      "src": "/ParadoxBlather/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/ParadoxBlather/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

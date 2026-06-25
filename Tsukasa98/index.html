@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Tsukasa Yugi Shrine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.441.0/lucide.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            cursor: default;
+            user-select: none;
+            overflow: hidden;
+            background-color: #008080;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .win98-border {
+            box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff;
+            background-color: #c0c0c0;
+        }
+
+        .win98-inset {
+            border-bottom: 2px solid #ffffff;
+            border-right: 2px solid #ffffff;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            background-color: #ffffff;
+        }
+
+        .win98-button {
+            box-shadow: inset 1px 1px #ffffff, inset -1px -1px #0a0a0a;
+            border-bottom: 1px solid #000;
+            border-right: 1px solid #000;
+            background-color: #c0c0c0;
+            outline: none;
+        }
+
+        .win98-button:active {
+            box-shadow: inset 1px 1px #0a0a0a;
+            border: 1px solid #fff;
+            padding-top: 1px;
+            padding-left: 1px;
+        }
+
+        .taskbar-item.active {
+            background-color: #e0e0e0;
+            box-shadow: inset 1px 1px #0a0a0a;
+            padding-top: 2px;
+            padding-left: 2px;
+        }
+
+        .title-bar-active { background-color: #000080; }
+        .title-bar-inactive { background-color: #808080; }
+
+        ::-webkit-scrollbar { width: 16px; }
+        ::-webkit-scrollbar-track { background: #dfdfdf; box-shadow: inset 1px 1px #808080; }
+        ::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-top: 1px solid #fff; border-left: 1px solid #fff;
+            border-right: 1px solid #808080; border-bottom: 1px solid #808080;
+        }
+
+        .desktop-icon:hover { background-color: rgba(0, 0, 128, 0.1); }
+        .desktop-icon.selected span { background-color: #000080; color: white; }
+        
+        .watermark {
+            position: absolute;
+            bottom: 80px;
+            right: 40px;
+            font-size: 8rem;
+            font-weight: 900;
+            color: white;
+            opacity: 0.15;
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="desktop" class="fixed inset-0 flex flex-col overflow-hidden">
+        <!-- Main Desktop Content Area -->
+        <div class="flex-1 relative overflow-hidden">
+            <!-- Background Text Watermark -->
+            <div class="watermark italic select-none">TSUKASA</div>
+
+            <!-- Icons -->
+            <div class="p-4 grid grid-flow-col grid-rows-6 w-fit gap-4 z-10 relative">
+                <div class="desktop-icon flex flex-col items-center w-20 cursor-pointer" onclick="toggleWindow('welcome')">
+                    <i data-lucide="folder-heart" class="text-white w-8 h-8"></i>
+                    <span class="text-white text-[11px] mt-1 px-1 text-center leading-tight">Adoration.exe</span>
+                </div>
+                <div class="desktop-icon flex flex-col items-center w-20 cursor-pointer" onclick="toggleWindow('gallery')">
+                    <i data-lucide="camera" class="text-white w-8 h-8"></i>
+                    <span class="text-white text-[11px] mt-1 px-1 text-center leading-tight">Photo_Album</span>
+                </div>
+                <div class="desktop-icon flex flex-col items-center w-20 cursor-pointer" onclick="toggleWindow('about')">
+                    <i data-lucide="info" class="text-white w-8 h-8"></i>
+                    <span class="text-white text-[11px] mt-1 px-1 text-center leading-tight">Secret_Profile</span>
+                </div>
+                <div class="desktop-icon flex flex-col items-center w-20 cursor-pointer" onclick="toggleWindow('music')">
+                    <i data-lucide="music" class="text-white w-8 h-8"></i>
+                    <span class="text-white text-[11px] mt-1 px-1 text-center leading-tight">Themes.wav</span>
+                </div>
+            </div>
+
+            <!-- Windows Container -->
+            <div id="window-layer" class="absolute inset-0 pointer-events-none">
+                
+                <!-- Welcome Window -->
+                <div id="welcome" class="win98-border p-1 w-[350px] md:w-[450px] absolute pointer-events-auto hidden" style="left: 50px; top: 50px; z-index: 10;">
+                    <div class="title-bar title-bar-active flex items-center justify-between p-1 h-6 cursor-default" onmousedown="startDrag(event, 'welcome')">
+                        <div class="flex items-center gap-1 text-white text-xs font-bold pointer-events-none">
+                            <i data-lucide="heart" class="w-3 h-3 fill-current"></i>
+                            <span>Welcome.exe</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <button class="win98-button w-4 h-4 flex items-center justify-center text-[10px]" onmousedown="event.stopPropagation()">_</button>
+                            <button class="win98-button w-4 h-4 flex items-center justify-center" onmousedown="event.stopPropagation()" onclick="toggleWindow('welcome')">×</button>
+                        </div>
+                    </div>
+                    <div class="win98-inset m-1 p-4 min-h-[200px] max-h-[60vh] overflow-y-auto text-sm">
+                        <h1 class="text-xl font-black italic mb-2">My Adoration For Tsukasa-kun!</h1>
+                        <p class="mb-4 leading-relaxed text-gray-800">
+                            Welcome to my humble digital shrine dedicated to the one and only Tsukasa Yugi. 
+                            His chaotic energy and mysterious nature make him the most captivating person ever!
+                            <br><br>
+                            <span class="bg-yellow-200 px-1">Warning: High levels of fan-adoration ahead!</span>
+                        </p>
+                        <div class="border-2 border-dashed border-pink-400 p-2 text-center text-pink-600 font-bold bg-pink-50 mb-4">
+                            "We'll be together... forever, Amane."
+                        </div>
+                        <img src="https://i.imgur.com/gFvTdfV.jpeg" class="w-full border-2 border-gray-400" alt="Tsukasa">
+                    </div>
+                </div>
+
+                <!-- Gallery Window -->
+                <div id="gallery" class="win98-border p-1 w-[350px] md:w-[400px] absolute pointer-events-auto hidden" style="left: 400px; top: 80px; z-index: 11;">
+                    <div class="title-bar title-bar-active flex items-center justify-between p-1 h-6 cursor-default" onmousedown="startDrag(event, 'gallery')">
+                        <div class="flex items-center gap-1 text-white text-xs font-bold pointer-events-none">
+                            <i data-lucide="camera" class="w-3 h-3"></i>
+                            <span>Gallery_Preview</span>
+                        </div>
+                        <button class="win98-button w-4 h-4 flex items-center justify-center" onmousedown="event.stopPropagation()" onclick="toggleWindow('gallery')">×</button>
+                    </div>
+                    <div class="win98-inset m-1 p-4 max-h-[60vh] overflow-y-auto space-y-4">
+                        <img src="https://i.imgur.com/a6r8zjv.jpeg" class="border shadow-sm w-full" alt="1">
+                        <img src="https://i.imgur.com/GUOe3U7.jpeg" class="border shadow-sm w-full" alt="2">
+                    </div>
+                </div>
+
+                <!-- About Window -->
+                <div id="about" class="win98-border p-1 w-[320px] absolute pointer-events-auto hidden" style="left: 150px; top: 200px; z-index: 12;">
+                    <div class="title-bar title-bar-active flex items-center justify-between p-1 h-6 cursor-default" onmousedown="startDrag(event, 'about')">
+                        <div class="flex items-center gap-1 text-white text-xs font-bold pointer-events-none">
+                            <i data-lucide="info" class="w-3 h-3"></i>
+                            <span>PROFILE.TXT</span>
+                        </div>
+                        <button class="win98-button w-4 h-4 flex items-center justify-center" onmousedown="event.stopPropagation()" onclick="toggleWindow('about')">×</button>
+                    </div>
+                    <div class="win98-inset m-1 p-4 font-mono text-xs whitespace-pre-wrap">Name: Tsukasa Yugi
+Status: Mystery No. 7's Twin
+Likes: Amane, Playing around, Chaos
+Dislikes: Boring things
+
+Why I love him:
+. That mischievous cat-like grin
+. His unpredictable personality
+. The deep, complex bond with his brother
+. The way he floats around!</div>
+                </div>
+
+                <!-- Music Window -->
+                <div id="music" class="win98-border p-1 w-[350px] md:w-[450px] absolute pointer-events-auto hidden" style="left: 200px; top: 150px; z-index: 13;">
+                    <div class="title-bar title-bar-active flex items-center justify-between p-1 h-6 cursor-default" onmousedown="startDrag(event, 'music')">
+                        <div class="flex items-center gap-1 text-white text-xs font-bold pointer-events-none">
+                            <i data-lucide="music" class="w-3 h-3"></i>
+                            <span>Themes.wav</span>
+                        </div>
+                        <button class="win98-button w-4 h-4 flex items-center justify-center" onmousedown="event.stopPropagation()" onclick="toggleWindow('music')">×</button>
+                    </div>
+                    <div class="win98-inset m-1 p-4">
+                        <div class="aspect-video w-full bg-black">
+                            <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/SOnurhCSM54" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        <p class="text-[10px] mt-2 italic text-gray-600">Now Streaming: Tsukasa's Theme</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="h-10 bg-[#c0c0c0] border-t-2 border-white flex items-center p-1 gap-1 z-[9999] shrink-0">
+            <button class="win98-button px-2 py-0.5 flex items-center gap-1 font-bold text-sm h-full shrink-0">
+                <span class="bg-black text-white px-1 text-[10px]">98</span> Start
+            </button>
+            <div id="taskbar-items" class="flex-1 flex gap-1 h-full overflow-hidden"></div>
+            <div class="win98-inset bg-[#c0c0c0] px-2 h-full flex items-center text-xs whitespace-nowrap shrink-0" id="clock">00:00</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        let activeWinId = null;
+        let highestZ = 20;
+        let dragging = null;
+
+        function toggleWindow(id) {
+            const win = document.getElementById(id);
+            if (win.classList.contains('hidden')) {
+                win.classList.remove('hidden');
+                bringToFront(id);
+            } else {
+                win.classList.add('hidden');
+            }
+            renderTaskbar();
+        }
+
+        function bringToFront(id) {
+            highestZ++;
+            const win = document.getElementById(id);
+            win.style.zIndex = highestZ;
+            
+            document.querySelectorAll('.title-bar').forEach(tb => {
+                tb.classList.remove('title-bar-active');
+                tb.classList.add('title-bar-inactive');
+            });
+            win.querySelector('.title-bar').classList.add('title-bar-active');
+            win.querySelector('.title-bar').classList.remove('title-bar-inactive');
+            
+            activeWinId = id;
+            renderTaskbar();
+        }
+
+        function renderTaskbar() {
+            const container = document.getElementById('taskbar-items');
+            container.innerHTML = '';
+            const windowIds = ['welcome', 'gallery', 'about', 'music'];
+            
+            windowIds.forEach(id => {
+                const win = document.getElementById(id);
+                if (!win.classList.contains('hidden')) {
+                    const btn = document.createElement('button');
+                    btn.className = `win98-button px-2 text-xs truncate max-w-[120px] h-full flex items-center gap-1 ${activeWinId === id ? 'active' : ''}`;
+                    
+                    let iconName = 'heart';
+                    if (id === 'gallery') iconName = 'camera';
+                    if (id === 'about') iconName = 'info';
+                    if (id === 'music') iconName = 'music';
+
+                    const label = id === 'about' ? 'PROFILE.TXT' : id === 'welcome' ? 'welcome.exe' : id + '.exe';
+                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-3 h-3"></i> ${label}`;
+                    btn.onclick = () => bringToFront(id);
+                    container.appendChild(btn);
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function startDrag(e, id) {
+            bringToFront(id);
+            const win = document.getElementById(id);
+            const rect = win.getBoundingClientRect();
+            dragging = {
+                id: id,
+                offsetX: e.clientX - rect.left,
+                offsetY: e.clientY - rect.top
+            };
+        }
+
+        window.onmousemove = (e) => {
+            if (!dragging) return;
+            const win = document.getElementById(dragging.id);
+            win.style.left = (e.clientX - dragging.offsetX) + 'px';
+            win.style.top = (e.clientY - dragging.offsetY) + 'px';
+        };
+
+        window.onmouseup = () => { dragging = null; };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        toggleWindow('welcome');
+        toggleWindow('gallery');
+    </script>
+</body>
+</html>

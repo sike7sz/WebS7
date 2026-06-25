@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal UI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(16,42,76,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(58,12,163,0.3) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── TITLE BAR (shared by all windows) ── */
+  .win-title-bar {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    background: #161b22;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 0 12px;
+    cursor: move;
+    flex-shrink: 0;
+    gap: 8px;
+    position: relative;
+  }
+
+  .win-btn {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    color: transparent;
+    transition: filter 0.15s;
+  }
+  .win-btn:hover { filter: brightness(1.3); color: rgba(0,0,0,0.7); }
+  .wbtn-close { background: #ff5f57; }
+  .wbtn-min   { background: #febc2e; }
+  .wbtn-max   { background: #28c840; }
+
+  .win-title-label {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ── TERMINAL BODY (shared by all windows) ── */
+  .win-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 16px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #fff;
+    cursor: text;
+    position: relative;
+  }
+  .win-body::-webkit-scrollbar { width: 6px; }
+  .win-body::-webkit-scrollbar-track { background: transparent; }
+  .win-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+  .win-body::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+  /* ── FLOATING CONTROL PANEL ── */
+  #control-panel {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 500;
+    background: rgba(22, 27, 34, 0.92);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(255,255,255,0.04),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    cursor: move;
+    user-select: none;
+  }
+
+  #panel-drag-hint {
+    width: 4px;
+    height: 26px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    margin-right: 2px;
+    flex-shrink: 0;
+  }
+
+  .tb-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.75);
+    font-size: 11.5px;
+    font-family: 'Inter', sans-serif;
+    padding: 5px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .tb-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.22);
+    color: #fff;
+  }
+  .tb-btn.accent {
+    background: rgba(0,210,180,0.13);
+    border-color: rgba(0,210,180,0.35);
+    color: #00d2b4;
+  }
+  .tb-btn.accent:hover {
+    background: rgba(0,210,180,0.24);
+    border-color: rgba(0,210,180,0.55);
+  }
+
+  .tb-sep {
+    width: 1px; height: 20px;
+    background: rgba(255,255,255,0.1);
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── TERMINAL BODY ── */
+  #terminal-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 16px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #fff;
+    cursor: text;
+    position: relative;
+  }
+  #terminal-body::-webkit-scrollbar { width: 6px; }
+  #terminal-body::-webkit-scrollbar-track { background: transparent; }
+  #terminal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+  #terminal-body::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+  /* ── LINE ── */
+  .term-line {
+    display: flex;
+    align-items: flex-start;
+    min-height: 1.6em;
+    position: relative;
+  }
+
+  .line-prefix {
+    flex-shrink: 0;
+    color: #00d2b4;
+    white-space: pre;
+    user-select: none;
+    cursor: default;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .line-content {
+    flex: 1;
+    outline: none;
+    color: #fff;
+    word-break: break-all;
+    white-space: pre-wrap;
+    min-width: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    caret-color: #00d2b4;
+  }
+
+  /* ── IMAGE OVERLAY ── */
+  .term-image-wrapper {
+    position: absolute;
+    cursor: move;
+    z-index: 50;
+    display: inline-block;
+  }
+  .term-image-wrapper img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+  .term-image-wrapper .resize-handle {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 14px; height: 14px;
+    background: rgba(0,210,180,0.6);
+    cursor: se-resize;
+    border-radius: 2px 0 4px 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #000;
+  }
+  .term-image-wrapper .img-close {
+    position: absolute;
+    top: -8px; right: -8px;
+    width: 18px; height: 18px;
+    background: #ff5f57;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+    line-height: 1;
+  }
+  .term-image-wrapper:hover .img-close { opacity: 1; }
+
+  /* ── RESIZE HANDLES ── */
+  .resize-edge {
+    position: absolute;
+    z-index: 200;
+  }
+  .resize-edge.n  { top:-4px; left:8px; right:8px; height:8px; cursor:n-resize; }
+  .resize-edge.s  { bottom:-4px; left:8px; right:8px; height:8px; cursor:s-resize; }
+  .resize-edge.e  { right:-4px; top:8px; bottom:8px; width:8px; cursor:e-resize; }
+  .resize-edge.w  { left:-4px; top:8px; bottom:8px; width:8px; cursor:w-resize; }
+  .resize-edge.ne { top:-4px; right:-4px; width:14px; height:14px; cursor:ne-resize; }
+  .resize-edge.nw { top:-4px; left:-4px; width:14px; height:14px; cursor:nw-resize; }
+  .resize-edge.se { bottom:-4px; right:-4px; width:14px; height:14px; cursor:se-resize; }
+  .resize-edge.sw { bottom:-4px; left:-4px; width:14px; height:14px; cursor:sw-resize; }
+
+  /* ── CONTEXT MENU ── */
+  #ctx-menu {
+    position: fixed;
+    background: #1c2333;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 5px;
+    min-width: 190px;
+    z-index: 9999;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+    display: none;
+  }
+  .ctx-item {
+    padding: 7px 12px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.85);
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+  .ctx-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .ctx-item.danger { color: #ff7b7b; }
+  .ctx-item.danger:hover { background: rgba(255,80,80,0.12); }
+  .ctx-sep { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
+  .ctx-icon { font-size: 13px; width: 16px; text-align: center; }
+
+  /* sub-menu colour picker inline */
+  .ctx-color-row {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.1s, border-color 0.1s;
+  }
+  .swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.5); }
+  .ctx-color-custom {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    padding: 2px 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+  }
+  .ctx-color-custom:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+  /* font size row */
+  .ctx-size-row {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ctx-size-btn {
+    width: 26px; height: 22px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.12s;
+  }
+  .ctx-size-btn:hover { background: rgba(255,255,255,0.15); }
+  .ctx-size-label { font-size: 11px; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif; }
+
+  /* ── MODAL ── */
+  #modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 8000;
+    backdrop-filter: blur(4px);
+  }
+  #modal-overlay.open { display: flex; }
+
+  #settings-modal {
+    background: #161b22;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 28px 32px;
+    width: 420px;
+    max-width: 95vw;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+  }
+  .modal-title span { color: #00d2b4; }
+  .field-group { margin-bottom: 16px; }
+  .field-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .field-row { display: flex; gap: 8px; }
+  .field-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 7px;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field-input:focus { border-color: rgba(0,210,180,0.5); }
+  .field-input.short { width: 70px; flex: none; }
+  .color-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  input[type=color] {
+    width: 34px; height: 34px;
+    border: none; border-radius: 7px;
+    cursor: pointer; background: none; padding: 0;
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .modal-btn {
+    padding: 8px 20px;
+    border-radius: 7px;
+    border: none;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .modal-btn:hover { opacity: 0.85; }
+  .modal-btn.primary { background: #00d2b4; color: #000; }
+  .modal-btn.secondary { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+
+  /* hidden file input */
+  #img-file-input { display: none; }
+
+  /* cursor blink on last line */
+  .term-line.active .line-content::after {
+    content:'';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: #00d2b4;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+  }
+</style>
+</head>
+<body>
+
+
+
+<!-- Floating Control Panel (outside terminal window) -->
+<div id="control-panel">
+  <div id="panel-drag-hint"></div>
+  <button class="tb-btn accent" id="tb-add-prompt" title="Add a new user@host prompt line">+ Prompt</button>
+  <button class="tb-btn" id="tb-add-plain" title="Add a blank plain line">+ Line</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="tb-new-window" title="Open a new terminal window">⧉ New Window</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="tb-upload-img" title="Upload image onto terminal">🖼 Image</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="tb-settings" title="Open settings">⚙ Settings</button>
+</div>
+
+<!-- Context Menu -->
+<div id="ctx-menu">
+  <div class="ctx-item" id="ctx-bold">  <span class="ctx-icon">𝐁</span> Bold</div>
+  <div class="ctx-item" id="ctx-italic"><span class="ctx-icon">𝐼</span> Italic</div>
+  <div class="ctx-item" id="ctx-under"> <span class="ctx-icon">U̲</span> Underline</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" id="ctx-color-label"><span class="ctx-icon">🎨</span> Text Colour</div>
+  <div class="ctx-color-row" id="ctx-swatches"></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item ctx-size-label-item"><span class="ctx-icon">Aa</span> Size</div>
+  <div class="ctx-size-row">
+    <button class="ctx-size-btn" id="ctx-size-down">−</button>
+    <span class="ctx-size-label">selected text</span>
+    <button class="ctx-size-btn" id="ctx-size-up">+</button>
+  </div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" id="ctx-remove-prompt"><span class="ctx-icon">✕</span> Remove Prompt</div>
+</div>
+
+<!-- Settings Modal -->
+<div id="modal-overlay">
+  <div id="settings-modal">
+    <div class="modal-title"><span>⚙</span> Terminal Settings</div>
+
+    <div class="field-group">
+      <div class="field-label">Window Title</div>
+      <input class="field-input" id="s-win-title" type="text" placeholder="bash">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Username</div>
+      <input class="field-input" id="s-username" type="text" placeholder="user">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Hostname</div>
+      <input class="field-input" id="s-hostname" type="text" placeholder="pc">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Path</div>
+      <input class="field-input" id="s-path" type="text" placeholder="~">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Symbol (e.g. $ # %)</div>
+      <input class="field-input" id="s-symbol" type="text" placeholder="$">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Prompt Colour</div>
+      <div class="color-input-wrap">
+        <input type="color" id="s-prompt-color" value="#00d2b4">
+        <input class="field-input" id="s-prompt-color-hex" type="text" placeholder="#00d2b4" style="width:110px;flex:none;">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Default Text Colour</div>
+      <div class="color-input-wrap">
+        <input type="color" id="s-text-color" value="#ffffff">
+        <input class="field-input" id="s-text-color-hex" type="text" placeholder="#ffffff" style="width:110px;flex:none;">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="s-cancel">Cancel</button>
+      <button class="modal-btn primary" id="s-apply">Apply</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="img-file-input" accept="image/*">
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+const state = {
+  winTitle: 'bash',
+  username: 'user',
+  hostname: 'machine',
+  path:     '~',
+  symbol:   '$',
+  promptColor: '#00d2b4',
+  textColor:   '#ffffff',
+};
+
+const SWATCHES = [
+  '#ff5f57','#febc2e','#28c840','#00d2b4',
+  '#4fc3f7','#ce93d8','#fff176','#ef9a9a',
+  '#a5d6a7','#ffffff','#aaaaaa','#555555',
+];
+
+/* ═══════════════════════════════════════════════════════
+   DOM REFS (shared/global)
+═══════════════════════════════════════════════════════ */
+const ctxMenu  = document.getElementById('ctx-menu');
+const modalOvl = document.getElementById('modal-overlay');
+
+/* ═══════════════════════════════════════════════════════
+   Z-INDEX MANAGEMENT
+═══════════════════════════════════════════════════════ */
+let zCounter = 110;
+function bringToFront(wEl) {
+  zCounter++;
+  wEl.style.zIndex = zCounter;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACTIVE BODY TRACKING
+   (which terminal body toolbar actions target)
+═══════════════════════════════════════════════════════ */
+let activeBody = null;
+
+/* ═══════════════════════════════════════════════════════
+   BUILD PROMPT STRING
+═══════════════════════════════════════════════════════ */
+function buildPrompt() {
+  return `${state.username}@${state.hostname}:${state.path}${state.symbol} `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TERMINAL WINDOW FACTORY
+═══════════════════════════════════════════════════════ */
+let windowIndex = 0;
+
+function spawnTerminalWindow() {
+  windowIndex++;
+  const offset  = (windowIndex - 1) * 28;
+  const startL  = 80 + offset;
+  const startT  = 80 + offset;
+
+  const wEl = document.createElement('div');
+  wEl.className = 'term-window';
+  wEl.style.cssText = `position:fixed;top:${startT}px;left:${startL}px;width:820px;min-width:340px;min-height:220px;z-index:${100+windowIndex};background:#0d1117;border-radius:10px;box-shadow:0 32px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.08),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;flex-direction:column;overflow:hidden;`;
+
+  wEl.innerHTML = `
+    <div class="resize-edge n"  data-dir="n"></div>
+    <div class="resize-edge s"  data-dir="s"></div>
+    <div class="resize-edge e"  data-dir="e"></div>
+    <div class="resize-edge w"  data-dir="w"></div>
+    <div class="resize-edge ne" data-dir="ne"></div>
+    <div class="resize-edge nw" data-dir="nw"></div>
+    <div class="resize-edge se" data-dir="se"></div>
+    <div class="resize-edge sw" data-dir="sw"></div>
+    <div class="win-title-bar">
+      <button class="win-btn wbtn-close">✕</button>
+      <button class="win-btn wbtn-min">–</button>
+      <button class="win-btn wbtn-max">⤢</button>
+      <div class="win-title-label">${state.winTitle}</div>
+    </div>
+    <div class="win-body"></div>
+  `;
+
+  document.body.appendChild(wEl);
+
+  const tb   = wEl.querySelector('.win-title-bar');
+  const bd   = wEl.querySelector('.win-body');
+
+  // ── track active body ──
+  wEl.addEventListener('mousedown', () => {
+    activeBody = bd;
+    bringToFront(wEl);
+  });
+  bd.addEventListener('focus', () => { activeBody = bd; }, true);
+
+  // ── drag ──
+  let ds = null;
+  tb.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('win-btn')) return;
+    ds = { sx: e.clientX, sy: e.clientY, ol: wEl.offsetLeft, ot: wEl.offsetTop };
+    document.body.style.userSelect = 'none';
+    bringToFront(wEl);
+  });
+  document.addEventListener('mousemove', e => {
+    if (!ds) return;
+    wEl.style.left = (ds.ol + e.clientX - ds.sx) + 'px';
+    wEl.style.top  = (ds.ot + e.clientY - ds.sy) + 'px';
+  });
+  document.addEventListener('mouseup', () => { ds = null; document.body.style.userSelect = ''; });
+
+  // ── resize ──
+  let rs = null, rsWin = null;
+  wEl.querySelectorAll('.resize-edge').forEach(edge => {
+    edge.addEventListener('mousedown', e => {
+      e.preventDefault();
+      rs = { dir: edge.dataset.dir, sx: e.clientX, sy: e.clientY,
+             ow: wEl.offsetWidth, oh: wEl.offsetHeight,
+             ol: wEl.offsetLeft,  ot: wEl.offsetTop };
+      rsWin = wEl;
+      document.body.style.userSelect = 'none';
+      bringToFront(wEl);
+    });
+  });
+  document.addEventListener('mousemove', e => {
+    if (!rs || rsWin !== wEl) return;
+    const { dir, sx, sy, ow, oh, ol, ot } = rs;
+    let dx = e.clientX - sx, dy = e.clientY - sy;
+    let nw = ow, nh = oh, nl = ol, nt = ot;
+    if (dir.includes('e')) nw = Math.max(340, ow + dx);
+    if (dir.includes('s')) nh = Math.max(220, oh + dy);
+    if (dir.includes('w')) { nw = Math.max(340, ow - dx); nl = ol + (ow - nw); }
+    if (dir.includes('n')) { nh = Math.max(220, oh - dy); nt = ot + (oh - nh); }
+    wEl.style.width  = nw + 'px'; wEl.style.height = nh + 'px';
+    wEl.style.left   = nl + 'px'; wEl.style.top    = nt + 'px';
+  });
+  document.addEventListener('mouseup', () => { if (rsWin === wEl) { rs = null; rsWin = null; } document.body.style.userSelect = ''; });
+
+  // ── close / min / max ──
+  wEl.querySelector('.wbtn-close').addEventListener('click', () => wEl.remove());
+  let minimized = false, savedH = '';
+  wEl.querySelector('.wbtn-min').addEventListener('click', () => {
+    if (!minimized) { savedH = wEl.style.height || wEl.offsetHeight + 'px'; wEl.style.height = '38px'; bd.style.display = 'none'; }
+    else { wEl.style.height = savedH; bd.style.display = ''; }
+    minimized = !minimized;
+  });
+  let maximized = false, savedRect = {};
+  wEl.querySelector('.wbtn-max').addEventListener('click', () => {
+    if (!maximized) {
+      savedRect = { left: wEl.style.left || wEl.offsetLeft + 'px', top: wEl.style.top || wEl.offsetTop + 'px', width: wEl.style.width || wEl.offsetWidth + 'px', height: wEl.style.height || wEl.offsetHeight + 'px' };
+      Object.assign(wEl.style, { left: '0', top: '0', width: '100vw', height: '100vh', borderRadius: '0' });
+    } else {
+      Object.assign(wEl.style, { left: savedRect.left, top: savedRect.top, width: savedRect.width, height: savedRect.height, borderRadius: '10px' });
+    }
+    maximized = !maximized;
+  });
+
+  // ── context menu: bind to this window's body ──
+  bd.addEventListener('contextmenu', onBodyContextMenu);
+
+  // ── seed initial lines ──
+  appendLineToBody(bd, true);
+  appendLineToBody(bd, false);
+
+  activeBody = bd;
+  return wEl;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CREATE / APPEND LINES
+═══════════════════════════════════════════════════════ */
+function createLine(withPrompt = false) {
+  const line = document.createElement('div');
+  line.className = 'term-line';
+  line.dataset.hasPrompt = withPrompt ? '1' : '0';
+
+  if (withPrompt) {
+    const prefix = document.createElement('span');
+    prefix.className = 'line-prefix';
+    prefix.textContent = buildPrompt();
+    prefix.style.color = state.promptColor;
+    line.appendChild(prefix);
+  }
+
+  const content = document.createElement('div');
+  content.className = 'line-content';
+  content.contentEditable = 'true';
+  content.spellcheck = false;
+  content.style.color = state.textColor;
+
+  content.addEventListener('keydown', onLineKeydown);
+  content.addEventListener('focus', () => line.classList.add('active'));
+  content.addEventListener('blur',  () => line.classList.remove('active'));
+
+  line.appendChild(content);
+  return { line, content };
+}
+
+// Append to a specific body container
+function appendLineToBody(container, withPrompt = false) {
+  const { line, content } = createLine(withPrompt);
+  container.appendChild(line);
+  content.focus();
+  return { line, content };
+}
+
+// Append to the currently active window's body
+function appendLine(withPrompt = false) {
+  const target = activeBody || document.querySelector('.win-body');
+  if (!target) return;
+  return appendLineToBody(target, withPrompt);
+}
+
+/* ═══════════════════════════════════════════════════════
+   KEYDOWN HANDLER
+═══════════════════════════════════════════════════════ */
+function onLineKeydown(e) {
+  const content = e.currentTarget;
+  const line    = content.parentElement;
+
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const { content: newContent } = insertLineAfter(line, false);
+    newContent.focus();
+    return;
+  }
+
+  if (e.key === 'Backspace') {
+    const sel = window.getSelection();
+    const isAtStart = sel.anchorOffset === 0 && sel.focusOffset === 0;
+    if (isAtStart && content.textContent === '') {
+      e.preventDefault();
+      const prev = line.previousElementSibling;
+      line.remove();
+      if (prev) {
+        const prevContent = prev.querySelector('.line-content');
+        if (prevContent) {
+          prevContent.focus();
+          const r = document.createRange();
+          r.selectNodeContents(prevContent);
+          r.collapse(false);
+          sel.removeAllRanges();
+          sel.addRange(r);
+        }
+      }
+      return;
+    }
+  }
+}
+
+function insertLineAfter(refLine, withPrompt) {
+  const { line, content } = createLine(withPrompt);
+  refLine.after(line);
+  return { line, content };
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONTROL PANEL DRAG
+═══════════════════════════════════════════════════════ */
+const panel = document.getElementById('control-panel');
+let panelDrag = null;
+panel.addEventListener('mousedown', e => {
+  if (e.target.classList.contains('tb-btn') || e.target.classList.contains('tb-sep')) return;
+  const rect = panel.getBoundingClientRect();
+  panelDrag = { sx: e.clientX, sy: e.clientY, ol: rect.left, ot: rect.top };
+  panel.style.transform = 'none';
+  panel.style.left = rect.left + 'px';
+  panel.style.top  = rect.top  + 'px';
+  document.body.style.userSelect = 'none';
+});
+document.addEventListener('mousemove', e => {
+  if (!panelDrag) return;
+  panel.style.left = (panelDrag.ol + e.clientX - panelDrag.sx) + 'px';
+  panel.style.top  = (panelDrag.ot + e.clientY - panelDrag.sy) + 'px';
+});
+document.addEventListener('mouseup', () => { panelDrag = null; document.body.style.userSelect = ''; });
+
+/* ═══════════════════════════════════════════════════════
+   TOOLBAR BUTTONS
+═══════════════════════════════════════════════════════ */
+document.getElementById('tb-add-prompt').addEventListener('click', () => appendLine(true));
+document.getElementById('tb-add-plain').addEventListener('click',  () => appendLine(false));
+document.getElementById('tb-new-window').addEventListener('click', () => spawnTerminalWindow());
+document.getElementById('tb-settings').addEventListener('click', openSettings);
+
+/* ═══════════════════════════════════════════════════════
+   IMAGE UPLOAD
+═══════════════════════════════════════════════════════ */
+document.getElementById('tb-upload-img').addEventListener('click', () => {
+  document.getElementById('img-file-input').click();
+});
+document.getElementById('img-file-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const target = activeBody || document.querySelector('.win-body');
+  if (target) addImage(url, target);
+  e.target.value = '';
+});
+
+function addImage(src, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'term-image-wrapper';
+  wrapper.style.width  = '220px';
+  wrapper.style.height = '160px';
+  wrapper.style.left   = '40px';
+  wrapper.style.top    = '40px';
+
+  const img = document.createElement('img');
+  img.src = src;
+  wrapper.appendChild(img);
+
+  const resH = document.createElement('div');
+  resH.className = 'resize-handle';
+  resH.textContent = '⇲';
+  wrapper.appendChild(resH);
+
+  const closeBtn = document.createElement('div');
+  closeBtn.className = 'img-close';
+  closeBtn.textContent = '×';
+  closeBtn.addEventListener('click', () => wrapper.remove());
+  wrapper.appendChild(closeBtn);
+
+  container.appendChild(wrapper);
+  makeImageDraggable(wrapper);
+  makeImageResizable(wrapper, resH);
+}
+
+function makeImageDraggable(el) {
+  let ds = null;
+  el.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('resize-handle') || e.target.classList.contains('img-close')) return;
+    e.preventDefault();
+    ds = { sx: e.clientX, sy: e.clientY, ol: el.offsetLeft, ot: el.offsetTop };
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!ds) return;
+    el.style.left = (ds.ol + e.clientX - ds.sx) + 'px';
+    el.style.top  = (ds.ot + e.clientY - ds.sy) + 'px';
+  });
+  document.addEventListener('mouseup', () => { ds = null; document.body.style.userSelect = ''; });
+}
+
+function makeImageResizable(el, handle) {
+  let rs = null;
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    rs = { sx: e.clientX, sy: e.clientY, ow: el.offsetWidth, oh: el.offsetHeight };
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!rs) return;
+    el.style.width  = Math.max(60, rs.ow + e.clientX - rs.sx) + 'px';
+    el.style.height = Math.max(40, rs.oh + e.clientY - rs.sy) + 'px';
+  });
+  document.addEventListener('mouseup', () => { rs = null; document.body.style.userSelect = ''; });
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONTEXT MENU
+═══════════════════════════════════════════════════════ */
+
+// Build swatches
+const swatchContainer = document.getElementById('ctx-swatches');
+SWATCHES.forEach(hex => {
+  const s = document.createElement('div');
+  s.className = 'swatch';
+  s.style.background = hex;
+  s.title = hex;
+  s.addEventListener('mousedown', e => { e.preventDefault(); applyColor(hex); });
+  swatchContainer.appendChild(s);
+});
+const customSwatch = document.createElement('span');
+customSwatch.className = 'ctx-color-custom';
+customSwatch.textContent = '+ custom';
+customSwatch.addEventListener('mousedown', e => {
+  e.preventDefault();
+  const inp = document.createElement('input');
+  inp.type = 'color';
+  inp.style.position = 'fixed';inp.style.opacity='0';inp.style.pointerEvents='none';
+  document.body.appendChild(inp);
+  inp.addEventListener('input', () => applyColor(inp.value));
+  inp.addEventListener('change', () => { applyColor(inp.value); inp.remove(); });
+  inp.click();
+});
+swatchContainer.appendChild(customSwatch);
+
+let savedRange = null;
+let ctxTargetLine = null;
+
+// Called by each spawned window's body
+function onBodyContextMenu(e) {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed) { hideCtx(); return; }
+  e.preventDefault();
+  savedRange = sel.getRangeAt(0).cloneRange();
+  ctxTargetLine = e.target.closest('.term-line');
+  const hasPfx = ctxTargetLine && ctxTargetLine.dataset.hasPrompt === '1';
+  document.getElementById('ctx-remove-prompt').style.display = hasPfx ? '' : 'none';
+  showCtx(e.clientX, e.clientY);
+}
+
+document.addEventListener('mousedown', e => {
+  if (!ctxMenu.contains(e.target)) hideCtx();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideCtx(); });
+
+function showCtx(x, y) {
+  ctxMenu.style.display = 'block';
+  const mw = ctxMenu.offsetWidth, mh = ctxMenu.offsetHeight;
+  ctxMenu.style.left = Math.min(x, window.innerWidth  - mw - 4) + 'px';
+  ctxMenu.style.top  = Math.min(y, window.innerHeight - mh - 4) + 'px';
+}
+function hideCtx() { ctxMenu.style.display = 'none'; }
+
+function restoreSelection() {
+  if (!savedRange) return;
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(savedRange);
+}
+
+function applyColor(color) {
+  restoreSelection();
+  document.execCommand('styleWithCSS', false, true);
+  document.execCommand('foreColor', false, color);
+  hideCtx();
+}
+
+document.getElementById('ctx-bold').addEventListener('mousedown', e => {
+  e.preventDefault(); restoreSelection(); document.execCommand('bold'); hideCtx();
+});
+document.getElementById('ctx-italic').addEventListener('mousedown', e => {
+  e.preventDefault(); restoreSelection(); document.execCommand('italic'); hideCtx();
+});
+document.getElementById('ctx-under').addEventListener('mousedown', e => {
+  e.preventDefault(); restoreSelection(); document.execCommand('underline'); hideCtx();
+});
+
+// Size
+document.getElementById('ctx-size-up').addEventListener('mousedown', e => {
+  e.preventDefault();
+  restoreSelection();
+  adjustFontSize(+2);
+  hideCtx();
+});
+document.getElementById('ctx-size-down').addEventListener('mousedown', e => {
+  e.preventDefault();
+  restoreSelection();
+  adjustFontSize(-2);
+  hideCtx();
+});
+
+function adjustFontSize(delta) {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0).cloneRange();
+
+  // Detect current font size at the selection start
+  let startNode = range.startContainer;
+  if (startNode.nodeType === Node.TEXT_NODE) startNode = startNode.parentElement;
+  const currentPx = parseFloat(window.getComputedStyle(startNode).fontSize) || 14;
+  const newSize = Math.max(8, Math.min(96, Math.round(currentPx + delta)));
+
+  // Wrap the selection in a <span> with the new font size
+  const span = document.createElement('span');
+  span.style.fontSize = newSize + 'px';
+  span.style.verticalAlign = 'middle';
+  span.style.lineHeight = '1.6';
+  try {
+    range.surroundContents(span);
+  } catch (err) {
+    // Cross-node selection: extract and re-insert
+    const frag = range.extractContents();
+    span.appendChild(frag);
+    range.insertNode(span);
+  }
+
+  // Re-select the newly sized span so repeated adjustments work
+  const newRange = document.createRange();
+  newRange.selectNodeContents(span);
+  sel.removeAllRanges();
+  sel.addRange(newRange);
+  savedRange = newRange.cloneRange();
+}
+
+// Remove prompt
+document.getElementById('ctx-remove-prompt').addEventListener('mousedown', e => {
+  e.preventDefault();
+  if (ctxTargetLine) {
+    const pfx = ctxTargetLine.querySelector('.line-prefix');
+    if (pfx) pfx.remove();
+    ctxTargetLine.dataset.hasPrompt = '0';
+  }
+  hideCtx();
+});
+
+/* ═══════════════════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════════════════ */
+function openSettings() {
+  document.getElementById('s-win-title').value     = state.winTitle;
+  document.getElementById('s-username').value      = state.username;
+  document.getElementById('s-hostname').value      = state.hostname;
+  document.getElementById('s-path').value          = state.path;
+  document.getElementById('s-symbol').value        = state.symbol;
+  document.getElementById('s-prompt-color').value  = state.promptColor;
+  document.getElementById('s-prompt-color-hex').value = state.promptColor;
+  document.getElementById('s-text-color').value    = state.textColor;
+  document.getElementById('s-text-color-hex').value   = state.textColor;
+  modalOvl.classList.add('open');
+}
+
+// Sync color pickers ↔ hex inputs
+['prompt','text'].forEach(k => {
+  const picker = document.getElementById(`s-${k}-color`);
+  const hex    = document.getElementById(`s-${k}-color-hex`);
+  picker.addEventListener('input', () => hex.value = picker.value);
+  hex.addEventListener('input', () => {
+    if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) picker.value = hex.value;
+  });
+});
+
+document.getElementById('s-cancel').addEventListener('click', () => modalOvl.classList.remove('open'));
+modalOvl.addEventListener('click', e => { if (e.target === modalOvl) modalOvl.classList.remove('open'); });
+
+document.getElementById('s-apply').addEventListener('click', () => {
+  state.winTitle    = document.getElementById('s-win-title').value.trim()  || 'bash';
+  state.username    = document.getElementById('s-username').value.trim()   || 'user';
+  state.hostname    = document.getElementById('s-hostname').value.trim()   || 'machine';
+  state.path        = document.getElementById('s-path').value.trim()       || '~';
+  state.symbol      = document.getElementById('s-symbol').value            || '$';
+  state.promptColor = document.getElementById('s-prompt-color').value;
+  state.textColor   = document.getElementById('s-text-color').value;
+
+  // Update all window title labels
+  document.title = state.winTitle;
+  document.querySelectorAll('.win-title-label').forEach(el => el.textContent = state.winTitle);
+
+  // Re-colour existing prompts
+  document.querySelectorAll('.line-prefix').forEach(el => {
+    el.style.color = state.promptColor;
+  });
+  // Update text colour for plain lines (not coloured individually)
+  document.querySelectorAll('.line-content').forEach(el => {
+    if (!el.style.color || el.style.color === state.textColor) {
+      el.style.color = state.textColor;
+    }
+  });
+
+  modalOvl.classList.remove('open');
+});
+
+/* ═══════════════════════════════════════════════════════
+   INIT — spawn the first terminal window
+═══════════════════════════════════════════════════════ */
+spawnTerminalWindow();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Boot Selector — TsuK-Interface</title>
+
+<style>
+    /* --- GLOBAL AESTHETIC --- */
+    body {
+        margin: 0;
+        height: 100vh;
+        background: #0a0a0a;
+        color: #e5e2d8;
+        font-family: "Times New Roman", serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        letter-spacing: 0.5px;
+    }
+
+    /* Subtle scanlines */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03) 0px,
+            rgba(255,255,255,0.03) 1px,
+            transparent 2px,
+            transparent 4px
+        );
+        opacity: 0.15;
+    }
+
+    /* --- BOOT MENU CONTAINER --- */
+    .boot-menu {
+        border: 1px solid #e5e2d8;
+        padding: 40px 60px;
+        min-width: 420px;
+        background: rgba(255,255,255,0.03);
+        backdrop-filter: blur(2px);
+        position: relative;
+        box-shadow: 0 0 25px rgba(255,255,255,0.08);
+    }
+
+    .title {
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+
+    /* --- OPTIONS --- */
+    .option {
+        padding: 10px 0;
+        font-size: 18px;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.2s;
+    }
+
+    .option:hover {
+        color: #ffffff;
+    }
+
+    /* NieR-style left selection bar */
+    .option::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0px;
+        height: 2px;
+        background: #ffffff;
+        transition: width 0.25s ease;
+    }
+
+    .option:hover::before {
+        width: 14px;
+    }
+
+    /* Soft glow on hover */
+    .option:hover {
+        text-shadow: 0 0 8px rgba(255,255,255,0.6);
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="boot-menu">
+    <h1>TsuK-Interface Boot Menu</h1>
+	<h3>Select your desired system...</h1>
+
+    <div class="option" onclick="boot('SCPF-OS')">SCPF‑OS</div>
+    <div class="option" onclick="boot('SysSoftlock')">SysSoftlock</div>
+</div>
+
+<script>
+function boot(target) {
+    window.location.href = window.location.origin + '/' + target;
+}
+</script>
+
+</body>
+</html>
